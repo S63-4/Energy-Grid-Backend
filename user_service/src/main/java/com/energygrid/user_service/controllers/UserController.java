@@ -97,4 +97,7 @@ public class UserController {
             throw new BadRequestException("Failed to update profile");
         }
     }
+
+    @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
+    public String test(){ return "Test works";}
 }
