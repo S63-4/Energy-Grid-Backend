@@ -9,6 +9,7 @@ import com.energygrid.user_service.repositories.UserRepository;
 import com.energygrid.user_service.services.StatusService;
 import com.energygrid.user_service.services.UserService;
 import com.google.gson.Gson;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
@@ -64,10 +65,13 @@ public class UserController {
         return statusService.getStatusById(id);
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getUserProfile, method = RequestMethod.GET)
     public @ResponseBody
-    ProfileDTO getProfile(@RequestParam("customerCode") String customerCode){
-        return userService.getUserByCustomerCode(customerCode);
+    ProfileDTO getProfile() {
+        var customerCode = "123456";
+//        var customerCode = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
+        return userService.getUserByCustomerCode(customerCode != null ? customerCode : "0");
     }
 
     @PostMapping(value = RestURIConstant.userRegistration)
@@ -82,7 +86,7 @@ public class UserController {
         } catch (Exception e) {
             throw new BadRequestException("Failed to register, check your email/code combination");
 
-    }
+        }
     }
 
     @PutMapping(value = RestURIConstant.updateProfile)
@@ -99,5 +103,7 @@ public class UserController {
     }
 
     @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
-    public String test(){ return "Test works";}
+    public String test() {
+        return "Test works";
+    }
 }
