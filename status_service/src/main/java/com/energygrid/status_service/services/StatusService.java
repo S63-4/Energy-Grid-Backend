@@ -1,8 +1,8 @@
 package com.energygrid.status_service.services;
 
-import com.energygrid.common.dto.StatusDTO;
+import com.energygrid.common.dto.*;
 import com.energygrid.common.models.Status;
-import com.energygrid.common.utils.StatusPeriod;
+import com.energygrid.common.enums.StatusPeriod;
 
 import com.energygrid.status_service.repositories.StatusRepository;
 import org.modelmapper.ModelMapper;
@@ -27,20 +27,7 @@ public class StatusService {
         this.modelMapper = modelMapper;
     }
 
-    public List<StatusDTO> getStatusById(Long id) {
-        try {
-            Status status = statusRepository.findStatusById(id);
-            List<StatusDTO> result = new ArrayList<>();
-            result.add(modelMapper.map(status, StatusDTO.class));
-
-            return result;
-        } catch (Exception ex) {
-            ex.printStackTrace();
-            return new ArrayList<>();
-        }
-    }
-
-    public List<StatusDTO> getStatusForPeriod(Long id, StatusPeriod statusPeriod, LocalDate currentDate) {
+    public List<StatusDTO> getStatusForPeriod(int id, StatusPeriod statusPeriod, LocalDate currentDate) {
         try {
             LocalDate beginDate;
             LocalDate endDate;
@@ -70,8 +57,7 @@ public class StatusService {
                 statusSet.add(modelMapper.map(status, StatusDTO.class));
             }*/
             if (beginDate != null) {
-
-                return sortStatusForPeriod(beginDate, endDate, statusPeriod);
+                return sortStatusForPeriod(beginDate, endDate, statusPeriod, id);
             }
 
 
@@ -83,9 +69,9 @@ public class StatusService {
     }
 
 
-    private List<StatusDTO> sortStatusForPeriod(LocalDate beginDate, LocalDate endDate, StatusPeriod statusPeriod) {
+    private List<StatusDTO> sortStatusForPeriod(LocalDate beginDate, LocalDate endDate, StatusPeriod statusPeriod, int id) {
 
-        var filtered = statusRepository.findByDateBetween(java.sql.Date.valueOf(beginDate), java.sql.Date.valueOf(endDate));
+        var filtered = statusRepository.findByDateandUser(java.sql.Date.valueOf(beginDate), java.sql.Date.valueOf(endDate), (long) id);
         List<StatusDTO> statusDTOS = new ArrayList<>();
         List<StatusDTO> result = new ArrayList<>();
         for (Status status : filtered) {

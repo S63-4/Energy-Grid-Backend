@@ -21,4 +21,5 @@ public class StatusServiceApplication {
         SpringApplication.run(StatusServiceApplication.class, args);
     }
 
+
 }
