@@ -1,4 +1,4 @@
-package com.energygrid.user_service.repositories;
+package com.energygrid.status_service.repositories;
 
 import com.energygrid.common.models.Status;
 import org.springframework.data.repository.CrudRepository;

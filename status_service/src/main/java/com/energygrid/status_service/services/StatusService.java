@@ -1,11 +1,10 @@
-package com.energygrid.user_service.services;
+package com.energygrid.status_service.services;
 
 import com.energygrid.common.dto.StatusDTO;
 import com.energygrid.common.models.Status;
 import com.energygrid.common.utils.StatusPeriod;
 
-import com.energygrid.user_service.repositories.StatusRepository;
-import com.energygrid.user_service.repositories.UserRepository;
+import com.energygrid.status_service.repositories.StatusRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
@@ -21,12 +20,10 @@ import java.util.Locale;
 public class StatusService {
 
     private final StatusRepository statusRepository;
-    private final UserRepository userRepository;
     private final ModelMapper modelMapper;
 
-    public StatusService(StatusRepository statusRepository, UserRepository userRepository, ModelMapper modelMapper) {
+    public StatusService(StatusRepository statusRepository, ModelMapper modelMapper) {
         this.statusRepository = statusRepository;
-        this.userRepository = userRepository;
         this.modelMapper = modelMapper;
     }
 

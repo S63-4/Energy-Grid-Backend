@@ -6,7 +6,6 @@ import com.energygrid.common.dto.StatusDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
-import com.energygrid.user_service.services.StatusService;
 import com.energygrid.user_service.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -21,12 +20,10 @@ import java.util.List;
 public class UserController {
 
     private final UserService userService;
-    private final StatusService statusService;
     private final UserRepository userRepository;
 
-    public UserController(UserService userService, StatusService statusService, UserRepository userRepository) {
+    public UserController(UserService userService, UserRepository userRepository) {
         this.userService = userService;
-        this.statusService = statusService;
         this.userRepository = userRepository;
     }
 
@@ -57,14 +54,6 @@ public class UserController {
         final String email = (String) auth.getPrincipal();
         return userRepository.findUserByCustomerCode(email);
     }
-
-    @RequestMapping(value = RestURIConstant.getUserStatus, method = RequestMethod.GET)
-    public @ResponseBody
-    List<StatusDTO> getUserStatus(@RequestParam("id") Long id) {
-        //  User user = (User) getCurrentAuthorizedUser(User.class);
-        return statusService.getStatusById(id);
-    }
-
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getUserProfile, method = RequestMethod.GET)
     public @ResponseBody
