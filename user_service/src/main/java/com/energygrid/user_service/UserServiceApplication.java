@@ -20,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
-@ComponentScan({"com.EnergyGrid.common","com.EnergyGrid.user_service"})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@ComponentScan({"com.energygrid.common","com.energygrid.user_service"})
 public class UserServiceApplication {
 
     @Bean
