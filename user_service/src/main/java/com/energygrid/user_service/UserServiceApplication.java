@@ -14,8 +14,11 @@ import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
+import org.springframework.cloud.client.loadbalancer.LoadBalanced;
+import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.*;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -23,10 +26,11 @@ import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 
-
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
+@EnableEurekaClient
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @ComponentScan({"com.EnergyGrid.common","com.EnergyGrid.user_service"})
 public class UserServiceApplication {
+
 
     @Bean
     public ModelMapper modelMapper() {
@@ -101,5 +105,16 @@ public class UserServiceApplication {
 
         };
     }
+    @Configuration
+    class RestTemplateConfig {
+
+        // Create a bean for restTemplate to call services
+        @Bean
+        @LoadBalanced        // Load balance between service instances running at different ports.
+        public RestTemplate restTemplate() {
+            return new RestTemplate();
+        }
+    }
+
 
 }
