@@ -2,6 +2,7 @@ package com.energygrid.common.models;
 
 import javax.persistence.*;
 import java.util.Date;
+import java.util.Set;
 
 @Entity
 public class Status {
@@ -19,6 +20,9 @@ public class Status {
     @Column(nullable = false)
     private double production;
 
+    @ManyToOne(cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    private User user;
 
 
     public Status(Date date, double consumption, double production) {

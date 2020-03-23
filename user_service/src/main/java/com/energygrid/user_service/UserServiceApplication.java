@@ -5,14 +5,11 @@ import com.energygrid.common.models.User;
 import com.energygrid.common.utils.AuthenticationUtils;
 import com.energygrid.common.utils.CsvValues;
 import com.energygrid.common.utils.RandomString;
-import com.energygrid.user_service.repositories.StatusRepository;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
@@ -28,7 +25,7 @@ import java.util.Set;
 
 @EnableEurekaClient
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
-@ComponentScan({"com.EnergyGrid.common","com.EnergyGrid.user_service"})
+@ComponentScan({"com.energygrid.common","com.energygrid.user_service"})
 public class UserServiceApplication {
 
 
@@ -42,7 +39,7 @@ public class UserServiceApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, StatusRepository statusRepository){
+    public CommandLineRunner demo(UserRepository userRepository){
         return args -> {
 
             AuthenticationUtils auth = new AuthenticationUtils();
@@ -91,11 +88,6 @@ public class UserServiceApplication {
 
             user1.setStatus(status_dashboard1);
             user2.setStatus(status_dashboard2);
-
-            statusRepository.save(status1);
-            statusRepository.save(status2);
-            statusRepository.save(status3);
-
             user1 = userRepository.save(user1);
             user2 = userRepository.save(user2);
             adminUser = userRepository.save(adminUser);
