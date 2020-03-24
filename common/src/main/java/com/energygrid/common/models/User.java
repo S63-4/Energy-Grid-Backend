@@ -5,11 +5,12 @@ import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
 import javax.persistence.*;
+import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
 @Entity
-public class User implements UserDetails {
+public class User implements UserDetails,Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -56,8 +57,12 @@ public class User implements UserDetails {
     @Column
     private  boolean isCredentialsNonExpired;
 
-    public void setCustomGrantedAuthorities(Set<CustomGrantedAuthority> customGrantedAuthorities) {
-        this.customGrantedAuthorities = customGrantedAuthorities;
+    public void setAuthorities(Set<CustomGrantedAuthority> customGrantedAuthorities) {
+        this.authorities = customGrantedAuthorities;
+    }
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return authorities;
     }
 
     public void setStatus(Set<Status> status) {
@@ -66,7 +71,7 @@ public class User implements UserDetails {
 
     @ManyToMany(cascade = CascadeType.ALL, fetch = FetchType.EAGER)
     @JoinTable(name = "user_role", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "auth_id"))
-    private Set<CustomGrantedAuthority> customGrantedAuthorities;
+    private Set<CustomGrantedAuthority> authorities;
 
 
     @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
@@ -88,7 +93,7 @@ public class User implements UserDetails {
         this.isEnabled = isEnabled;
         this.isAccountNonLocked = isAccountNonLocked;
         this.isCredentialsNonExpired = isCredentialsNonExpired;
-        this.customGrantedAuthorities = customGrantedAuthorities;
+        this.authorities = customGrantedAuthorities;
     }
 
     public User(){
@@ -206,10 +211,7 @@ public class User implements UserDetails {
         return status;
     }
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return customGrantedAuthorities;
-    }
+
 
     @Override
     public String getPassword() {

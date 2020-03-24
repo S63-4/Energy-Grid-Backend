@@ -36,6 +36,8 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
     public Authentication attemptAuthentication(HttpServletRequest request, HttpServletResponse response)
             throws AuthenticationException {
 
+        System.out.println("attempting auth");
+
         try {
 
 
@@ -54,12 +56,14 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         }
     }
 
+
     // Upon successful authentication, generate a token.
     // The 'auth' passed to successfulAuthentication() is the current authenticated user.
     @Override
     protected void successfulAuthentication(HttpServletRequest request, HttpServletResponse response, FilterChain chain,
                                             Authentication auth) throws IOException, ServletException {
 
+        System.out.println("attempting auth: succes");
         Long now = System.currentTimeMillis();
         String token = Jwts.builder()
                 .setSubject(auth.getName())
@@ -87,7 +91,9 @@ public class JwtUsernameAndPasswordAuthenticationFilter extends UsernamePassword
         public String getPassword() {
             return password;
         }
-        // getters and setters ...
+        // gett
+
+
     }
 }
 

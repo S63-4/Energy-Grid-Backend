@@ -2,6 +2,7 @@ package com.energygrid.gateway.security;
 
 
 
+import com.energygrid.common.models.CustomGrantedAuthority;
 import com.energygrid.common.security.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
@@ -65,7 +66,7 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
                 // UsernamePasswordAuthenticationToken: A built-in object, used by spring to represent the current authenticated / being authenticated user.
                 // It needs a list of authorities, which has type of GrantedAuthority interface, where SimpleGrantedAuthority is an implementation of that interface
                 UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(
-                        username, null, authorities.stream().map(SimpleGrantedAuthority::new).collect(Collectors.toList()));
+                        username, null, authorities.stream().map(CustomGrantedAuthority::new).collect(Collectors.toList()));
 
                 // 6. Authenticate the user
                 // Now, user is authenticated
