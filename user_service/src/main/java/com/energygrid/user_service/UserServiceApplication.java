@@ -58,8 +58,6 @@ public class UserServiceApplication {
             User user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",false,false,false,false, USER.getGrantedAuthorities()); //default
 
 
-
-
             Status status1 = new Status();
             Status status2 = new Status();
             Status status3 = new Status();
