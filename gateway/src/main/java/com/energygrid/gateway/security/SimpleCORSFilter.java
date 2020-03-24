@@ -1,4 +1,4 @@
-package com.energygrid.user_service;
+package com.energygrid.gateway.security;
 
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
@@ -12,7 +12,7 @@ import java.io.IOException;
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
 
-public class SimpleCORSFilter implements javax.servlet.Filter {
+public class SimpleCORSFilter implements Filter {
 
   @Override
   public void init(FilterConfig fc) throws ServletException {
@@ -28,6 +28,7 @@ public class SimpleCORSFilter implements javax.servlet.Filter {
     response.setHeader("Access-Control-Max-Age", "3600");
     //Headers allowed for error logging
     response.setHeader("Access-Control-Allow-Headers", "x-requested-with, authorization, Content-Type, Authorization, credential, X-XSRF-TOKEN, access-control-allow-origin, OPTIONS");
+    response.setHeader("Access-Control-Expose-Headers", "Authorization");
 
     if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
       response.setStatus(HttpServletResponse.SC_OK);
