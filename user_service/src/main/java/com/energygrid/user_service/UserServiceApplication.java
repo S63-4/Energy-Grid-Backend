@@ -55,7 +55,7 @@ public class UserServiceApplication {
             String[] data2 = value2.split(",");
 
             User user1 = new User("victor","victory",passwordEncoder.encode("test2"),"test@test.com", "0773077070", "0612345678", data1[CsvValues.ZIPCODE.getValue()], data1[CsvValues.STREET.getValue()], data1[CsvValues.CITY.getValue()], data1[CsvValues.HOUSE_NUMBER.getValue()],"123456",true,true,true,true, ADMIN.getGrantedAuthorities()); //default
-            User user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], rdm.getAlphaNumericString(8),true,true,true,true, USER.getGrantedAuthorities()); //default
+            User user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",false,false,false,false, USER.getGrantedAuthorities()); //default
 
 
 
@@ -92,6 +92,7 @@ public class UserServiceApplication {
             user2 = userRepository.save(user2);
             System.out.println("Id of user1 is: " + user1.getId() + "CustomerCode:" + user1.getCustomerCode());
             System.out.println("Id of user2 is: " + user2.getId()+ "CustomerCode:" + user2.getCustomerCode());
+            System.out.println(user1.isEnabled());
 
         };
     }

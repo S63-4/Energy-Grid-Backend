@@ -30,7 +30,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
             throw new IllegalArgumentException("CustomerCode can't be empty");
         }
             User user = restTemplate.getForObject("http://user-service/UserController/user?code="+customerCode, User.class);
-        System.out.println("found user");
+
+        System.out.println(user);
             return user;
     }
 
