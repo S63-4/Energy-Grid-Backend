@@ -1,12 +1,12 @@
-from regional_simulator.event_producer import EventProducer
-from regional_simulator.simulator import Simulator
-from regional_simulator.broadcaster import Broadcaster
+from websocket_producer import WebSocketProducer
+from simulator import Simulator
+from websocket_server import WebSocketServer
 
 if __name__ == "__main__":
     host = "localhost"
     port = 8765
-    broadcaster = Broadcaster(host, port)
-    event_producer = EventProducer(host, port)
-    sim = Simulator(event_producer)
-    broadcaster.start()
+    websocket_server = WebSocketServer(host, port)
+    websocket_producer = WebSocketProducer(host, port)
+    sim = Simulator(websocket_producer)
+    websocket_server.start()
     sim.main()

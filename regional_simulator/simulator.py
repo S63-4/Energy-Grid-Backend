@@ -1,6 +1,6 @@
 import pandas as pd
 import datetime
-from regional_simulator.broadcaster import Broadcaster
+from websocket_server import WebSocketServer
 import time
 from pydispatch import dispatcher
 import asyncio
@@ -45,4 +45,4 @@ class Simulator:
 
         while 1:
             self._event_producer.send(f"SIM: {consumption_now}")
-            time.sleep(10)
+            time.sleep(2)
