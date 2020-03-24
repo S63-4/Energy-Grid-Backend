@@ -90,9 +90,6 @@ public class UserServiceApplication {
             user2.setStatus(status_dashboard2);
             user1 = userRepository.save(user1);
             user2 = userRepository.save(user2);
-            System.out.println("Id of user1 is: " + user1.getId() + "CustomerCode:" + user1.getCustomerCode());
-            System.out.println("Id of user2 is: " + user2.getId()+ "CustomerCode:" + user2.getCustomerCode());
-            System.out.println(user1.isEnabled());
 
         };
     }
