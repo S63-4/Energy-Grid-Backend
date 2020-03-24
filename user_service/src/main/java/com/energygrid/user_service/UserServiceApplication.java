@@ -29,8 +29,6 @@ import static com.energygrid.common.security.UserRole.USER;
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
 @ComponentScan({"com.energygrid.common","com.energygrid.user_service"})
 public class UserServiceApplication {
-
-
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
