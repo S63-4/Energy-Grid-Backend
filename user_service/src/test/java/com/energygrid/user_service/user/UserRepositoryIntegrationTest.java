@@ -12,6 +12,7 @@ import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 
+import static com.energygrid.common.security.UserRole.USER;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 
@@ -37,7 +38,7 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void shouldSaveAndFetch() {
-        User testUser = new User("Test","Testory", passwordEncoder.encode("test212313212312312"),"testaccount@test.nl", "0773077070", "0612345678", "1111TT","SCHOOLSTRAAT", "EINDHOVEN", "11","623415");
+        User testUser = new User("Test","Testory", passwordEncoder.encode("test212313212312312"),"testaccount@test.nl", "0773077070", "0612345678", "1111TT","SCHOOLSTRAAT", "EINDHOVEN", "11","623415",true,true,true,true,USER.getGrantedAuthorities());
         subject.save(testUser);
         User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
 
