@@ -18,7 +18,7 @@ import java.util.Scanner;
 @EnableEurekaClient
 public class DataProcessorApplication {
 
-    private static String URL = "ws://localhost:8080/spring-mvc-java/chat";
+    private static String URL = "ws://localhost:8";
 
     public static void main(String[] args) {
         SpringApplication.run(DataProcessorApplication.class, args);
