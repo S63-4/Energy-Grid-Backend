@@ -1,0 +1,8 @@
+user-service:       9000
+employee-service:   9010
+auth-service:       9020
+status-service:     9030
+common:             9040
+
+eureka-server:      8761 (default)
+zuul-server:        8762 (default)

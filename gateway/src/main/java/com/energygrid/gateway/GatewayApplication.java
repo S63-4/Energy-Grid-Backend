@@ -1,18 +1,17 @@
-package com.energygrid.common;
+package com.energygrid.gateway;
 
-import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.Bean;
+import org.springframework.cloud.netflix.zuul.EnableZuulProxy;
 
 @SpringBootApplication
 @EnableEurekaClient
-public class CommonApplication {
-
+@EnableZuulProxy
+public class GatewayApplication {
 
     public static void main(String[] args) {
-        SpringApplication.run(CommonApplication.class, args);
+        SpringApplication.run(GatewayApplication.class, args);
     }
 
 }
