@@ -1,4 +1,4 @@
-package com.energygrid.common.utils;
+package com.energygrid.common.enums;
 
 public enum StatusPeriod {
     YEAR,

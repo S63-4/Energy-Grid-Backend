@@ -2,7 +2,6 @@ package com.energygrid.user_service.user;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.user_service.controllers.UserController;
 import com.energygrid.user_service.repositories.UserRepository;
-import com.energygrid.user_service.services.StatusService;
 import com.energygrid.user_service.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
@@ -23,14 +22,12 @@ public class UserControllerTest {
     @Mock
     private UserService userService;
     @Mock
-    private StatusService statusService;
-    @Mock
     private UserRepository userRepository;
 
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        subject = new UserController(userService, statusService, userRepository);
+        subject = new UserController(userService, userRepository);
     }
 
     @Test

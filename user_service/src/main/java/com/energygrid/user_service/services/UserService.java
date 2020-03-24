@@ -76,6 +76,9 @@ public class UserService {
     public ProfileDTO getUserByCustomerCode(String customerCode){
         return modelMapper.map(userRepository.findUserByCustomerCode(customerCode), ProfileDTO.class);
     }
+    public User getByCustomerCode(String customerCode){
+        return userRepository.findUserByCustomerCode(customerCode);
+    }
 
     public String updateProfile(ProfileDTO user) throws Exception{
         try{

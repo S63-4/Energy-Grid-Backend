@@ -58,8 +58,7 @@ public class User {
     }
 
 
-    @OneToMany(cascade = CascadeType.DETACH, fetch = FetchType.EAGER)
-    @JoinTable(name = "user_status", joinColumns = @JoinColumn(name = "user_id"), inverseJoinColumns = @JoinColumn(name = "status_id"))
+    @OneToMany(mappedBy = "user", cascade = CascadeType.DETACH, fetch = FetchType.LAZY)
     private Set<Status> status;
 
     public User(String firstName, String lastName, String password_hash, String email, String phoneNumber, String mobileNumber, String zipCode, String street, String city, String houseNumber, String customerCode) {

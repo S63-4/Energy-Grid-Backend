@@ -5,17 +5,13 @@ import com.energygrid.common.models.User;
 import com.energygrid.common.utils.AuthenticationUtils;
 import com.energygrid.common.utils.CsvValues;
 import com.energygrid.common.utils.RandomString;
-import com.energygrid.user_service.repositories.StatusRepository;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.*;
-import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.BufferedReader;
 import java.io.FileReader;
@@ -24,8 +20,8 @@ import java.util.HashSet;
 import java.util.Set;
 
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
-@ComponentScan({"com.EnergyGrid.common","com.EnergyGrid.user_service"})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class})
+@ComponentScan({"com.energygrid.common","com.energygrid.user_service"})
 public class UserServiceApplication {
 
     @Bean
@@ -38,7 +34,7 @@ public class UserServiceApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, StatusRepository statusRepository){
+    public CommandLineRunner demo(UserRepository userRepository){
         return args -> {
 
             AuthenticationUtils auth = new AuthenticationUtils();
@@ -87,11 +83,6 @@ public class UserServiceApplication {
 
             user1.setStatus(status_dashboard1);
             user2.setStatus(status_dashboard2);
-
-            statusRepository.save(status1);
-            statusRepository.save(status2);
-            statusRepository.save(status3);
-
             user1 = userRepository.save(user1);
             user2 = userRepository.save(user2);
             adminUser = userRepository.save(adminUser);
