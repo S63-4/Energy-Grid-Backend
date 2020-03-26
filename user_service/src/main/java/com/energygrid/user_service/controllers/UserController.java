@@ -2,10 +2,10 @@ package com.energygrid.user_service.controllers;
 
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.dto.RegisterDTO;
-import com.energygrid.common.dto.StatusDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
+import com.energygrid.user_service.services.EmailService;
 import com.energygrid.user_service.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.security.access.prepost.PreAuthorize;
@@ -19,10 +19,12 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final EmailService emailService;
     private final UserRepository userRepository;
 
-    public UserController(UserService userService, UserRepository userRepository) {
+    public UserController(UserService userService, EmailService emailService, UserRepository userRepository) {
         this.userService = userService;
+        this.emailService = emailService;
         this.userRepository = userRepository;
     }
 
@@ -92,6 +94,12 @@ public class UserController {
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody User getUserByCode(@RequestParam("code") String code){
         return userService.getByCustomerCode(code);
+    }
+
+    @RequestMapping(value = RestURIConstant.sendMail, method = RequestMethod.GET)
+    public String sendmail(@RequestParam("email") String email, @RequestParam("customerCode") String customerCode) {
+        emailService.sendRegistrationMail(email, customerCode);
+        return "emailsent";
     }
 
     @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)

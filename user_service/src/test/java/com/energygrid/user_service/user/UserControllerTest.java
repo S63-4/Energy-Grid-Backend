@@ -27,7 +27,7 @@ public class UserControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        subject = new UserController(userService, userRepository);
+        //subject = new UserController(userService, userRepository);
     }
 
     @Test
