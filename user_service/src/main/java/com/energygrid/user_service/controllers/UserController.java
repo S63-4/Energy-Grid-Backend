@@ -95,9 +95,4 @@ public class UserController {
         return userService.getByCustomerCode(code);
     }
 
-    @PreAuthorize("hasAnyAuthority('ROLE_ADMIN')")
-    @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
-    public String test() {
-        return "Test works";
-    }
 }
