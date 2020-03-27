@@ -22,6 +22,5 @@ class EmailServiceTest {
         emailSend = emailService.sendRegistrationMail(email, customerCode);
 
         Assert.assertTrue("Email failed to send to " + email, emailSend);
-
     }
 }

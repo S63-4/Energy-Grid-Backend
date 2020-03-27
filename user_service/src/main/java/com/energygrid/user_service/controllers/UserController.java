@@ -96,12 +96,6 @@ public class UserController {
         return userService.getByCustomerCode(code);
     }
 
-    @RequestMapping(value = RestURIConstant.sendMail, method = RequestMethod.GET)
-    public String sendmail(@RequestParam("email") String email, @RequestParam("customerCode") String customerCode) {
-        emailService.sendRegistrationMail(email, customerCode);
-        return "emailsent";
-    }
-
     @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
     public String test() {
         return "Test works";

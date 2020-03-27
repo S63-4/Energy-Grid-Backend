@@ -11,6 +11,5 @@ public class RestURIConstant {
     public static final String getUserProfile = "/UserController/profile";
     public static final String updateProfile = "/UserController/updateProfile";
     public static final String test = "/UserController/test";
-    public static final String sendMail = "/UserController/sendMail";
     public static final String getUserByCode = "/UserController/user";
 }
