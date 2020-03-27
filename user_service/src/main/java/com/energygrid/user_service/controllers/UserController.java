@@ -95,4 +95,9 @@ public class UserController {
         return userService.getByCustomerCode(code);
     }
 
+    @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
+    public String test() {
+        return "Test works";
+    }
+
 }
