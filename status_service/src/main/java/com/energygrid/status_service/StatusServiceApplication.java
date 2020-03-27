@@ -3,12 +3,15 @@ package com.energygrid.status_service;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
-@ComponentScan({"com.EnergyGrid.common","com.EnergyGrid.status_service"})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
+@ComponentScan({"com.energygrid.common","com.energygrid.status_service"})
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class StatusServiceApplication {
 
 
