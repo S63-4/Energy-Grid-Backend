@@ -7,9 +7,11 @@ import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoCon
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
 @ComponentScan({"com.energygrid.common","com.energygrid.status_service"})
+@EnableGlobalMethodSecurity(prePostEnabled = true)
 public class StatusServiceApplication {
 
 

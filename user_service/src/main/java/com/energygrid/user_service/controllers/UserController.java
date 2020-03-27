@@ -26,26 +26,20 @@ public class UserController {
         this.userRepository = userRepository;
     }
 
-    @RequestMapping(value = RestURIConstant.newUser, method = RequestMethod.POST)
-    public @ResponseBody
-    User newUser(@RequestBody User user) {
-        return userService.newUser(user);
-    }
-
-    //@PreAuthorize("hasAnyAuthority('ADMIN_USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = RestURIConstant.deleteUser, method = RequestMethod.DELETE)
     public void delete(@RequestBody User user) {
         userService.DeleteUser(user);
     }
 
-    //@PreAuthorize("hasAnyAuthority('ADMIN_USER')")
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = RestURIConstant.allUsers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<User> allUsers() {
         return userService.alluser();
     }
 
-    //@PreAuthorize("isAuthenticated()")
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.currentUser, method = RequestMethod.GET)
     public @ResponseBody
     User current() {
@@ -77,6 +71,7 @@ public class UserController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @PutMapping(value = RestURIConstant.updateProfile)
     public @ResponseBody
     String updateProfileDetails(@RequestBody String user) {
