@@ -16,7 +16,7 @@ class EmailServiceTest {
 
         boolean emailSend;
 
-        String email = "test@mail.com";
+        String email = "tcs.krijnen@student.fontys.nl";
         String customerCode = "27302732";
 
         emailSend = emailService.sendRegistrationMail(email, customerCode);
