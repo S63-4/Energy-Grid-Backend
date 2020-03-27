@@ -91,6 +91,7 @@ public class UserController {
             throw new BadRequestException("Failed to update profile");
         }
     }
+
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody User getUserByCode(@RequestParam("code") String code){
         return userService.getByCustomerCode(code);
@@ -100,4 +101,5 @@ public class UserController {
     public String test() {
         return "Test works";
     }
+
 }
