@@ -1,6 +1,5 @@
 package com.energygrid.user_service.services;
 
-import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.stereotype.Service;
@@ -16,7 +15,7 @@ public class EmailService {
         this.javaMailSender = javaMailSender;
     }
 
-    public void sendRegistrationMail(String targetAddress, String customerCode) {
+    public boolean sendRegistrationMail(String targetAddress, String customerCode) {
 
         MimeMessage message = javaMailSender.createMimeMessage();
         MimeMessageHelper mailHelper = new MimeMessageHelper(message);
@@ -26,11 +25,15 @@ public class EmailService {
             mailHelper.setSubject("Registratie Energy Maatschappij");
             mailHelper.setText("Gebruik uw klantennummer om uw registratie af te ronden: " + customerCode);
 
-            mailHelper.setFrom("test@example.com");
+            mailHelper.setFrom("registration@energycompany.com");
 
             javaMailSender.send(message);
+
+            return true;
         }catch (Exception ex){
             ex.printStackTrace();
+
+            return false;
         }
 
     }

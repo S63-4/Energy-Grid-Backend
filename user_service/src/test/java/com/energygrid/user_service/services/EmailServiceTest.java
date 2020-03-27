@@ -1,5 +1,6 @@
 package com.energygrid.user_service.services;
 
+import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -13,9 +14,14 @@ class EmailServiceTest {
     @Test
     void sendRegistrationMail() {
 
-        String email = "testmail";
+        boolean emailSend;
+
+        String email = "test@mail.com";
         String customerCode = "27302732";
 
-        emailService.sendRegistrationMail(email, customerCode);
+        emailSend = emailService.sendRegistrationMail(email, customerCode);
+
+        Assert.assertTrue("Email failed to send to " + email, emailSend);
+
     }
 }
