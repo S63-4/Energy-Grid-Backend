@@ -33,8 +33,6 @@ import static com.energygrid.common.security.UserRole.USER;
 @ComponentScan({"com.energygrid.common","com.energygrid.user_service"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserServiceApplication {
-
-
     @Bean
     public ModelMapper modelMapper() {
         return new ModelMapper();
