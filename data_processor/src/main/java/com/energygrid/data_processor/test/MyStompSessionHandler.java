@@ -34,6 +34,7 @@ public class MyStompSessionHandler extends StompSessionHandlerAdapter {
 
     @Override
     public void handleFrame(StompHeaders headers, Object payload) {
+        System.out.println(payload.toString());
         Message msg = (Message) payload;
         logger.info("Received : " + msg.getText() + " from : " + msg.getFrom());
     }

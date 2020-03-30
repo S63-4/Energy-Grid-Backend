@@ -18,7 +18,7 @@ import java.util.Scanner;
 @EnableEurekaClient
 public class DataProcessorApplication {
 
-    private static String URL = "ws://localhost:8";
+    private static String URL = "ws://localhost:8765";
 
     public static void main(String[] args) {
         SpringApplication.run(DataProcessorApplication.class, args);
