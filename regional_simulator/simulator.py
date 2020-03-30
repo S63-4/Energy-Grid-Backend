@@ -36,10 +36,10 @@ class Simulator:
 
     def calculate_consumption(self, lookup_hour):
         consumption = self._mock_data.loc[self._mock_data["hour"] == lookup_hour]
-        return consumption["winter_value"].values[0]
+        return consumption["january"].values[0]
 
     def main(self):
-        self._mock_data = pd.read_excel("household_consumption_winter_mock_data.xlsx")
+        self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         lookup_hour = self.calculate_lookup_hour()
         consumption_now = self.calculate_consumption(lookup_hour)
 

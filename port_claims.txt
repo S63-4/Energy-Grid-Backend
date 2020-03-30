@@ -5,5 +5,7 @@ status-service:     9030
 common:             9040
 data-processor:     9050
 
+regional-simulator: 9200
+
 eureka-server:      8761 (default)
 zuul-server:        8762 (default)
