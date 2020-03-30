@@ -30,10 +30,6 @@ public class UserControllerTest {
         subject = new UserController(userService, userRepository);
     }
 
-    @Test
-    public void shouldReturnTest() throws Exception {
-        assertThat(subject.test(), is("Test works"));
-    }
 
     @Test
     public void shouldRegisterUser() throws Exception {

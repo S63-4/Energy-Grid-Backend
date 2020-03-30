@@ -1,12 +1,16 @@
 package com.energygrid.status_service.services;
 
-import com.energygrid.common.dto.*;
-import com.energygrid.common.models.Status;
+import com.energygrid.common.dto.StatusDTO;
 import com.energygrid.common.enums.StatusPeriod;
-
+import com.energygrid.common.models.Status;
+import com.energygrid.common.models.User;
 import com.energygrid.status_service.repositories.StatusRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
+import org.springframework.web.client.RestTemplate;
 
 import java.time.LocalDate;
 import java.time.Month;
@@ -19,6 +23,9 @@ import java.util.Locale;
 @Service
 public class StatusService {
 
+
+    @Autowired
+    private RestTemplate restTemplate;
     private final StatusRepository statusRepository;
     private final ModelMapper modelMapper;
 
@@ -27,7 +34,15 @@ public class StatusService {
         this.modelMapper = modelMapper;
     }
 
-    public List<StatusDTO> getStatusForPeriod(int id, StatusPeriod statusPeriod, LocalDate currentDate) {
+    private long getCurrentUserId() {
+        final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        final String customerCode = (String) auth.getPrincipal();
+        User user = restTemplate.getForObject("http://user-service/UserController/user?code=" + customerCode, User.class);
+        return user != null ? user.getId() : 0;
+    }
+
+    public List<StatusDTO> getStatusForPeriod(StatusPeriod statusPeriod, LocalDate currentDate) {
+        var id = getCurrentUserId();
         try {
             LocalDate beginDate;
             LocalDate endDate;
@@ -69,9 +84,9 @@ public class StatusService {
     }
 
 
-    private List<StatusDTO> sortStatusForPeriod(LocalDate beginDate, LocalDate endDate, StatusPeriod statusPeriod, int id) {
+    private List<StatusDTO> sortStatusForPeriod(LocalDate beginDate, LocalDate endDate, StatusPeriod statusPeriod, long id) {
 
-        var filtered = statusRepository.findByDateandUser(java.sql.Date.valueOf(beginDate), java.sql.Date.valueOf(endDate), (long) id);
+        var filtered = statusRepository.findByDateandUser(java.sql.Date.valueOf(beginDate), java.sql.Date.valueOf(endDate), id);
         List<StatusDTO> statusDTOS = new ArrayList<>();
         List<StatusDTO> result = new ArrayList<>();
         for (Status status : filtered) {
