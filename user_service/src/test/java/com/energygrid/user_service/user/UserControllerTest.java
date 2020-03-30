@@ -27,13 +27,9 @@ public class UserControllerTest {
     @Before
     public void setUp() throws Exception {
         initMocks(this);
-        subject = new UserController(userService, userRepository);
+        //subject = new UserController(userService, userRepository);
     }
 
-    @Test
-    public void shouldReturnTest() throws Exception {
-        assertThat(subject.test(), is("Test works"));
-    }
 
     @Test
     public void shouldRegisterUser() throws Exception {

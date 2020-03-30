@@ -31,7 +31,6 @@ public class StatusController {
         var statusPeriodEnum = StatusPeriod.values()[Integer.parseInt(statusPeriod)];
         var unixInteger = Long.parseLong(unixDateTime);
         var currentDate = Instant.ofEpochMilli(unixInteger).atZone(ZoneId.systemDefault()).toLocalDate();
-        int id = 1;
-        return statusService.getStatusForPeriod(id, statusPeriodEnum, currentDate);
+        return statusService.getStatusForPeriod(statusPeriodEnum, currentDate);
     }
 }
