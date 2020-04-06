@@ -5,6 +5,7 @@ import com.energygrid.common.dto.CustomerDTO;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.dto.RegisterDTO;
 import com.energygrid.common.exceptions.BadRequestException;
+import com.energygrid.common.exceptions.DatabaseException;
 import com.energygrid.common.models.User;
 import com.energygrid.common.utils.AuthenticationUtils;
 import com.energygrid.common.utils.RandomString;
@@ -13,6 +14,8 @@ import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
+
+import static com.energygrid.common.security.UserRole.USER;
 
 @Service
 public class UserService {
@@ -25,20 +28,23 @@ public class UserService {
         this.modelMapper = modelMapper;
     }
 
-
     public String newCustomer(CustomerDTO user){
 
         RandomString randomString = new RandomString();
 
         User newCustomer = modelMapper.map(user, User.class);
 
+        newCustomer.setAuthorities(USER.getGrantedAuthorities());
+        newCustomer.setCustomerCode(randomString.getAlphaNumericString(12));
         newCustomer.setPassword("null");
 
-        userRepository.save(newCustomer);
+        try{
+            userRepository.save(newCustomer);
 
-        //user.setCustomerCode(randomString.getAlphaNumericString(10));
-
-        return "test";
+            return "saved";
+        }catch (Exception ex){
+            throw new DatabaseException("New customer not saved");
+        }
     }
 
     public Iterable<User> alluser (){
