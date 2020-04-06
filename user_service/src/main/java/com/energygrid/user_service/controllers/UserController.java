@@ -1,5 +1,6 @@
 package com.energygrid.user_service.controllers;
 
+import com.energygrid.common.dto.CustomerDTO;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.dto.RegisterDTO;
 import com.energygrid.common.exceptions.BadRequestException;
@@ -69,6 +70,24 @@ public class UserController {
             return gson.toJson(userService.registerUser(userObject));
         } catch (Exception e) {
             throw new BadRequestException("Failed to register, check your email/code combination");
+
+        }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = RestURIConstant.newCustomer)
+    public @ResponseBody
+    String newCustomer(@RequestBody String user){
+
+        try {
+            Gson gson = new Gson();
+            var userObject = gson.fromJson(user, CustomerDTO.class);
+
+            userService.newCustomer(userObject);
+
+            return userObject.getFirstName();
+        } catch (Exception e) {
+            throw new BadRequestException("error");
 
         }
     }

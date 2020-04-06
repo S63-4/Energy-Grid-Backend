@@ -1,11 +1,13 @@
 package com.energygrid.user_service.services;
 
 
+import com.energygrid.common.dto.CustomerDTO;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.dto.RegisterDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.User;
 import com.energygrid.common.utils.AuthenticationUtils;
+import com.energygrid.common.utils.RandomString;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -24,11 +26,21 @@ public class UserService {
     }
 
 
-    public User newUser(User user){
-        userRepository.save(user);
-        User newuser = userRepository.findUserByEmail(user.getEmail());
-        return newuser;
+    public String newCustomer(CustomerDTO user){
+
+        RandomString randomString = new RandomString();
+
+        User newCustomer = modelMapper.map(user, User.class);
+
+        newCustomer.setPassword("null");
+
+        userRepository.save(newCustomer);
+
+        //user.setCustomerCode(randomString.getAlphaNumericString(10));
+
+        return "test";
     }
+
     public Iterable<User> alluser (){
         return userRepository.findAll();
     }
