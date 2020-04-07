@@ -139,11 +139,9 @@ public class User implements UserDetails,Serializable {
         return zipCode;
     }
 
-
     public String getPasswordHash() {
         return hash;
     }
-
 
     public String getEmail() {
         return email;
@@ -226,7 +224,6 @@ public class User implements UserDetails,Serializable {
     public Set<Status> getStatus() {
         return status;
     }
-
 
 
     @Override

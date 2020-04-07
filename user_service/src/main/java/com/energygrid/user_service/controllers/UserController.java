@@ -70,7 +70,6 @@ public class UserController {
             return gson.toJson(userService.registerUser(userObject));
         } catch (Exception e) {
             throw new BadRequestException("Failed to register, check your email/code combination");
-
         }
     }
 

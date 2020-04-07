@@ -22,10 +22,12 @@ public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
 
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, EmailService emailService) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.emailService = emailService;
     }
 
     public String newCustomer(CustomerDTO user){
@@ -36,10 +38,13 @@ public class UserService {
 
         newCustomer.setAuthorities(USER.getGrantedAuthorities());
         newCustomer.setCustomerCode(randomString.getAlphaNumericString(12));
+        newCustomer.setEnabled(true);
         newCustomer.setPassword("null");
 
         try{
             userRepository.save(newCustomer);
+
+            //emailService.sendRegistrationMail(newCustomer.getEmail(), newCustomer.getCustomerCode());
 
             return "saved";
         }catch (Exception ex){
@@ -80,6 +85,10 @@ public class UserService {
                 User userEntity = userRepository.findUserByCustomerCode(user.getCustomerCode());
 
                 User updateUser = modelMapper.map(userEntity, User.class);
+
+                updateUser.setAccountNonLocked(true);
+                updateUser.setAccountNonExpired(true);
+                updateUser.setCredentialsNonExpired(true);
 
                 updateUser.setPassword(new AuthenticationUtils().encode(user.getPassword()));
                 userRepository.save(updateUser);
