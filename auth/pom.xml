@@ -110,6 +110,9 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>2.1.0</version>
                 <configuration>
+                    <from>
+                        <image>adoptopenjdk/openjdk13</image>
+                    </from>
                     <to>
                         <image>service_auth</image>
                     </to>
