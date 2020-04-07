@@ -1,20 +1,21 @@
 package com.energygrid.user_service;
 
+import com.energygrid.common.models.Customer;
 import com.energygrid.common.models.Status;
-import com.energygrid.common.models.User;
 import com.energygrid.common.utils.CsvValues;
 import com.energygrid.common.utils.RandomString;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
@@ -26,11 +27,10 @@ import java.util.HashSet;
 import java.util.Set;
 
 import static com.energygrid.common.security.UserRole.ADMIN;
-import static com.energygrid.common.security.UserRole.USER;
 
 @EnableEurekaClient
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class})
-@ComponentScan({"com.energygrid.common","com.energygrid.user_service"})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class})
+@ComponentScan({"com.energygrid.common", "com.energygrid.user_service"})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserServiceApplication {
     @Bean
@@ -43,7 +43,7 @@ public class UserServiceApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public CommandLineRunner demo(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
 
             AuthenticationUtils auth = new AuthenticationUtils();
@@ -56,10 +56,10 @@ public class UserServiceApplication {
             String[] data1 = value1.split(",");
             String[] data2 = value2.split(",");
 
-/*
-            User user1 = new User("victor","victory",passwordEncoder.encode("test2"),"test@test.com", "0773077070", "0612345678", data1[CsvValues.ZIPCODE.getValue()], data1[CsvValues.STREET.getValue()], data1[CsvValues.CITY.getValue()], data1[CsvValues.HOUSE_NUMBER.getValue()],"123456",true,true,true,true, ADMIN.getGrantedAuthorities()); //default
-            User user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",true,true,true,true, USER.getGrantedAuthorities()); //default
-*/
+            var user1 = new Customer("victor", "victory", passwordEncoder.encode("test2"), "test@test.com", true, true, true,
+                    true, ADMIN.getGrantedAuthorities(), "0773077070", "0612345678",
+                    data1[CsvValues.ZIPCODE.getValue()], data1[CsvValues.STREET.getValue()], data1[CsvValues.CITY.getValue()], data1[CsvValues.HOUSE_NUMBER.getValue()], "123456"); //default
+            //var user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",true,true,true,true, USER.getGrantedAuthorities()); //default
 
 
             Status status1 = new Status();
@@ -90,11 +90,12 @@ public class UserServiceApplication {
 
  /*           user1.setStatus(status_dashboard1);
             user2.setStatus(status_dashboard2);
-            user1 = userRepository.save(user1);
-            user2 = userRepository.save(user2);
 */
+            user1 = userRepository.save(user1);
+            //  user2 = userRepository.save(user2);
         };
     }
+
     @Configuration
     class RestTemplateConfig {
 

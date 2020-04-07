@@ -4,6 +4,7 @@ import com.energygrid.common.dto.CustomerRegisterDTO;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.Customer;
+import com.energygrid.user_service.controllers.RestURIConstant;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
@@ -39,7 +40,7 @@ public class CustomerController {
 
     @RequestMapping(value = RestURIConstant.getCustomerByCode, method = RequestMethod.GET)
     public @ResponseBody
-    Customer getcustomerByCode(@RequestParam("code") String code) {
+    Customer getCustomerByCode(@RequestParam("code") String code) {
         return customerService.getByCustomerCode(code);
     }
 

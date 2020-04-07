@@ -1,13 +1,9 @@
 package com.energygrid.user_service.controllers;
 
-import com.energygrid.common.dto.ProfileDTO;
-import com.energygrid.common.dto.CustomerRegisterDTO;
-import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
 import com.energygrid.user_service.services.EmailService;
 import com.energygrid.user_service.services.UserService;
-import com.google.gson.Gson;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -50,6 +46,11 @@ public class UserController {
         return userRepository.findUserByEmail(email);
     }
 
+    @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
+    public @ResponseBody
+    User getCustomerByCode(@RequestParam("email") String code) {
+        return userService.getByEmail(code);
+    }
 
     @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
     public String test() {

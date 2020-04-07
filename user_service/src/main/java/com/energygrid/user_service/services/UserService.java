@@ -18,16 +18,21 @@ public class UserService {
     }
 
 
-    public User newUser(User user){
+    public User newUser(User user) {
         userRepository.save(user);
         User newuser = userRepository.findUserByEmail(user.getEmail());
         return newuser;
     }
-    public Iterable<User> alluser (){
+
+    public Iterable<User> alluser() {
         return userRepository.findAll();
     }
 
-    public void DeleteUser(User user){
+    public User getByEmail(String emial) {
+        return userRepository.findUserByEmail(emial);
+    }
+
+    public void DeleteUser(User user) {
         userRepository.delete(user);
     }
 
