@@ -1,7 +1,7 @@
 package com.energygrid.user_service.controllers;
 
 import com.energygrid.common.dto.ProfileDTO;
-import com.energygrid.common.dto.RegisterDTO;
+import com.energygrid.common.dto.CustomerRegisterDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
@@ -47,50 +47,9 @@ public class UserController {
     User current() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         final String email = (String) auth.getPrincipal();
-        return userRepository.findUserByCustomerCode(email);
-    }
-    @PreAuthorize("isAuthenticated()")
-    @RequestMapping(value = RestURIConstant.getUserProfile, method = RequestMethod.GET)
-    public @ResponseBody
-    ProfileDTO getProfile() {
-        var customerCode = "123456";
-//        var customerCode = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
-        return userService.getUserByCustomerCode(customerCode != null ? customerCode : "0");
+        return userRepository.findUserByEmail(email);
     }
 
-    @PostMapping(value = RestURIConstant.userRegistration)
-    public @ResponseBody
-    String userRegister(@RequestBody String user) {
-        try {
-
-            Gson gson = new Gson();
-            var userObject = gson.fromJson(user, RegisterDTO.class);
-
-            return gson.toJson(userService.registerUser(userObject));
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to register, check your email/code combination");
-
-        }
-    }
-
-    @PreAuthorize("isAuthenticated()")
-    @PutMapping(value = RestURIConstant.updateProfile)
-    public @ResponseBody
-    String updateProfileDetails(@RequestBody String user) {
-        try {
-            //TODO: Get current user
-            Gson gson = new Gson();
-            var userObject = gson.fromJson(user, ProfileDTO.class);
-            return userService.updateProfile(userObject);
-        } catch (Exception e) {
-            throw new BadRequestException("Failed to update profile");
-        }
-    }
-
-    @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
-    public @ResponseBody User getUserByCode(@RequestParam("code") String code){
-        return userService.getByCustomerCode(code);
-    }
 
     @RequestMapping(value = RestURIConstant.test, method = RequestMethod.GET)
     public String test() {

@@ -56,8 +56,10 @@ public class UserServiceApplication {
             String[] data1 = value1.split(",");
             String[] data2 = value2.split(",");
 
+/*
             User user1 = new User("victor","victory",passwordEncoder.encode("test2"),"test@test.com", "0773077070", "0612345678", data1[CsvValues.ZIPCODE.getValue()], data1[CsvValues.STREET.getValue()], data1[CsvValues.CITY.getValue()], data1[CsvValues.HOUSE_NUMBER.getValue()],"123456",true,true,true,true, ADMIN.getGrantedAuthorities()); //default
             User user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",true,true,true,true, USER.getGrantedAuthorities()); //default
+*/
 
 
             Status status1 = new Status();
@@ -86,11 +88,11 @@ public class UserServiceApplication {
             status_dashboard2.add(status3);
 
 
-            user1.setStatus(status_dashboard1);
+ /*           user1.setStatus(status_dashboard1);
             user2.setStatus(status_dashboard2);
             user1 = userRepository.save(user1);
             user2 = userRepository.save(user2);
-
+*/
         };
     }
     @Configuration
