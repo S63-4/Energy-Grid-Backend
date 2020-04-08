@@ -46,6 +46,12 @@ public class UserController {
         return userRepository.findUserByEmail(email);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = RestURIConstant.changePassword, method = RequestMethod.POST)
+    public boolean changePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass) {
+
+        return userService.changePassword(current(), oldPass, newPass);
+    }
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody
     User getCustomerByCode(@RequestParam("email") String code) {
