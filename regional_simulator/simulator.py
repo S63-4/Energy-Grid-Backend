@@ -125,7 +125,7 @@ class Simulator:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.run_simulator())
 
-    def main(self):
+    async def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
         # schedule.every().minute.at(":00").do(self.create_event_loop)
@@ -135,5 +135,5 @@ class Simulator:
 
         # DEBUG CODE, prints faster than production code above
         while True:
-            self.create_event_loop()
+            await self._event_producer.send_to_server(f"VALUE")
             time.sleep(10)

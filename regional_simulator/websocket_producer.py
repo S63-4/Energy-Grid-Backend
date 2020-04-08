@@ -17,5 +17,5 @@ class WebSocketProducer:
             return_message = await websocket.recv()
             print(return_message)
 
-    async def send(self, message):
+    def send(self, message):
         asyncio.run(self.send_to_server(message))
