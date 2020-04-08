@@ -22,4 +22,6 @@ if __name__ == "__main__":
     simulator = Simulator(websocket_producer)
 
     # run the simulator
-    simulator.main()
+    loop = asyncio.get_event_loop()
+    loop.run_until_complete(simulator.main())
+    loop.close()
