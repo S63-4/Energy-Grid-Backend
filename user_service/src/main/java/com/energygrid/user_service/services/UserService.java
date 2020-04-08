@@ -42,6 +42,10 @@ public class UserService {
         newCustomer.setEnabled(true);
         newCustomer.setPassword("null");
 
+    public User newUser(User user) {
+        userRepository.save(user);
+        User newuser = userRepository.findUserByEmail(user.getEmail());
+        return newuser;
         try{
             userRepository.save(newCustomer);
 
@@ -53,11 +57,17 @@ public class UserService {
         }
     }
 
+    public Iterable<User> alluser() {
+
     public Iterable<User> alluser (){
         return userRepository.findAll();
     }
 
-    public void DeleteUser(User user){
+    public User getByEmail(String emial) {
+        return userRepository.findUserByEmail(emial);
+    }
+
+    public void DeleteUser(User user) {
         userRepository.delete(user);
     }
 
