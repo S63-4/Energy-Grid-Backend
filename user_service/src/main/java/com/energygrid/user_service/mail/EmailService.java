@@ -1,4 +1,4 @@
-package com.energygrid.user_service.services;
+package com.energygrid.user_service.mail;
 
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;

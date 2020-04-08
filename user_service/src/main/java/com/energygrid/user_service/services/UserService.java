@@ -9,6 +9,7 @@ import com.energygrid.common.exceptions.DatabaseException;
 import com.energygrid.common.models.User;
 import com.energygrid.common.utils.AuthenticationUtils;
 import com.energygrid.common.utils.RandomString;
+import com.energygrid.user_service.mail.EmailService;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
@@ -44,7 +45,7 @@ public class UserService {
         try{
             userRepository.save(newCustomer);
 
-            //emailService.sendRegistrationMail(newCustomer.getEmail(), newCustomer.getCustomerCode());
+            emailService.sendRegistrationMail(newCustomer.getEmail(), newCustomer.getCustomerCode());
 
             return "saved";
         }catch (Exception ex){

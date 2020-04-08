@@ -6,7 +6,7 @@ import com.energygrid.common.dto.RegisterDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
-import com.energygrid.user_service.services.EmailService;
+import com.energygrid.user_service.mail.EmailService;
 import com.energygrid.user_service.services.UserService;
 import com.google.gson.Gson;
 import org.springframework.security.access.prepost.PreAuthorize;
