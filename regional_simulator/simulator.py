@@ -118,7 +118,7 @@ class Simulator:
         print(json_string)
         end = time.perf_counter()
         print(f"Calculations done in: {end-start}")
-        await self._event_producer.send_to_server("hoi")
+        await self._event_producer.send_to_server(f"{household_consumption}")
         await asyncio.sleep(2)
 
     def create_event_loop(self):
@@ -128,12 +128,12 @@ class Simulator:
     def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
-        schedule.every().minute.at(":00").do(self.create_event_loop)
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+        # schedule.every().minute.at(":00").do(self.create_event_loop)
+        # while True:
+        #     schedule.run_pending()
+        #     time.sleep(1)
 
         # DEBUG CODE, prints faster than production code above
-        # while True:
-        #     self.create_event_loop()
-        #     time.sleep(10)
+        while True:
+            self.create_event_loop()
+            time.sleep(10)
