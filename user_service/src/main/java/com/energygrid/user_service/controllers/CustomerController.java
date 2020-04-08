@@ -1,5 +1,6 @@
 package com.energygrid.user_service.controllers;
 
+import com.energygrid.common.dto.CustomerDTO;
 import com.energygrid.common.dto.CustomerRegisterDTO;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.exceptions.BadRequestException;
@@ -20,7 +21,6 @@ public class CustomerController {
 
     public CustomerController(CustomerService customerService, ModelMapper modelMapper) {
         this.customerService = customerService;
-
         this.modelMapper = modelMapper;
     }
 
@@ -51,6 +51,24 @@ public class CustomerController {
         var customerCode = "123456";
 //        var customerCode = (String) SecurityContextHolder.getContext().getAuthentication().getPrincipal();
         return customerService.getCustomerByCustomerCode(customerCode != null ? customerCode : "0");
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @PostMapping(value = RestURIConstant.newCustomer)
+    public @ResponseBody
+    String newCustomer(@RequestBody String user){
+
+        try {
+            Gson gson = new Gson();
+            var userObject = gson.fromJson(user, CustomerDTO.class);
+
+            customerService.newCustomer(userObject);
+
+            return userObject.getFirstName();
+        } catch (Exception e) {
+            throw new BadRequestException("error");
+
+        }
     }
 
     @PostMapping(value = RestURIConstant.customerRegistration)
