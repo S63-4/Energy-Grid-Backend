@@ -30,6 +30,6 @@ class WebSocketConsumer(Thread):
 
 if __name__ == "__main__":
     host = "localhost"
-    port = 8765
+    port = 9200
     websocket_consumer = WebSocketConsumer(host, port)
     websocket_consumer.start()
