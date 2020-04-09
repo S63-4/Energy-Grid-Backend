@@ -2,8 +2,7 @@ package com.energygrid.user_service.controllers;
 
 import com.energygrid.common.dto.CustomerDTO;
 import com.energygrid.common.dto.CustomerRegisterDTO;
-import com.energygrid.common.models.Customer;
-import com.energygrid.user_service.repositories.CustomerRepository;
+import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.junit.Before;
@@ -33,11 +32,12 @@ public class CustomerControllerTest {
 
     @Test
     public void shouldReturnNewCustomer() throws Exception {
+        Gson gson = new Gson();
+
         CustomerDTO newCustomer = new CustomerDTO("testname", "surname", "testmail@email.com",
                 "0494829","06123456", "4750DD", "teststreet",
                 "teststad", "10");
 
-        Gson gson = new Gson();
         String json = gson.toJson(newCustomer);
 
         String result = subject.newCustomer(json);
@@ -49,10 +49,24 @@ public class CustomerControllerTest {
     public void shouldRegisterCustomer() throws Exception {
         Gson gson = new Gson();
 
-        CustomerRegisterDTO customerRegister = new CustomerRegisterDTO("test1234","password", "12345");
+        CustomerDTO newCustomer = new CustomerDTO("testname", "surname", "testmail@email.com",
+                "0494829","06123456", "4750DD", "teststreet",
+                "teststad", "10");
+
+        CustomerRegisterDTO customerRegister = new CustomerRegisterDTO("testmail@email.com","password", "123456");
+
+        given(customerService.register(customerRegister)).willReturn("saved");
 
         String registration = gson.toJson(customerRegister);
 
         String saved = subject.customerRegister(registration);
+    }
+
+    @Test
+    public void shouldReturnProfile() throws Exception {
+        ProfileDTO testUser  = new ProfileDTO("victor","victory","test@test.com","0773077070","0612345678","5981TT","kerkstraat","EINDHOVEN","33","123456");
+        given(customerService.getCustomerByCustomerCode("123456")).willReturn(testUser);
+        ProfileDTO code = subject.getProfile();
+        assertThat(code.getCustomerCode(), is("123456"));
     }
 }
