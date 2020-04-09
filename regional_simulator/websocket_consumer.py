@@ -2,6 +2,9 @@ from threading import Thread
 import websockets
 from websockets import WebSocketClientProtocol
 import asyncio
+import datetime
+import os
+import pika
 
 class WebSocketConsumer(Thread):
     _host = None
@@ -26,6 +29,10 @@ class WebSocketConsumer(Thread):
     async def message_handler(self, websocket: WebSocketClientProtocol):
         async for message in websocket:
             print(message)
+            date = datetime.datetime.now()
+            new_file = open(os.path.join("json", f"{date.hour}-{date.minute}-00.json"), "x")
+            new_file.write(message)
+            new_file.close()
 
 
 if __name__ == "__main__":

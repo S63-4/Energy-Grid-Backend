@@ -31,8 +31,7 @@ class WebSocketServer(Thread):
 
     async def distribute(self, websocket: WebSocketServerProtocol):
         async for message in websocket:
-            if message.startswith("SIM"):
-                await self.broadcast(message)
+            await self.broadcast(message)
 
     async def broadcast(self, message):
         if self.clients:

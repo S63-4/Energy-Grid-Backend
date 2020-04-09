@@ -5,6 +5,7 @@ import asyncio
 import schedule
 from event import Event
 import json
+import jsonpickle
 
 class Simulator:
     _mock_data = None
@@ -82,18 +83,6 @@ class Simulator:
     async def calculate_industry_consumption(self):
         await asyncio.sleep(0)
 
-    def create_json(self, event):
-        event.consumption.households = json.dumps(event.consumption.households.__dict__)
-        event.consumption.big_consumers = json.dumps(event.consumption.big_consumers.__dict__)
-        event.consumption.industries = json.dumps(event.consumption.industries.__dict__)
-        event.consumption = json.dumps(event.consumption.__dict__)
-        event.production.wind_farms = json.dumps(event.production.wind_farms.__dict__)
-        event.production.solar_farms = json.dumps(event.production.solar_farms.__dict__)
-        event.production.power_plants = json.dumps(event.production.power_plants.__dict__)
-        event.production = json.dumps(event.production.__dict__)
-        json_string = json.dumps(event.__dict__)
-        return json_string
-
     async def run_simulator(self):
         date = datetime.datetime.now()
         date = date.replace(microsecond=0).isoformat()
@@ -114,11 +103,11 @@ class Simulator:
         industry_consumption = await industry_consumption_task
 
         event.consumption.households.total_consumption = household_consumption
-        json_string = self.create_json(event)
+        json_string = event.toJSON()
         print(json_string)
         end = time.perf_counter()
         print(f"Calculations done in: {end-start}")
-        await self._event_producer.send_to_server(f"{household_consumption}")
+        await self._event_producer.send_to_server(f"{json_string}")
         await asyncio.sleep(2)
 
     def create_event_loop(self):
@@ -128,12 +117,12 @@ class Simulator:
     async def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
-        # schedule.every().minute.at(":00").do(self.create_event_loop)
-        # while True:
-        #     schedule.run_pending()
-        #     time.sleep(1)
+        schedule.every().minute.at(":00").do(self.create_event_loop)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
         # DEBUG CODE, prints faster than production code above
-        while True:
-            await self._event_producer.send_to_server(f"VALUE")
-            time.sleep(10)
+        # while True:
+        #     self.create_event_loop()
+        #     time.sleep(10)
