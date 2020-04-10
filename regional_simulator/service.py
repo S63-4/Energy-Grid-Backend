@@ -1,4 +1,4 @@
-from websocket_producer import WebSocketProducer
+from message_producer import MessageProducer
 from simulator import Simulator
 from websocket_server import WebSocketServer
 import py_eureka_client.eureka_client as eureka_client
@@ -18,10 +18,8 @@ if __name__ == "__main__":
     websocket_server.start()
 
     # create consumer class to pass to simulator
-    websocket_producer = WebSocketProducer(host, port)
+    websocket_producer = MessageProducer(host, port)
     simulator = Simulator(websocket_producer)
 
     # run the simulator
-    loop = asyncio.get_event_loop()
-    loop.run_until_complete(simulator.main())
-    loop.close()
+    simulator.main()

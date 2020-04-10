@@ -1,12 +1,12 @@
 import websockets
 import asyncio
+import pika
 
-class WebSocketProducer:
+class MessageProducer:
     _host = None
     _port = None
 
     def __init__(self, host, port):
-        super().__init__()
         self._host = host
         self._port = port
 
@@ -17,5 +17,12 @@ class WebSocketProducer:
             return_message = await websocket.recv()
             print(return_message)
 
-    def send(self, message):
-        asyncio.run(self.send_to_server(message))
+    def connect(self):
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
+        channel = connection.channel()
+        channel.queue_declare(queue="hello")
+        channel.basic_publish(exchange="",
+                              routing_key="hello",
+                              body="Hello World!")
+        print("Message sent!")
+        connection.close()

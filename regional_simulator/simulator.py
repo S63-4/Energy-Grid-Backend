@@ -10,10 +10,10 @@ import jsonpickle
 class Simulator:
     _mock_data = None
     _enduris_data = None
-    _event_producer = None
+    _message_producer = None
 
     def __init__(self, event_producer):
-        self._event_producer = event_producer
+        self._message_producer = event_producer
 
     def calculate_lookup_hour(self):
         """
@@ -104,25 +104,25 @@ class Simulator:
 
         event.consumption.households.total_consumption = household_consumption
         json_string = event.toJSON()
-        print(json_string)
         end = time.perf_counter()
         print(f"Calculations done in: {end-start}")
-        await self._event_producer.send_to_server(f"{json_string}")
+        self._message_producer.connect()
+        # await self._message_producer.send_to_server(f"{json_string}")
         await asyncio.sleep(2)
 
     def create_event_loop(self):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.run_simulator())
 
-    async def main(self):
+    def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
-        schedule.every().minute.at(":00").do(self.create_event_loop)
-        while True:
-            schedule.run_pending()
-            time.sleep(1)
+        # schedule.every().minute.at(":00").do(self.create_event_loop)
+        # while True:
+        #     schedule.run_pending()
+        #     time.sleep(1)
 
         # DEBUG CODE, prints faster than production code above
-        # while True:
-        #     self.create_event_loop()
-        #     time.sleep(10)
+        while True:
+            self.create_event_loop()
+            time.sleep(10)
