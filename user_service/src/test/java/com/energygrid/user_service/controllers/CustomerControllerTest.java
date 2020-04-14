@@ -1,15 +1,19 @@
 package com.energygrid.user_service.controllers;
 
 import com.energygrid.common.dto.CustomerDTO;
-import com.energygrid.common.dto.CustomerRegisterDTO;
 import com.energygrid.common.dto.ProfileDTO;
+import com.energygrid.common.models.Customer;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
+import org.hamcrest.Matchers;
 import org.junit.Before;
 import org.junit.Test;
 import org.mockito.Mock;
 import org.modelmapper.ModelMapper;
 
+import java.util.Arrays;
+
+import static com.energygrid.common.security.UserRole.ADMIN;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -45,22 +49,38 @@ public class CustomerControllerTest {
         assertThat(newCustomer.getFirstName(), is(result));
    }
 
-    @Test
-    public void shouldRegisterCustomer() throws Exception {
-        Gson gson = new Gson();
+   @Test
+   public void shouldGetAllCustomers() throws Exception   {
+       Customer customer1 = new Customer("victor", "victory", "password",
+               "test@test.com", true, true, true,
+               true, ADMIN.getGrantedAuthorities(), "0773077070",
+               "0612345678", "4354DD", "teststraat", "woenselbois", "54", "123456");
 
-        CustomerDTO newCustomer = new CustomerDTO("testname", "surname", "testmail@email.com",
-                "0494829","06123456", "4750DD", "teststreet",
-                "teststad", "10");
+       Customer customer2 = new Customer("Kees", "Kachel", "password",
+               "kachel@test.com", true, true, true,
+               true, ADMIN.getGrantedAuthorities(), "0773077070",
+               "0612345678", "4354DD", "teststraat", "woensel", "54", "654321");
 
-        CustomerRegisterDTO customerRegister = new CustomerRegisterDTO("testmail@email.com","password", "123456");
+       given(customerService.allCustomers()).willReturn(Arrays.asList(customer1, customer2));
 
-        given(customerService.register(customerRegister)).willReturn("saved");
+       Iterable<Customer> response =  subject.allUsers();
 
-        String registration = gson.toJson(customerRegister);
+       assertThat(response, Matchers.<Customer> iterableWithSize(2));
+   }
 
-        String saved = subject.customerRegister(registration);
-    }
+   @Test
+   public void shouldGetCustomerByCode() throws Exception {
+       Customer customer = new Customer("Kees", "Kachel", "password",
+               "kachel@test.com", true, true, true,
+               true, ADMIN.getGrantedAuthorities(), "0773077070",
+               "0612345678", "4354DD", "teststraat", "woensel", "54", "654321");
+
+       given(customerService.getByCustomerCode("654321")).willReturn(customer);
+
+       Customer response = subject.getCustomerByCode("654321");
+
+       assertThat(response.getCustomerCode(), is("654321"));
+   }
 
     @Test
     public void shouldReturnProfile() throws Exception {

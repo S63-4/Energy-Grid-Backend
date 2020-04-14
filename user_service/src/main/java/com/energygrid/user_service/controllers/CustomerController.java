@@ -5,6 +5,7 @@ import com.energygrid.common.dto.CustomerRegisterDTO;
 import com.energygrid.common.dto.ProfileDTO;
 import com.energygrid.common.exceptions.BadRequestException;
 import com.energygrid.common.models.Customer;
+import com.energygrid.common.models.User;
 import com.energygrid.user_service.controllers.RestURIConstant;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
@@ -84,6 +85,13 @@ public class CustomerController {
             throw new BadRequestException("Failed to register, check your email/code combination");
 
         }
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.allUsers, method = RequestMethod.GET)
+    public @ResponseBody
+    Iterable<Customer> allUsers() {
+        return customerService.allCustomers();
     }
 
 

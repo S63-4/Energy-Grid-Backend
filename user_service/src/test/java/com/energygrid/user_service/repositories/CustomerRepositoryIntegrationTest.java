@@ -8,11 +8,12 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
-import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.test.context.junit4.SpringRunner;
 
 import static com.energygrid.common.security.UserRole.USER;
+import static org.hamcrest.Matchers.is;
+import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @DataJpaTest
@@ -37,8 +38,8 @@ public class CustomerRepositoryIntegrationTest {
     public void shouldSaveAndFetch() {
         Customer testCustomer = new Customer("Test","Testory", passwordEncoder.encode("test212313212312312"),"testaccount@test.nl", false, false, false,false, USER.getGrantedAuthorities(), "11","623415", "7593DD", "testStraat", "test", "50", "445467838");
         subject.save(testCustomer);
-        Boolean isThisTestUser = subject.existsByEmail("testaccount@test.nl");
+        Customer isThisTestUser = subject.findCustomerByCustomerCode("445467838");
 
-        //assertThat(isThisTestUser, is(testUser));
+        assertThat(isThisTestUser, is(testCustomer));
     }
 }
