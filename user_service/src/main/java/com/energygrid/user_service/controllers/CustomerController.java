@@ -6,7 +6,6 @@ import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
 import com.energygrid.user_service.common.dto.ProfileDTO;
 import com.energygrid.user_service.common.exceptions.BadRequestException;
 import com.energygrid.user_service.common.models.Customer;
-import com.energygrid.user_service.controllers.RestURIConstant;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;

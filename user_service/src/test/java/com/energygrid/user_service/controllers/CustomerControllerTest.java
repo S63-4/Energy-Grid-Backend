@@ -1,8 +1,8 @@
 package com.energygrid.user_service.controllers;
 
-import com.energygrid.common.dto.CustomerDTO;
-import com.energygrid.common.dto.ProfileDTO;
-import com.energygrid.common.models.Customer;
+import com.energygrid.user_service.common.dto.CustomerDTO;
+import com.energygrid.user_service.common.dto.ProfileDTO;
+import com.energygrid.user_service.common.models.Customer;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.hamcrest.Matchers;
@@ -13,7 +13,7 @@ import org.modelmapper.ModelMapper;
 
 import java.util.Arrays;
 
-import static com.energygrid.common.security.UserRole.ADMIN;
+import static com.energygrid.user_service.common.security.UserRole.ADMIN;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
