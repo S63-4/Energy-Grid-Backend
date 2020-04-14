@@ -1,14 +1,14 @@
 package com.energygrid.user_service.services;
 
-import com.energygrid.common.dto.CustomerDTO;
-import com.energygrid.common.dto.CustomerRegisterDTO;
-import com.energygrid.common.dto.ProfileDTO;
-import com.energygrid.common.exceptions.BadRequestException;
-import com.energygrid.common.exceptions.DatabaseException;
-import com.energygrid.common.models.Customer;
-import com.energygrid.common.models.User;
-import com.energygrid.common.utils.AuthenticationUtils;
-import com.energygrid.common.utils.RandomString;
+
+import com.energygrid.user_service.AuthenticationUtils;
+import com.energygrid.user_service.common.dto.CustomerDTO;
+import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
+import com.energygrid.user_service.common.dto.ProfileDTO;
+import com.energygrid.user_service.common.exceptions.BadRequestException;
+import com.energygrid.user_service.common.exceptions.DatabaseException;
+import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.utils.RandomString;
 import com.energygrid.user_service.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.context.annotation.Bean;
@@ -16,7 +16,8 @@ import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
 
-import static com.energygrid.common.security.UserRole.USER;
+import static com.energygrid.user_service.common.security.UserRole.USER;
+
 
 @Service
 public class CustomerService {

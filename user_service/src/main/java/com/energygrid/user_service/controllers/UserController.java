@@ -1,6 +1,7 @@
 package com.energygrid.user_service.controllers;
 
-import com.energygrid.common.models.User;
+
+import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.mail.EmailService;
 import com.energygrid.user_service.repositories.UserRepository;
 import com.energygrid.user_service.services.UserService;
@@ -21,6 +22,10 @@ public class UserController {
         this.userService = userService;
         this.emailService = emailService;
         this.userRepository = userRepository;
+    }
+    @RequestMapping(value = RestURIConstant.id, method = RequestMethod.GET)
+    public @ResponseBody Long getId(@RequestParam("email") String email){
+        return userService.getId(email);
     }
 
     @PreAuthorize("hasRole('ADMIN')")
@@ -45,6 +50,12 @@ public class UserController {
         return userRepository.findUserByEmail(email);
     }
 
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = RestURIConstant.changePassword, method = RequestMethod.POST)
+    public boolean changePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass) {
+
+        return userService.changePassword(current(), oldPass, newPass);
+    }
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody
     User getCustomerByCode(@RequestParam("email") String code) {

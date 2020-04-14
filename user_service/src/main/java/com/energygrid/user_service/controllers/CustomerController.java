@@ -1,10 +1,12 @@
 package com.energygrid.user_service.controllers;
 
-import com.energygrid.common.dto.CustomerDTO;
-import com.energygrid.common.dto.CustomerRegisterDTO;
-import com.energygrid.common.dto.ProfileDTO;
-import com.energygrid.common.exceptions.BadRequestException;
-import com.energygrid.common.models.Customer;
+
+import com.energygrid.user_service.common.dto.CustomerDTO;
+import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
+import com.energygrid.user_service.common.dto.ProfileDTO;
+import com.energygrid.user_service.common.exceptions.BadRequestException;
+import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.controllers.RestURIConstant;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;

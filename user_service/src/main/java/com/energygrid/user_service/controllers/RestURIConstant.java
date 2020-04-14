@@ -15,4 +15,6 @@ public class RestURIConstant {
     public static final String getCustomerByCode = "/user/customer";
     public static final String getUserByCode = "/user/user";
     public static final String test = "/UserController/test";
+    public static final String changePassword = "/user/changepass";
+    public static final String id = "/UserController/id";
 }
