@@ -106,9 +106,7 @@ class Simulator:
         json_string = event.toJSON()
         end = time.perf_counter()
         print(f"Calculations done in: {end-start}")
-        self._message_producer.connect()
-        # await self._message_producer.send_to_server(f"{json_string}")
-        await asyncio.sleep(2)
+        self._message_producer.send(json_string)
 
     def create_event_loop(self):
         loop = asyncio.get_event_loop()

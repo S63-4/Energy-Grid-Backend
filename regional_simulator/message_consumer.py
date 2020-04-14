@@ -12,8 +12,8 @@ class MessageConsumer:
     def start(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
         channel = connection.channel()
-        channel.queue_declare("hello")
-        channel.basic_consume(queue="hello",
+        channel.queue_declare("regional_simulator")
+        channel.basic_consume(queue="regional_simulator",
                               auto_ack=True,
                               on_message_callback=self.message_handler)
         print("Waiting for messages...")
@@ -25,6 +25,6 @@ class MessageConsumer:
 
 if __name__ == "__main__":
     host = "localhost"
-    port = 9200
+    port = 5672
     websocket_consumer = MessageConsumer(host, port)
     websocket_consumer.start()

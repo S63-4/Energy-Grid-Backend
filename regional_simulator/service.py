@@ -7,7 +7,7 @@ import asyncio
 if __name__ == "__main__":
 
     host = "localhost"
-    port = 9200
+    port = 5672
     # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
     eureka_client.init(eureka_server="http://localhost:8761/eureka",
                        app_name="regional-simulator",

@@ -10,19 +10,12 @@ class MessageProducer:
         self._host = host
         self._port = port
 
-    async def send_to_server(self, message):
-        uri = f"ws://{self._host}:{self._port}"
-        async with websockets.connect(uri) as websocket:
-            await websocket.send(message)
-            return_message = await websocket.recv()
-            print(return_message)
-
-    def connect(self):
+    def send(self, message):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
         channel = connection.channel()
-        channel.queue_declare(queue="hello")
+        channel.queue_declare(queue="regional_simulator")
         channel.basic_publish(exchange="",
-                              routing_key="hello",
-                              body="Hello World!")
+                              routing_key="regional_simulator",
+                              body=message)
         print("Message sent!")
         connection.close()
