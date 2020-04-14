@@ -86,11 +86,10 @@ public class CustomerController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
-    @RequestMapping(value = RestURIConstant.allUsers, method = RequestMethod.GET)
+    @RequestMapping(value = RestURIConstant.allCustomers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<Customer> allUsers() {
         return customerService.allCustomers();
     }
-
 
 }
