@@ -1,9 +1,10 @@
 package com.energygrid.user_service.controllers;
 
-import com.energygrid.common.dto.ProfileDTO;
-import com.energygrid.common.dto.RegisterDTO;
-import com.energygrid.common.exceptions.BadRequestException;
-import com.energygrid.common.models.User;
+
+import com.energygrid.user_service.common.dto.ProfileDTO;
+import com.energygrid.user_service.common.dto.RegisterDTO;
+import com.energygrid.user_service.common.exceptions.BadRequestException;
+import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
 import com.energygrid.user_service.services.EmailService;
 import com.energygrid.user_service.services.UserService;
@@ -26,6 +27,10 @@ public class UserController {
         this.userService = userService;
         this.emailService = emailService;
         this.userRepository = userRepository;
+    }
+    @RequestMapping(value = RestURIConstant.id, method = RequestMethod.GET)
+    public @ResponseBody Long getId(@RequestParam("email") String email){
+        return userService.getId(email);
     }
 
     @PreAuthorize("hasRole('ADMIN')")

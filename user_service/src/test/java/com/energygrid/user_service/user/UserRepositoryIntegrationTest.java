@@ -1,6 +1,7 @@
 package com.energygrid.user_service.user;
-import com.energygrid.common.models.User;
-import com.energygrid.common.utils.AuthenticationUtils;
+
+import com.energygrid.user_service.AuthenticationUtils;
+import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.junit.After;
 import org.junit.Before;
@@ -11,8 +12,7 @@ import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
-
-import static com.energygrid.common.security.UserRole.USER;
+import static com.energygrid.user_service.common.security.UserRole.USER;
 import static org.junit.Assert.assertThat;
 import static org.hamcrest.core.Is.is;
 

@@ -1,5 +1,5 @@
 package com.energygrid.user_service.user;
-import com.energygrid.common.dto.ProfileDTO;
+import com.energygrid.user_service.common.dto.ProfileDTO;
 import com.energygrid.user_service.controllers.UserController;
 import com.energygrid.user_service.repositories.UserRepository;
 import com.energygrid.user_service.services.UserService;
