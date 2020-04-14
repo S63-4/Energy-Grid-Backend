@@ -1,5 +1,6 @@
 package com.energygrid.user_service;
 
+import com.energygrid.user_service.common.models.Customer;
 import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.common.utils.CsvValues;
 import com.energygrid.user_service.common.utils.RandomString;
@@ -12,7 +13,9 @@ import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoCon
 import org.springframework.boot.autoconfigure.security.servlet.SecurityAutoConfiguration;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
-import org.springframework.context.annotation.*;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.ComponentScan;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
@@ -39,7 +42,7 @@ public class UserServiceApplication {
     }
 
     @Bean
-    public CommandLineRunner demo(UserRepository userRepository, PasswordEncoder passwordEncoder){
+    public CommandLineRunner demo(UserRepository userRepository, PasswordEncoder passwordEncoder) {
         return args -> {
 
             AuthenticationUtils auth = new AuthenticationUtils();
@@ -52,12 +55,12 @@ public class UserServiceApplication {
             String[] data1 = value1.split(",");
             String[] data2 = value2.split(",");
 
-            User user1 = new User("victor","victory",passwordEncoder.encode("test2"),"test@test.com", "0773077070", "0612345678", data1[CsvValues.ZIPCODE.getValue()], data1[CsvValues.STREET.getValue()], data1[CsvValues.CITY.getValue()], data1[CsvValues.HOUSE_NUMBER.getValue()],"123456",true,true,true,true, ADMIN.getGrantedAuthorities()); //default
-            User user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",true,true,true,true, USER.getGrantedAuthorities()); //default
+            var user1 = new Customer("victor", "victory", passwordEncoder.encode("test2"), "test@test.com", true, true, true,
+                    true, ADMIN.getGrantedAuthorities(), "0773077070", "0612345678", data1[CsvValues.ZIPCODE.getValue()], data1[CsvValues.STREET.getValue()], data1[CsvValues.CITY.getValue()], data1[CsvValues.HOUSE_NUMBER.getValue()], "123456"); //default
+            //var user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",true,true,true,true, USER.getGrantedAuthorities()); //default
 
             user1 = userRepository.save(user1);
-            user2 = userRepository.save(user2);
-
+            //  user2 = userRepository.save(user2);
         };
     }
     @Configuration

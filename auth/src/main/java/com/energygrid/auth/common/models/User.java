@@ -4,11 +4,13 @@ package com.energygrid.auth.common.models;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
 
+import javax.persistence.*;
 import java.io.Serializable;
 import java.util.Collection;
 import java.util.Set;
 
-public class User implements UserDetails,Serializable {
+
+public class User implements UserDetails, Serializable {
 
     private Long id;
 
@@ -16,22 +18,10 @@ public class User implements UserDetails,Serializable {
 
     private String lastName;
 
-    private String hash;
+    private String password;
 
     private String email;
 
-    private String phoneNumber;
-    private String mobileNumber;
-
-    private String zipCode;
-
-    private String street;
-
-    private String city;
-
-    private String houseNumber;
-
-    private String customerCode;
 
     public void setAccountNonExpired(boolean accountNonExpired) {
         isAccountNonExpired = accountNonExpired;
@@ -49,35 +39,28 @@ public class User implements UserDetails,Serializable {
         isCredentialsNonExpired = credentialsNonExpired;
     }
 
-    private  boolean isAccountNonExpired;
-    private  boolean isEnabled;
-    private  boolean isAccountNonLocked;
-    private  boolean isCredentialsNonExpired;
+    private boolean isAccountNonExpired;
+    private boolean isEnabled;
+    private boolean isAccountNonLocked;
+    private boolean isCredentialsNonExpired;
 
     public void setAuthorities(Set<CustomGrantedAuthority> customGrantedAuthorities) {
         this.authorities = customGrantedAuthorities;
     }
+
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
         return authorities;
     }
 
-
     private Set<CustomGrantedAuthority> authorities;
 
 
-    public User(String firstName, String lastName, String password_hash, String email, String phoneNumber, String mobileNumber, String zipCode, String street, String city, String houseNumber, String customerCode, boolean isAccountNonExpired, boolean isEnabled, boolean isAccountNonLocked, boolean isCredentialsNonExpired, Set<CustomGrantedAuthority> customGrantedAuthorities) {
+    public User(String firstName, String lastName, String password_hash, String email, boolean isAccountNonExpired, boolean isEnabled, boolean isAccountNonLocked, boolean isCredentialsNonExpired, Set<CustomGrantedAuthority> customGrantedAuthorities) {
         this.firstName = firstName;
         this.lastName = lastName;
-        this.hash = password_hash;
-        this.email= email;
-        this.phoneNumber = phoneNumber;
-        this.mobileNumber = mobileNumber;
-        this.zipCode = zipCode;
-        this.street = street;
-        this.city = city;
-        this.houseNumber = houseNumber;
-        this.customerCode = customerCode;
+        this.password = password_hash;
+        this.email = email;
         this.isAccountNonExpired = isAccountNonExpired;
         this.isEnabled = isEnabled;
         this.isAccountNonLocked = isAccountNonLocked;
@@ -85,7 +68,7 @@ public class User implements UserDetails,Serializable {
         this.authorities = customGrantedAuthorities;
     }
 
-    public User(){
+    public User() {
     }
 
     public Long getId() {
@@ -100,21 +83,9 @@ public class User implements UserDetails,Serializable {
         return lastName;
     }
 
-    public String getCustomerCode() {
-        return customerCode;
-    }
-
-    public String getHouseNumber() {
-        return houseNumber;
-    }
-
-    public String getZipCode() {
-        return zipCode;
-    }
-
 
     public String getPasswordHash() {
-        return hash;
+        return password;
     }
 
 
@@ -122,21 +93,6 @@ public class User implements UserDetails,Serializable {
         return email;
     }
 
-    public String getPhoneNumber() {
-        return phoneNumber;
-    }
-
-    public void setPhoneNumber(String phoneNumber) {
-        this.phoneNumber = phoneNumber;
-    }
-
-    public String getMobileNumber() {
-        return mobileNumber;
-    }
-
-    public void setMobileNumber(String mobileNumber) {
-        this.mobileNumber = mobileNumber;
-    }
 
     public void setId(Long id) {
         this.id = id;
@@ -150,63 +106,23 @@ public class User implements UserDetails,Serializable {
         this.lastName = lastName;
     }
 
-    public String getHash() {
-        return hash;
+    public String getPassword() {
+        return password;
     }
 
-    public void setHash(String hash) {
-        this.hash = hash;
+    public void setPassword(String hash) {
+        this.password = hash;
     }
 
-    public String getStreet() {
-        return street;
-    }
-
-    public void setStreet(String street) {
-        this.street = street;
-    }
-
-    public String getCity() {
-        return city;
-    }
-
-    public void setCity(String city) {
-        this.city = city;
-    }
 
     public void setEmail(String email) {
         this.email = email;
     }
 
-    public void setCustomerCode(String customerCode) {
-        this.customerCode = customerCode;
-    }
-
-    public void setHouseNumber(String houseNumber) {
-        this.houseNumber = houseNumber;
-    }
-
-    public void setZipCode(String zipCode) {
-        this.zipCode = zipCode;
-    }
-
-
-    public void setPassword(String password_hash) {
-        this.hash = password_hash;
-
-    }
-
-
-
-
-    @Override
-    public String getPassword() {
-        return hash;
-    }
 
     @Override
     public String getUsername() {
-        return customerCode;
+        return email;
     }
 
     @Override

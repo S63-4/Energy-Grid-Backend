@@ -2,7 +2,7 @@ package com.energygrid.user_service.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-public class RegisterDTO {
+public class CustomerRegisterDTO {
 
     @JsonProperty
     private String email;
@@ -13,9 +13,9 @@ public class RegisterDTO {
     @JsonProperty
     private String customerCode;
 
-    public RegisterDTO(){}
+    public CustomerRegisterDTO(){}
 
-    public RegisterDTO(String email, String password, String customerCode) {
+    public CustomerRegisterDTO(String email, String password, String customerCode) {
         this.email = email;
         this.password = password;
         this.customerCode = customerCode;

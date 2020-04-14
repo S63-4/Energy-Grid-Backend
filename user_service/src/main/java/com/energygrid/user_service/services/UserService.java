@@ -1,30 +1,29 @@
 package com.energygrid.user_service.services;
 
 
-import com.energygrid.user_service.AuthenticationUtils;
-import com.energygrid.user_service.common.dto.ProfileDTO;
-import com.energygrid.user_service.common.dto.RegisterDTO;
-import com.energygrid.user_service.common.exceptions.BadRequestException;
 import com.energygrid.user_service.common.models.User;
+import com.energygrid.user_service.mail.EmailService;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-
-import java.util.regex.Pattern;
 
 @Service
 public class UserService {
 
     private final UserRepository userRepository;
     private final ModelMapper modelMapper;
+    private final EmailService emailService;
+    private final PasswordEncoder passwordEncoder;
 
-    public UserService(UserRepository userRepository, ModelMapper modelMapper) {
+    public UserService(UserRepository userRepository, ModelMapper modelMapper, EmailService emailService, PasswordEncoder passwordEncoder) {
         this.userRepository = userRepository;
         this.modelMapper = modelMapper;
+        this.emailService = emailService;
+        this.passwordEncoder = passwordEncoder;
     }
 
-
-    public User newUser(User user){
+    public User newUser(User user) {
         userRepository.save(user);
         User newuser = userRepository.findUserByEmail(user.getEmail());
         return newuser;
@@ -32,69 +31,25 @@ public class UserService {
     public Long getId(String email){
         return userRepository.findIdByEmail(email);
     }
-    public Iterable<User> alluser (){
+
+
+    public Iterable<User> alluser() {
         return userRepository.findAll();
     }
 
-    public void DeleteUser(User user){
+    public User getByEmail(String email) {
+        return userRepository.findUserByEmail(email);
+    }
+
+    public void DeleteUser(User user) {
         userRepository.delete(user);
     }
 
-    public String registerUser(RegisterDTO user) {
-        final Pattern Email = Pattern.compile("^[A-Z0-9._%+-]+@[A-Z0-9.-]+\\.[A-Z]{2,6}$", Pattern.CASE_INSENSITIVE);
-
-        System.out.println("Received: " + user.getCustomerCode());
-
-        if (user == null) throw new IllegalArgumentException("The user object is not allowed to be null.");
-
-        if(user.getEmail().isEmpty() || user.getEmail() ==null){
-            throw new IllegalArgumentException("Email can`t be empty or null");
-        }
-
-        if (user.getPassword().isEmpty() || user.getPassword() == null){
-            throw new IllegalArgumentException("Password can`t be empty or null");
-        }
-        if (user.getPassword().length() < 8){
-            throw new BadRequestException("Password must be at least 8 characters");
-        }
-        if (!Email.matcher(user.getEmail()).find()) {
-            throw new IllegalArgumentException("The email should be a valid email address.");
-        }
-        if (userRepository.existsByEmail(user.getEmail()) && userRepository.existsByCustomerCode(user.getCustomerCode())){
-
-                User userEntity = userRepository.findUserByCustomerCode(user.getCustomerCode());
-
-                User updateUser = modelMapper.map(userEntity, User.class);
-
-                updateUser.setPassword(new AuthenticationUtils().encode(user.getPassword()));
-                userRepository.save(updateUser);
-                updateUser.setPassword(null);
-                return "saved";
-            }
-            else{
-                throw new BadRequestException("Wrong combination");
-            }
+    public boolean changePassword(User user, String oldPass, String newPass) {
+        if (passwordEncoder.encode(oldPass) != user.getPassword())
+            return false;
+        user.setPassword(passwordEncoder.encode(newPass));
+        userRepository.save(user);
+        return true;
     }
-
-    public ProfileDTO getUserByCustomerCode(String customerCode){
-        return modelMapper.map(userRepository.findUserByCustomerCode(customerCode), ProfileDTO.class);
-    }
-    public User getByCustomerCode(String customerCode){
-        return userRepository.findUserByCustomerCode(customerCode);
-    }
-
-    public String updateProfile(ProfileDTO user) throws Exception{
-        try{
-            User userEntity = userRepository.findUserByCustomerCode(user.getCustomerCode());
-            User updateUser = modelMapper.map(userEntity, User.class);
-            userRepository.save(updateUser);
-
-            return "Profile updated";
-        }
-
-        catch (Exception ex){
-            throw new Exception("Unable to update user in database");
-        }
-    }
-
 }
