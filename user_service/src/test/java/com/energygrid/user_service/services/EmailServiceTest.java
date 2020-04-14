@@ -1,5 +1,6 @@
 package com.energygrid.user_service.services;
 
+import com.energygrid.user_service.mail.EmailService;
 import org.junit.Assert;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;

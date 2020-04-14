@@ -12,11 +12,10 @@ import org.springframework.context.annotation.ComponentScan;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.web.client.RestTemplate;
 
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class}, scanBasePackages = {"com.energygrid"})
-@ComponentScan({"com.energygrid.common","com.energygrid.status_service"})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableEurekaClient
-@ComponentScan({"com.energygrid.common", "com.energygrid.status_service"})
+@ComponentScan
 public class StatusServiceApplication {
 
     @Bean
