@@ -113,7 +113,7 @@
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
                     <to>
-                        <image>service-dataprocessor</image>
+                        <image><image>docker.io/energygrids63d/data_processor</image></image>
                     </to>
                 </configuration>
             </plugin>
