@@ -76,7 +76,7 @@
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
                     <to>
-                        <image><image>docker.io/energygrids63d/eureka-server</image></image>
+                        <image>docker.io/energygrids63d/eureka-server</image>
                     </to>
                 </configuration>
             </plugin>
