@@ -96,13 +96,7 @@
                     </from>
 
                     <to>
-                        <auth>
-                            <username>energygrids63d</username>
-                            <password>fontys123456</password>
-                        </auth>
-
                         <image>docker.io/energygrids63d/gateway</image>
-
                     </to>
                 </configuration>
             </plugin>
