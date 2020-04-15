@@ -90,11 +90,19 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>2.1.0</version>
                 <configuration>
+
                     <from>
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
+
                     <to>
-                        <image>service-gateway</image>
+                        <auth>
+                            <username>energygrids63d</username>
+                            <password>fontys123456</password>
+                        </auth>
+
+                        <image>docker.io/energygrids63d/gateway</image>
+
                     </to>
                 </configuration>
             </plugin>
