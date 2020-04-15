@@ -83,7 +83,7 @@
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
                     <to>
-                        <image>service_auth</image>
+                        <image><image>docker.io/energygrids63d/auth</image></image>
                     </to>
                 </configuration>
             </plugin>
