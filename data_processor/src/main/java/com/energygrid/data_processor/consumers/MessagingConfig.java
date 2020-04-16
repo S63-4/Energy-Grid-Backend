@@ -1,5 +1,6 @@
-package com.energygrid.data_processor;
+package com.energygrid.data_processor.consumers;
 
+import com.energygrid.data_processor.consumers.MessageConsumer;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,14 +15,37 @@ public class MessagingConfig {
 
     private static class ConsumerConfig {
 
+        // Queue for regional production
         @Bean
-        public Queue autoDeleteQueue() {
+        public Queue regionalSimQueue() {
+            return new AnonymousQueue();
+        }
+
+        // Queue for national production
+        @Bean
+        public Queue nationalSimQueue() {
+            return new AnonymousQueue();
+        }
+
+        // Queue for the market
+        @Bean
+        public Queue regionalSimulatorQueue() {
             return new AnonymousQueue();
         }
 
         @Bean
-        public Binding binding(DirectExchange directExchange, Queue autoDeleteQueue) {
-            return BindingBuilder.bind(autoDeleteQueue).to(directExchange).with("regional");
+        public Binding bindingRegional(DirectExchange directExchange, Queue regionalSimQueue) {
+            return BindingBuilder.bind(regionalSimQueue).to(directExchange).with("regional");
+        }
+
+        @Bean
+        public Binding bindingNational(DirectExchange directExchange, Queue nationalSimQueue) {
+            return BindingBuilder.bind(nationalSimQueue).to(directExchange).with("national");
+        }
+
+        @Bean
+        public Binding bindingMarket(DirectExchange directExchange, Queue marketSimQueue) {
+            return BindingBuilder.bind(marketSimQueue).to(directExchange).with("market");
         }
 
         @Bean

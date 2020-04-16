@@ -1,4 +1,4 @@
-package com.energygrid.data_processor;
+package com.energygrid.data_processor.producers;
 
 import org.springframework.amqp.core.DirectExchange;
 import org.springframework.amqp.core.FanoutExchange;

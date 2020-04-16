@@ -1,4 +1,5 @@
 package com.energygrid.data_processor.services;
 
-public class RegionalSimulatorService {
+public class RegionalService extends AbstractService {
+
 }
