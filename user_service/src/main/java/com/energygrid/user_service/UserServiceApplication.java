@@ -29,7 +29,6 @@ import static com.energygrid.user_service.common.security.UserRole.USER;
 
 @EnableEurekaClient
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class})
-@ComponentScan
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 public class UserServiceApplication {
     @Bean
