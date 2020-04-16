@@ -18,24 +18,22 @@ import java.util.Scanner;
 @EnableEurekaClient
 public class DataProcessorApplication {
 
-    private static String URL = "ws://localhost:8765";
-
     public static void main(String[] args) {
         SpringApplication.run(DataProcessorApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demo(){
-        return args -> {
-            WebSocketClient client = new StandardWebSocketClient();
-            WebSocketStompClient stompClient = new WebSocketStompClient(client);
+//    @Bean
+//    public CommandLineRunner demo(){
+//        return args -> {
+//            WebSocketClient client = new StandardWebSocketClient();
+//            WebSocketStompClient stompClient = new WebSocketStompClient(client);
+//
+//            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
+//
+//            StompSessionHandler sessionHandler = new MyStompSessionHandler();
+//            stompClient.connect(URL, sessionHandler);
 
-            stompClient.setMessageConverter(new MappingJackson2MessageConverter());
-
-            StompSessionHandler sessionHandler = new MyStompSessionHandler();
-            stompClient.connect(URL, sessionHandler);
-
-            new Scanner(System.in).nextLine(); // Don't close immediately.
-        };
-    }
+//            new Scanner(System.in).nextLine(); // Don't close immediately.
+//        };
+//    }
 }

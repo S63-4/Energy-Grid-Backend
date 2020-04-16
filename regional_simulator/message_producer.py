@@ -13,9 +13,9 @@ class MessageProducer:
     def send(self, message):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
         channel = connection.channel()
-        channel.queue_declare(queue="regional_simulator")
-        channel.basic_publish(exchange="",
-                              routing_key="regional_simulator",
+        channel.exchange_declare(exchange="simulator", exchange_type="direct")
+        channel.basic_publish(exchange="simulator",
+                              routing_key="regional",
                               body=message)
         print("Message sent!")
         connection.close()
