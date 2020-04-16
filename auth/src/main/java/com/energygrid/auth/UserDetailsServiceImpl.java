@@ -1,6 +1,6 @@
 package com.energygrid.auth;
 
-import com.energygrid.common.models.User;
+import com.energygrid.auth.common.models.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.AuthorityUtils;
@@ -24,12 +24,12 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     private BCryptPasswordEncoder encoder;
 
     @Override
-    public UserDetails loadUserByUsername(String customerCode) throws UsernameNotFoundException {
+    public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
-        if (customerCode.isEmpty()){
+        if (email.isEmpty()){
             throw new IllegalArgumentException("CustomerCode can't be empty");
         }
-            User user = restTemplate.getForObject("http://user-service/UserController/user?code="+customerCode, User.class);
+            User user = restTemplate.getForObject("http://user-service/user/user?email="+email, User.class);
             return user;
     }
 

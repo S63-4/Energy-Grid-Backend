@@ -2,8 +2,7 @@ package com.energygrid.status_service.filters;
 
 
 
-import com.energygrid.common.models.CustomGrantedAuthority;
-import com.energygrid.common.security.JwtConfig;
+import com.energygrid.status_service.common.models.CustomGrantedAuthority;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.core.annotation.Order;

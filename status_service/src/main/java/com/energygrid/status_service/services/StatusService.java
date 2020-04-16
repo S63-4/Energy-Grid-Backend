@@ -1,9 +1,8 @@
 package com.energygrid.status_service.services;
 
-import com.energygrid.common.dto.StatusDTO;
-import com.energygrid.common.enums.StatusPeriod;
-import com.energygrid.common.models.Status;
-import com.energygrid.common.models.User;
+import com.energygrid.status_service.common.dto.StatusDTO;
+import com.energygrid.status_service.common.enums.StatusPeriod;
+import com.energygrid.status_service.common.models.Status;
 import com.energygrid.status_service.repositories.StatusRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,9 +35,9 @@ public class StatusService {
 
     private long getCurrentUserId() {
         final Authentication auth = SecurityContextHolder.getContext().getAuthentication();
-        final String customerCode = (String) auth.getPrincipal();
-        User user = restTemplate.getForObject("http://user-service/UserController/user?code=" + customerCode, User.class);
-        return user != null ? user.getId() : 0;
+        final String email = (String) auth.getPrincipal();
+        Long id = restTemplate.getForObject("http://user-service/UserController/id?email=" + email, Long.class);
+        return id;
     }
 
     public List<StatusDTO> getStatusForPeriod(StatusPeriod statusPeriod, LocalDate currentDate) {

@@ -1,7 +1,7 @@
 package com.energygrid.status_service.controllers;
 
-import com.energygrid.common.dto.*;
-import com.energygrid.common.enums.StatusPeriod;
+import com.energygrid.status_service.common.dto.StatusDTO;
+import com.energygrid.status_service.common.enums.StatusPeriod;
 import com.energygrid.status_service.repositories.StatusRepository;
 import com.energygrid.status_service.services.StatusService;
 import org.springframework.stereotype.Controller;

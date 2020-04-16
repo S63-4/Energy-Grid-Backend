@@ -1,6 +1,6 @@
 package com.energygrid.auth;
 
-import com.energygrid.common.security.JwtConfig;
+import com.energygrid.auth.common.security.JwtConfig;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;

@@ -2,8 +2,8 @@ package com.energygrid.gateway.security;
 
 
 
-import com.energygrid.common.models.CustomGrantedAuthority;
-import com.energygrid.common.security.JwtConfig;
+import com.energygrid.gateway.security.common.models.CustomGrantedAuthority;
+import com.energygrid.gateway.security.common.security.JwtConfig;
 import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
