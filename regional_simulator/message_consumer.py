@@ -12,7 +12,7 @@ class MessageConsumer:
     def start(self):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
         channel = connection.channel()
-        channel.exchange_declare(exchange="simulator", exchange_type="direct")
+        channel.exchange_declare(exchange="simulator", exchange_type="direct", durable=True)
         result = channel.queue_declare("queue1", exclusive=True)
         queue_name = result.method.queue
         channel.queue_bind(exchange="simulator", queue=queue_name, routing_key="regional")
