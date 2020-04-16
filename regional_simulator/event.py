@@ -1,16 +1,19 @@
 class Event:
     date = None
+    region = None
     consumption = None
     production = None
 
     def __init__(self, date):
         self.date = date
+        self.region = "zeeland"
         self.consumption = Consumption()
         self.production = Production()
 
     def toJSON(self):
         json = "{"
         json += f"\"date\" : \"{self.date}\", " \
+                f"\"region\" : \"{self.region}\", " \
                 f"\"consumption\" : {self.consumption.toJSON()}, " \
                 f"\"production\" : {self.production.toJSON()}"
         json += "}"
@@ -39,17 +42,20 @@ class Production:
     wind_farms = None
     solar_farms = None
     power_plants = None
+    households = None
 
     def __init__(self):
         self.wind_farms = ProducerGroup()
         self.solar_farms = ProducerGroup()
         self.power_plants = ProducerGroup()
+        self.households = ProducerGroup()
 
     def toJSON(self):
         json = "{"
         json += f"\"wind_farms\" : {self.wind_farms.toJSON()}, " \
                 f"\"solar_farms\" : {self.solar_farms.toJSON()}, " \
-                f"\"power_plants\" : {self.power_plants.toJSON()}"
+                f"\"power_plants\" : {self.power_plants.toJSON()}, " \
+                f"\"households\" : {self.households.toJSON()}"
         json += "}"
         return json
 
@@ -100,7 +106,7 @@ class Consumer:
         json += "}"
         return json
 
-class Household(Consumer):
+class HouseholdConsumption(Consumer):
     num_connection = 0
 
     def toJSON(self):
@@ -118,6 +124,17 @@ class Producer:
     def toJSON(self):
         json = "{"
         json += f"\"name\" : {self.name}, " \
+                f"\"production\" : {self.production}"
+        json += "}"
+        return json
+
+class HouseholdProduction(Producer):
+    num_connection = 0
+
+    def toJSON(self):
+        json = "{"
+        json += f"\"name\" : {self.name}, " \
+                f"\"num_connection\" : {self.num_connection}, " \
                 f"\"production\" : {self.production}"
         json += "}"
         return json
