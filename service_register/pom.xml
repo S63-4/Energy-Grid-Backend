@@ -61,6 +61,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>eureka</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -75,7 +76,7 @@
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
                     <to>
-                        <image>service-eureka</image>
+                        <image>docker.io/energygrids63d/eureka-server</image>
                     </to>
                 </configuration>
             </plugin>

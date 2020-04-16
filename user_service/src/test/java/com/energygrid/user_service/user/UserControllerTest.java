@@ -5,14 +5,9 @@ import com.energygrid.user_service.repositories.UserRepository;
 import com.energygrid.user_service.services.UserService;
 import org.junit.Before;
 import org.junit.Test;
-
 import org.mockito.Mock;
 import org.springframework.test.context.ActiveProfiles;
 
-
-import static org.hamcrest.core.Is.is;
-import static org.junit.Assert.assertThat;
-import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.initMocks;
 
 @ActiveProfiles("test")
