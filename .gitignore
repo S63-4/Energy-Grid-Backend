@@ -25,5 +25,4 @@ hs_err_pid*
 
 # Python
 regional_simulator/__pycache__/*
-*/venv/*
-regional_simulator/venv/*
+regional_simulator/venv/
