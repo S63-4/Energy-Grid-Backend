@@ -2,7 +2,6 @@ from message_producer import MessageProducer
 from simulator import Simulator
 from websocket_server import WebSocketServer
 import py_eureka_client.eureka_client as eureka_client
-import asyncio
 
 if __name__ == "__main__":
 
@@ -13,13 +12,9 @@ if __name__ == "__main__":
                        app_name="regional-simulator",
                        instance_port=port)
 
-    # starting a websocket server on a different thread
-    websocket_server = WebSocketServer(host, port)
-    websocket_server.start()
-
     # create consumer class to pass to simulator
-    websocket_producer = MessageProducer(host, port)
-    simulator = Simulator(websocket_producer)
+    message_producer = MessageProducer(host, port)
+    simulator = Simulator(message_producer)
 
     # run the simulator
     simulator.main()

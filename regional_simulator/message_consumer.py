@@ -23,7 +23,7 @@ class MessageConsumer:
         channel.start_consuming()
 
     def message_handler(self, ch, method, properties, body):
-        print(f"Message received: {body.decode()}")
+        print(f"{body.decode()}")
 
 
 if __name__ == "__main__":
