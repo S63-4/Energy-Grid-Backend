@@ -29,7 +29,7 @@ public class MessagingConfig {
 
         // Queue for the market
         @Bean
-        public Queue regionalSimulatorQueue() {
+        public Queue marketSimQueue() {
             return new AnonymousQueue();
         }
 
