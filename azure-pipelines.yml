@@ -26,6 +26,6 @@ steps:
   displayName: 'Install dependencies'
 - script: |
     python -m pip install flake8
-    flake8 .
+    flake8 . --ignore E501 E302
   displayName: 'Run lint tests'
 
