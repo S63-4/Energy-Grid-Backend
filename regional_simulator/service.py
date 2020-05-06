@@ -1,6 +1,5 @@
 from message_producer import MessageProducer
 from simulator import Simulator
-from websocket_server import WebSocketServer
 import py_eureka_client.eureka_client as eureka_client
 
 if __name__ == "__main__":
