@@ -24,8 +24,12 @@ steps:
     python -m pip install --upgrade pip
     pip install -r requirements.txt
   displayName: 'Install dependencies'
+  
 - script: |
-    python -m pip install flake8
-    flake8 . --ignore E501 E302
-  displayName: 'Run lint tests'
+    cd regional_simulator
+    docker build -t $(DOCKER_USER)/$(CI_PROJECT_NAME) .
+    docker tag $(DOCKER_USER)/$(CI_PROJECT_NAME) $(DOCKER_USER)/$(CI_PROJECT_NAME):$(Build.SourceVersion)
+    docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
+    docker push $(DOCKER_USER)/$(CI_PROJECT_NAME)
+  displayName: 'create and push docker image'
 
