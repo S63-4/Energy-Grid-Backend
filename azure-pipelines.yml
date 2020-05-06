@@ -10,12 +10,6 @@ pool:
   vmImage: 'ubuntu-latest'
 strategy:
   matrix:
-    Python27:
-      python.version: '2.7'
-    Python35:
-      python.version: '3.5'
-    Python36:
-      python.version: '3.6'
     Python37:
       python.version: '3.7'
 
@@ -26,11 +20,16 @@ steps:
   displayName: 'Use Python $(python.version)'
 
 - script: |
+    cd regional_simulator
     python -m pip install --upgrade pip
     pip install -r requirements.txt
   displayName: 'Install dependencies'
-
+  
 - script: |
-    pip install pytest pytest-azurepipelines
-    pytest
-  displayName: 'pytest'
+    cd regional_simulator
+    docker build -t $(DOCKER_USER)/$(CI_PROJECT_NAME) .
+    docker tag $(DOCKER_USER)/$(CI_PROJECT_NAME) $(DOCKER_USER)/$(CI_PROJECT_NAME):$(Build.SourceVersion)
+    docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
+    docker push $(DOCKER_USER)/$(CI_PROJECT_NAME)
+  displayName: 'create and push docker image'
+
