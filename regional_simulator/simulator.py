@@ -4,8 +4,6 @@ import time
 import asyncio
 import schedule
 from event import *
-import json
-import jsonpickle
 
 class Simulator:
     _mock_data = None
@@ -66,6 +64,7 @@ class Simulator:
 
         # steps 3, 4, 5 & 6 are taken for every row in the util company sheet
         consumer_group = ConsumerGroup()
+        consumer_group.consumers.clear()
         total_consumption = 0
         total_consumers = 0
         for index, row in self._enduris_data.iterrows():
@@ -149,4 +148,4 @@ class Simulator:
         # DEBUG CODE, prints faster than production code above
         # while True:
         #     self.create_event_loop()
-        #     time.sleep(10)
+        #     time.sleep(60)
