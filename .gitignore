@@ -26,3 +26,6 @@ hs_err_pid*
 # Python
 regional_simulator/__pycache__/*
 regional_simulator/venv/
+
+# database settings
+database.properties

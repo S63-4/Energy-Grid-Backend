@@ -16,6 +16,7 @@ import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
@@ -30,6 +31,7 @@ import static com.energygrid.user_service.common.security.UserRole.USER;
 @EnableEurekaClient
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
+@PropertySource("database.properties")
 public class UserServiceApplication {
     @Bean
     public ModelMapper modelMapper() {
@@ -40,18 +42,7 @@ public class UserServiceApplication {
         SpringApplication.run(UserServiceApplication.class, args);
     }
 
-    @Bean
-    public CommandLineRunner demo(UserRepository userRepository, PasswordEncoder passwordEncoder) {
-        return args -> {
 
-               var user1 = new Customer("victor", "victory", passwordEncoder.encode("test2"), "test@test.com", true, true, true,
-                    true, ADMIN.getGrantedAuthorities(), "0773077070", "0612345678", "1234AB", "Meme street", "Aidshoven", "14", "123456"); //default
-            //var user2 = new User("Piet","Pieters",passwordEncoder.encode("test1"),"test@test.nl", "0773086060", "0687654321",data2[CsvValues.ZIPCODE.getValue()],data2[CsvValues.STREET.getValue()], data2[CsvValues.CITY.getValue()], data2[CsvValues.HOUSE_NUMBER.getValue()], "007",true,true,true,true, USER.getGrantedAuthorities()); //default
-
-            user1 = userRepository.save(user1);
-            //  user2 = userRepository.save(user2);
-        };
-    }
     @Configuration
     class RestTemplateConfig {
 
