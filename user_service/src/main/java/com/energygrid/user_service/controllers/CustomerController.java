@@ -6,9 +6,11 @@ import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
 import com.energygrid.user_service.common.dto.ProfileDTO;
 import com.energygrid.user_service.common.exceptions.BadRequestException;
 import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
+import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -64,10 +66,9 @@ public class CustomerController {
 
             customerService.newCustomer(userObject);
 
-            return userObject.getFirstName();
+            return gson.toJson(userObject.getFirstName());
         } catch (Exception e) {
             throw new BadRequestException("error");
-
         }
     }
 
@@ -87,10 +88,16 @@ public class CustomerController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.getCustomerByCustomerCode, method = RequestMethod.GET)
+    public @ResponseBody
+    ProfileDTO getCustomerByCustomerCode(@RequestParam("customercode") String code) {
+        return customerService.getCustomerByCustomerCode(code);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = RestURIConstant.allCustomers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<Customer> allUsers() {
         return customerService.allCustomers();
     }
-
 }
