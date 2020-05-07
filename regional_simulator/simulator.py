@@ -4,8 +4,6 @@ import time
 import asyncio
 import schedule
 from event import *
-import json
-import jsonpickle
 
 class Simulator:
     _mock_data = None

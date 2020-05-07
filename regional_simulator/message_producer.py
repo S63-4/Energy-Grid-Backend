@@ -1,4 +1,3 @@
-import websockets
 import asyncio
 import pika
 
