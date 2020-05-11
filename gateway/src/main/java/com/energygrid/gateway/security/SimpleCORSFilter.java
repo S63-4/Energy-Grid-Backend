@@ -8,6 +8,8 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.List;
 
 @Component
 @Order(Ordered.HIGHEST_PRECEDENCE)
@@ -17,6 +19,8 @@ public class SimpleCORSFilter implements Filter {
   @Override
   public void init(FilterConfig fc) throws ServletException {
   }
+
+  private final List<String> allowedOrigins = Arrays.asList("http://localhost:4200");
 
   @Override
   public void doFilter(ServletRequest req, ServletResponse resp,
@@ -32,8 +36,8 @@ public class SimpleCORSFilter implements Filter {
     response.setHeader("Access-Control-Allow-Credentials", "true");
 
     String origin = request.getHeader("Origin");
-    response.setHeader("Access-Control-Allow-Origin",  origin);
-    response.setHeader("Vary", "Origin");
+    response.setHeader("Access-Control-Allow-Origin", allowedOrigins.contains(origin) ? origin : "");
+  //  response.setHeader("Vary", "Origin");
 
     if ("OPTIONS".equalsIgnoreCase(request.getMethod())) {
       response.setStatus(HttpServletResponse.SC_OK);
