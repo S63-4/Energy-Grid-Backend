@@ -13,4 +13,19 @@ public class MessageController {
         Thread.sleep(1000); // simulated delay
         return new Message("Hello " + HtmlUtils.htmlEscape(message.getName()));
     }
+
+    @SendTo("/topic/regional")
+    public Message regional(String message) throws InterruptedException {
+        return new Message(message);
+    }
+
+    @SendTo("/topic/national")
+    public Message national(String message) throws InterruptedException {
+        return new Message(message);
+    }
+
+    @SendTo("/topic/market")
+    public Message market(String message) throws InterruptedException {
+        return new Message(message);
+    }
 }
