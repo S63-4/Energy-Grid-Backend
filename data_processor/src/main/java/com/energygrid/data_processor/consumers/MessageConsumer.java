@@ -1,13 +1,11 @@
 package com.energygrid.data_processor.consumers;
 
 
-import com.energygrid.data_processor.domain.events.RegionalEvent;
 import com.energygrid.data_processor.services.RegionalService;
 import com.fasterxml.jackson.core.JsonFactory;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.gson.Gson;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -25,14 +23,6 @@ public class MessageConsumer {
     @RabbitListener(queues = "#{regionalSimQueue.name}")
     public void receiveRegional(String message) throws InterruptedException {
         regionalService.handleEvent(message);
-        // DEBUG code for writing JSON to file
-//        try {
-//            writeToFile(message);
-//        } catch (JsonProcessingException e) {
-//            System.out.println(e.getMessage());
-//        } catch (IOException e) {
-//            System.out.println(e.getMessage());
-//        }
     }
 
     @RabbitListener(queues = "#{nationalSimQueue.name}")

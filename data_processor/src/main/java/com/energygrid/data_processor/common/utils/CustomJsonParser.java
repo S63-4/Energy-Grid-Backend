@@ -1,8 +1,8 @@
-package com.energygrid.data_processor.domain.utils;
+package com.energygrid.data_processor.common.utils;
 
-import com.energygrid.data_processor.domain.events.RegionalEvent;
+import com.energygrid.data_processor.common.events.RegionalEvent;
 
-import com.energygrid.data_processor.domain.models.*;
+import com.energygrid.data_processor.common.models.*;
 import com.fasterxml.jackson.core.*;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;

@@ -8,35 +8,45 @@ import org.springframework.stereotype.Service;
 import java.time.LocalDateTime;
 
 @Service
-public class BucketFactory {
+public class RegionalBucketFactory {
 
-    private MonthBucketRegional monthBucketRegional;
-    private DayBucketRegional dayBucketRegional;
-    private HourBucketRegional hourBucketRegional;
+    private MonthBucketRegional monthBucket;
+    private DayBucketRegional dayBucket;
+    private HourBucketRegional hourBucket;
 
-    public HourBucketRegional getHourBucketRegional() {
-        if (hourBucketRegional == null) {
-            this.hourBucketRegional = new HourBucketRegional();
+    public HourBucketRegional getHourBucket(LocalDateTime dateTime) {
+        if (hourBucket == null) {
+            this.hourBucket = new HourBucketRegional(dateTime);
         }
-        return hourBucketRegional;
+        return hourBucket;
     }
 
-    public DayBucketRegional getDayBucketRegional() {
-        if (dayBucketRegional == null) {
-            this.dayBucketRegional = new DayBucketRegional();
+    public DayBucketRegional getDayBucket(LocalDateTime dateTime) {
+        if (dayBucket == null) {
+            this.dayBucket = new DayBucketRegional(dateTime);
         }
-        return dayBucketRegional;
+        return dayBucket;
     }
 
-    public MonthBucketRegional getMonthBucketRegional() {
-        if (monthBucketRegional == null) {
-            this.monthBucketRegional = new MonthBucketRegional();
+    public MonthBucketRegional getMonthBucket(LocalDateTime dateTime) {
+        if (monthBucket == null) {
+            this.monthBucket = new MonthBucketRegional(dateTime);
         }
-        return monthBucketRegional;
+        return monthBucket;
     }
 
-    public HourBucketRegional newHourBucketRegional(LocalDateTime dateTime) {
-        this.hourBucketRegional = new HourBucketRegional(dateTime);
-        return this.hourBucketRegional;
+    public HourBucketRegional newHourBucket(LocalDateTime dateTime) {
+        this.hourBucket = new HourBucketRegional(dateTime);
+        return this.hourBucket;
+    }
+
+    public DayBucketRegional newDayBucket(LocalDateTime dateTime) {
+        this.dayBucket = new DayBucketRegional(dateTime);
+        return this.dayBucket;
+    }
+
+    public MonthBucketRegional newMonthBucket(LocalDateTime dateTime) {
+        this.monthBucket = new MonthBucketRegional(dateTime);
+        return this.monthBucket;
     }
 }

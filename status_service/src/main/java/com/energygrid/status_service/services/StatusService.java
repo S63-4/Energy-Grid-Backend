@@ -40,10 +40,6 @@ public class StatusService {
         return id;
     }
 
-    public void saveStatus() {
-
-    }
-
     public List<StatusDTO> getStatusForPeriod(StatusPeriod statusPeriod, LocalDate currentDate) {
         var id = getCurrentUserId();
         try {

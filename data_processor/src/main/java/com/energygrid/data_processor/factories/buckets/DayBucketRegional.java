@@ -2,11 +2,11 @@ package com.energygrid.data_processor.factories.buckets;
 
 import java.time.LocalDateTime;
 
-public class DayBucket {
+public class DayBucketRegional extends AbstractBucket {
 
-    private LocalDateTime dateTime;
-
-    public DayBucket(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public DayBucketRegional(LocalDateTime dateTime) {
+        super(dateTime);
     }
+
+
 }

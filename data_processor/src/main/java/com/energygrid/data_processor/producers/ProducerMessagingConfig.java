@@ -6,7 +6,9 @@ import org.springframework.context.annotation.Configuration;
 
 @Configuration
 public class ProducerMessagingConfig {
-    @Bean(name = "data-processor-exchange")
+
+
+    @Bean("data-processor-exchange")
     public DirectExchange directExchange() {
         return new DirectExchange("data-processor-exchange");
     }

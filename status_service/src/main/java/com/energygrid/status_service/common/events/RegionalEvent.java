@@ -1,7 +1,7 @@
-package com.energygrid.data_processor.common.events;
+package com.energygrid.status_service.common.events;
 
-import com.energygrid.data_processor.common.models.Consumption;
-import com.energygrid.data_processor.common.models.Production;
+import com.energygrid.status_service.common.models.Consumption;
+import com.energygrid.status_service.common.models.Production;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;

@@ -1,9 +1,9 @@
-package com.energygrid.data_processor.common.utils;
+package com.energygrid.status_service.common.utils;
 
-import com.energygrid.data_processor.common.events.RegionalEvent;
-
-import com.energygrid.data_processor.common.models.*;
-import com.fasterxml.jackson.core.*;
+import com.energygrid.status_service.common.events.RegionalEvent;
+import com.energygrid.status_service.common.models.*;
+import com.fasterxml.jackson.core.JsonFactory;
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
