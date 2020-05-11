@@ -43,7 +43,7 @@ public class ProducerGroup {
         return producers;
     }
 
-    public void setProducers(ArrayList<Producer> producers) {
-        this.producers = producers;
+    public <T extends Producer> void setProducers(ArrayList<T> producers) {
+        this.producers = (ArrayList<Producer>) producers;
     }
 }

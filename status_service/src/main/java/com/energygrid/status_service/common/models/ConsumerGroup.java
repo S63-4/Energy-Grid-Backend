@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.domain.models;
+package com.energygrid.data_processor.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -43,7 +43,7 @@ public class ConsumerGroup {
         return consumers;
     }
 
-    public void setConsumers(ArrayList<Consumer> consumers) {
-        this.consumers = consumers;
+    public <T extends Consumer> void setConsumers(ArrayList<T> consumers) {
+        this.consumers = (ArrayList<Consumer>) consumers;
     }
 }

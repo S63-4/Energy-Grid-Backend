@@ -4,13 +4,13 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Production {
 
-    @JsonProperty
+    @JsonProperty("wind_farms")
     private ProducerGroup windFarms;
-    @JsonProperty
+    @JsonProperty("solar_farms")
     private ProducerGroup solarFarms;
-    @JsonProperty
+    @JsonProperty("power_plants")
     private ProducerGroup powerPlants;
-    @JsonProperty
+    @JsonProperty("households")
     private ProducerGroup households;
 
     public Production(ProducerGroup windFarms, ProducerGroup solarFarms, ProducerGroup powerPlants, ProducerGroup households) {

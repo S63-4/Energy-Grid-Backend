@@ -4,11 +4,11 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class Consumption {
 
-    @JsonProperty
+    @JsonProperty("households")
     private ConsumerGroup households;
-    @JsonProperty
+    @JsonProperty("big_consumers")
     private ConsumerGroup bigConsumers;
-    @JsonProperty
+    @JsonProperty("industries")
     private  ConsumerGroup industries;
 
     public Consumption(ConsumerGroup households, ConsumerGroup bigConsumers, ConsumerGroup industries) {

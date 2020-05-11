@@ -1,8 +1,10 @@
-package com.energygrid.data_processor.domain.events;
+package com.energygrid.data_processor.common.events;
 
-import com.energygrid.data_processor.domain.models.Consumption;
-import com.energygrid.data_processor.domain.models.Production;
+import com.energygrid.data_processor.common.models.Consumption;
+import com.energygrid.data_processor.common.models.Production;
 import com.fasterxml.jackson.annotation.JsonProperty;
+
+import java.time.LocalDateTime;
 
 public class RegionalEvent extends AbstractEvent {
 
@@ -11,7 +13,7 @@ public class RegionalEvent extends AbstractEvent {
     @JsonProperty
     private Production production;
 
-    public RegionalEvent(String dateTime, String region) {
+    public RegionalEvent(LocalDateTime dateTime, String region) {
         super(dateTime, region);
     }
 

@@ -1,10 +1,10 @@
-package com.energygrid.data_processor.domain.models;
+package com.energygrid.data_processor.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HouseholdProducer extends Producer {
 
-    @JsonProperty
+    @JsonProperty("num_connections")
     private int numConnections;
 
     public HouseholdProducer(String name, double production, int numConnections) {
