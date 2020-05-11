@@ -1,7 +1,6 @@
-package com.energygrid.dataforwarder.events.consumers;
+package com.energygrid.dataforwarder.consumers;
 
-import com.energygrid.dataforwarder.HelloMessage;
-import com.energygrid.dataforwarder.MessageController;
+import com.energygrid.dataforwarder.websocket.MessageController;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
 

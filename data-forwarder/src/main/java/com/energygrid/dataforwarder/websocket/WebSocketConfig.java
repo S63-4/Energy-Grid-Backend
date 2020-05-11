@@ -1,4 +1,4 @@
-package com.energygrid.dataforwarder;
+package com.energygrid.dataforwarder.websocket;
 
 import org.springframework.context.annotation.Configuration;
 import org.springframework.messaging.simp.config.MessageBrokerRegistry;

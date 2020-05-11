@@ -1,7 +1,6 @@
-package com.energygrid.dataforwarder.events.consumers;
+package com.energygrid.dataforwarder.consumers;
 
 import org.springframework.amqp.core.*;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
