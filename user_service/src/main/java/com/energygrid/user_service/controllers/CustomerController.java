@@ -1,16 +1,13 @@
 package com.energygrid.user_service.controllers;
 
-
 import com.energygrid.user_service.common.dto.CustomerDTO;
 import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
 import com.energygrid.user_service.common.dto.ProfileDTO;
 import com.energygrid.user_service.common.exceptions.BadRequestException;
 import com.energygrid.user_service.common.models.Customer;
-import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
-import org.springframework.http.MediaType;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -92,6 +89,14 @@ public class CustomerController {
     public @ResponseBody
     ProfileDTO getCustomerByCustomerCode(@RequestParam("customercode") String code) {
         return customerService.getCustomerByCustomerCode(code);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.deleteCustomerByCustomerCode, method = RequestMethod.GET)
+    public @ResponseBody
+    String deleteCustomerByCustomerCode(@RequestParam("customercode") String code) {
+        Gson gson = new Gson();
+        return gson.toJson(customerService.deleteCustomerByCustomerCode(code));
     }
 
     @PreAuthorize("hasRole('ADMIN')")

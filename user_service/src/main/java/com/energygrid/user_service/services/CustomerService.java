@@ -11,7 +11,6 @@ import com.energygrid.user_service.common.models.Customer;
 import com.energygrid.user_service.common.utils.RandomString;
 import com.energygrid.user_service.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.regex.Pattern;
@@ -96,11 +95,32 @@ public class CustomerService {
     }
 
     public ProfileDTO getCustomerByCustomerCode(String customerCode) {
-        return modelMapper.map(customerRepository.findCustomerByCustomerCode(customerCode), ProfileDTO.class);
+        if(customerCode == ""){
+            throw new BadRequestException("Customer code cannot be empty");
+        }
+        else{
+            Customer customer = customerRepository.findCustomerByCustomerCode(customerCode);
+
+            if(customer == null){
+                throw new BadRequestException("Customer not found");
+            }
+            else{
+                return modelMapper.map(customer, ProfileDTO.class);
+            }
+        }
     }
 
     public Customer getByCustomerCode(String customerCode) {
         return customerRepository.findCustomerByCustomerCode(customerCode);
+    }
+
+    public String deleteCustomerByCustomerCode(String customerCode){
+        try {
+            customerRepository.delete(customerRepository.findCustomerByCustomerCode(customerCode));
+        } catch (Exception ex) {
+            return ex.getMessage();
+        }
+        return "Account deleted.";
     }
 
     public String updateProfile(ProfileDTO user) throws Exception {
