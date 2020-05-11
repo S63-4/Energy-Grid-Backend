@@ -34,17 +34,17 @@ public class MessageConfig {
         }
 
         @Bean
-        public Binding bindingRegional(@Qualifier("simulator-exchange") DirectExchange directExchangeSimulator, Queue regionalSimQueue) {
+        public Binding bindingRegional( DirectExchange directExchangeSimulator, Queue regionalSimQueue) {
             return BindingBuilder.bind(regionalSimQueue).to(directExchangeSimulator).with("regional");
         }
 
         @Bean
-        public Binding bindingNational(@Qualifier("simulator-exchange")DirectExchange directExchangeSimulator, Queue nationalSimQueue) {
+        public Binding bindingNational( DirectExchange directExchangeSimulator, Queue nationalSimQueue) {
             return BindingBuilder.bind(nationalSimQueue).to(directExchangeSimulator).with("national");
         }
 
         @Bean
-        public Binding bindingMarket(@Qualifier("simulator-exchange") DirectExchange directExchangeSimulator, Queue marketSimQueue) {
+        public Binding bindingMarket( DirectExchange directExchangeSimulator, Queue marketSimQueue) {
             return BindingBuilder.bind(marketSimQueue).to(directExchangeSimulator).with("market");
         }
 

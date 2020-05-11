@@ -21,12 +21,6 @@ import org.springframework.security.config.annotation.method.configuration.Enabl
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-
-import static com.energygrid.user_service.common.security.UserRole.ADMIN;
-import static com.energygrid.user_service.common.security.UserRole.USER;
-
 
 @EnableEurekaClient
 @SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class})

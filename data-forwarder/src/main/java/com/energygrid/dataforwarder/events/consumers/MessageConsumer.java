@@ -1,5 +1,6 @@
 package com.energygrid.dataforwarder.events.consumers;
 
+import com.energygrid.dataforwarder.HelloMessage;
 import com.energygrid.dataforwarder.MessageController;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,7 +13,7 @@ public class MessageConsumer {
     }
 
     @RabbitListener(queues = "#{regionalSimQueue.name}")
-    public void receiveRegional(String message) throws InterruptedException {
+    public void receiveRegional(String message) throws Exception {
         controller.regional(message);
     }
 
