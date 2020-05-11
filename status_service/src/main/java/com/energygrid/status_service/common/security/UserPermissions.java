@@ -3,7 +3,10 @@ package com.energygrid.status_service.common.security;
 public enum UserPermissions {
     // declare all the different permissions here.
     USER_READ("user:read"),
-    USER_WRITE("user:write");
+    USER_WRITE("user:write"),
+    EMPLOYEE_READ("employee:read"),
+    EMPLOYEE_WRITE("Employee:write");
+
 
     private final String permission;
 
