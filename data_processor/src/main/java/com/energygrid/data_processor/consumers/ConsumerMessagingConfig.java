@@ -10,7 +10,7 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class ConsumerMessagingConfig {
 
-    @Bean(name = "simulator-exchange")
+    @Bean("simulator-exchange")
     public DirectExchange directExchange() {
         return new DirectExchange("simulator-exchange");
     }

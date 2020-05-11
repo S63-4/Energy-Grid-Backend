@@ -12,16 +12,15 @@ public class ConsumerMessagingConfig {
         return new DirectExchange("data-processor-exchange");
     }
 
-    private static class ConsumerConfig
-    {
+    private static class ConsumerConfig {
         @Bean
-        public Queue saveStatusQueue () {
+        public Queue regionalHourQueue() {
             return new AnonymousQueue();
     }
 
         @Bean
-        public Binding saveStatusBinding (DirectExchange directExchange, Queue saveStatusQueue){
-            return BindingBuilder.bind(saveStatusQueue).to(directExchange).with("saveStatus");
+        public Binding saveStatusBinding (DirectExchange directExchange, Queue regionalHourQueue){
+            return BindingBuilder.bind(regionalHourQueue).to(directExchange).with("regional-hour");
     }
 
         @Bean

@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.domain.events;
+package com.energygrid.data_processor.common.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

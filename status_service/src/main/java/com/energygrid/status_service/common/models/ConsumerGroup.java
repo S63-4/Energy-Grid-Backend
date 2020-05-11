@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.common.models;
+package com.energygrid.status_service.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

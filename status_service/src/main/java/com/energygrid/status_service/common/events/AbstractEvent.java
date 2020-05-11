@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.common.events;
+package com.energygrid.status_service.common.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

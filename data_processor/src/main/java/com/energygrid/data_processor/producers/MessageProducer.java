@@ -12,14 +12,19 @@ public class MessageProducer {
     @Autowired
     private RabbitTemplate template;
 
-    @Autowired
     @Qualifier("data-processor-exchange")
+    @Autowired
     private DirectExchange directExchange;
 
-    public MessageProducer() {
+    public void sendRegionalHourMessage(String message) {
+        template.convertAndSend(directExchange.getName(), "regional-hour", message);
     }
 
-    public void send(String message) {
-        template.convertAndSend(directExchange.getName(), message);
+    public void sendRegionalDayMessage(String message) {
+        template.convertAndSend(directExchange.getName(), "regional-day", message);
+    }
+
+    public void sendRegionalMonthMessage(String message) {
+        template.convertAndSend(directExchange.getName(), "regional-month", message);
     }
 }

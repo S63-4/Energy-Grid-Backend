@@ -67,6 +67,7 @@ class Simulator:
         consumer_group.consumers.clear()
         total_consumption = 0
         total_consumers = 0
+        list_consumers = []
         for index, row in self._enduris_data.iterrows():
             if row["PRODUCTSOORT"] == "ELK":
                 # find yearly total from households in util company sheet (step 3)
@@ -84,14 +85,15 @@ class Simulator:
                 # build consumer group object
                 new_consumer = HouseholdConsumer()
                 new_consumer.name = row["POSTCODE_VAN"]
-                new_consumer.num_connection = row["AANSLUITINGEN_AANTAL"]
+                new_consumer.num_connections = row["AANSLUITINGEN_AANTAL"]
                 new_consumer.consumption = consumption
                 total_consumption += consumption
                 total_consumers += 1
-                consumer_group.consumers.append(new_consumer)
+                list_consumers.append(new_consumer)
 
         consumer_group.total_consumption = total_consumption
         consumer_group.num_consumers = total_consumers
+        consumer_group.consumers = list_consumers
         return consumer_group  # step 8
 
     async def calculate_household_consumption(self, lookup_hour, lookup_month):
@@ -109,6 +111,13 @@ class Simulator:
         date = date.replace(microsecond=0).isoformat()
         print(f"Start time in ISO 8601: {date}")
         event = Event(date)
+        # event.consumption.households.consumers.clear()
+        # event.consumption.big_consumers.consumers.clear()
+        # event.consumption.industries.consumers.clear()
+        # event.production.wind_farms.producers.clear()
+        # event.production.solar_farms.producers.clear()
+        # event.production.power_plants.producers.clear()
+        # event.production.households.producers.clear()
 
         start = time.perf_counter()
         lookup_hour = self.calculate_lookup_hour()
@@ -125,8 +134,8 @@ class Simulator:
             self.calculate_industry_consumption())
 
         event.consumption.households = await household_consumption_task
-        big_consumer_consumption = await big_consumer_consumption_task
-        industry_consumption = await industry_consumption_task
+        # event.consumption.big_consumers = await big_consumer_consumption_task
+        # event.consumption.industries = await industry_consumption_task
 
         json_string = event.toJSON()
         end = time.perf_counter()
@@ -136,6 +145,14 @@ class Simulator:
     def create_event_loop(self):
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.run_simulator())
+
+    def writeToFile(self, message):
+        """
+        mainly used for DEBUG purposes
+        """
+        f = open("event.json", "x")
+        f.write(message)
+        f.close()
 
     def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
