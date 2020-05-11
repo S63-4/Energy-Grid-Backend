@@ -16,7 +16,8 @@ import org.springframework.test.context.junit4.SpringRunner;
 
 import java.util.Arrays;
 
-import static com.energygrid.user_service.common.security.UserRole.ADMIN;
+
+import static com.energygrid.user_service.common.security.UserRole.Employee;
 import static org.hamcrest.core.Is.is;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
@@ -58,12 +59,12 @@ public class CustomerControllerTest {
    public void shouldGetAllCustomers() throws Exception   {
        Customer customer1 = new Customer("victor", "victory", "password",
                "test@test.com", true, true, true,
-               true, ADMIN.getGrantedAuthorities(), "0773077070",
+               true, Employee.getGrantedAuthorities(), "0773077070",
                "0612345678", "4354DD", "teststraat", "woenselbois", "54", "123456");
 
        Customer customer2 = new Customer("Kees", "Kachel", "password",
                "kachel@test.com", true, true, true,
-               true, ADMIN.getGrantedAuthorities(), "0773077070",
+               true, Employee.getGrantedAuthorities(), "0773077070",
                "0612345678", "4354DD", "teststraat", "woensel", "54", "654321");
 
        given(customerService.allCustomers()).willReturn(Arrays.asList(customer1, customer2));
@@ -77,7 +78,7 @@ public class CustomerControllerTest {
    public void shouldGetCustomerByCode() throws Exception {
        Customer customer = new Customer("Kees", "Kachel", "password",
                "kachel@test.com", true, true, true,
-               true, ADMIN.getGrantedAuthorities(), "0773077070",
+               true, Employee.getGrantedAuthorities(), "0773077070",
                "0612345678", "4354DD", "teststraat", "woensel", "54", "654321");
 
        given(customerService.getByCustomerCode("654321")).willReturn(customer);
