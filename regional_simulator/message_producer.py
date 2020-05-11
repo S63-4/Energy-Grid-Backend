@@ -1,5 +1,3 @@
-import websockets
-import asyncio
 import pika
 
 class MessageProducer:
@@ -13,8 +11,8 @@ class MessageProducer:
     def send(self, message):
         connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
         channel = connection.channel()
-        channel.exchange_declare(exchange="simulator", exchange_type="direct")
-        channel.basic_publish(exchange="simulator",
+        channel.exchange_declare(exchange="simulator-exchange", exchange_type="direct", durable=True)
+        channel.basic_publish(exchange="simulator-exchange",
                               routing_key="regional",
                               body=message)
         print("Message sent!")

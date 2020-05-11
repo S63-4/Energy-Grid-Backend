@@ -30,6 +30,10 @@ public class CustomerService {
         this.modelMapper = modelMapper;
     }
 
+    public Iterable<Customer> allCustomers (){
+        return customerRepository.findAll();
+    }
+
     public String newCustomer(CustomerDTO customer) {
 
         RandomString randomString = new RandomString();

@@ -3,9 +3,7 @@ import datetime
 import time
 import asyncio
 import schedule
-from event import Event
-import json
-import jsonpickle
+from event import *
 
 class Simulator:
     _mock_data = None
@@ -44,15 +42,17 @@ class Simulator:
         # divide current quarter value by 15 to mock a minute
         return row_current_quarter[lookup_month].values[0] / 15
 
-    def calculate_current_minute_consumption(self, current_minute_value, lookup_month):
+    def calculate_current_minute_household_consumption(self, current_minute_value, lookup_month):
         """
         This method calculates the consumption for the current minute.
         step 1: look at the total of all the quarters of the month combined
         step 2: look at how much the current month takes up from the yearly total
-        step 3: look at the yearly consumption data from the util. comp. sheet
+        step 3: look at the yearly consumption data for current household from the util. comp. sheet
         step 4: calculate the amount of util. comp. data is used in current month
         step 5: calculate the ratio between total monthly value in mock data util. comp. data
-        step 6: return current minute value multiplied by ratio to form actual data
+        step 6: calculate current minute value multiplied by ratio to form actual data
+        step 7: build ConsumerGroup object
+        step 8: return ConsumerGroup object
         """
         # find the row with the sum of all quarter hour (step 1)
         row_totals = self._mock_data.loc[self._mock_data["hour"] == "total_month"]
@@ -62,20 +62,41 @@ class Simulator:
         row_month_percentage_of_year = self._mock_data.loc[self._mock_data["hour"] == "percentage_of_year"]
         month_percentage_of_year = row_month_percentage_of_year[lookup_month].array[0]
 
-        # find yearly total from util company (step 3)
-        household_consumption_year_total = self._enduris_data["SJV_GEMIDDELD"][0]
+        # steps 3, 4, 5 & 6 are taken for every row in the util company sheet
+        consumer_group = ConsumerGroup()
+        consumer_group.consumers.clear()
+        total_consumption = 0
+        total_consumers = 0
+        for index, row in self._enduris_data.iterrows():
+            if row["PRODUCTSOORT"] == "ELK":
+                # find yearly total from households in util company sheet (step 3)
+                household_consumption_year_total = row["SJV_GEMIDDELD"]
 
-        # calculate how much of yearly total is used in {lookup_month} (step 4)
-        total_month_consumption = month_percentage_of_year * household_consumption_year_total
+                # calculate how much of yearly total is used in {lookup_month} (step 4)
+                total_month_consumption = month_percentage_of_year * household_consumption_year_total
 
-        # calculate ratio between mock data and real data (step 5)
-        ratio = total_month_consumption / total_month_value
-        return current_minute_value * ratio  # (step 6)
+                # calculate ratio between mock data and real data (step 5)
+                ratio = total_month_consumption / total_month_value
+
+                # calculate consumption from ratio and current minute value
+                consumption = ratio * current_minute_value
+
+                # build consumer group object
+                new_consumer = HouseholdConsumer()
+                new_consumer.name = row["POSTCODE_VAN"]
+                new_consumer.num_connection = row["AANSLUITINGEN_AANTAL"]
+                new_consumer.consumption = consumption
+                total_consumption += consumption
+                total_consumers += 1
+                consumer_group.consumers.append(new_consumer)
+
+        consumer_group.total_consumption = total_consumption
+        consumer_group.num_consumers = total_consumers
+        return consumer_group  # step 8
 
     async def calculate_household_consumption(self, lookup_hour, lookup_month):
         current_minute_value = self.calculate_current_minute_value(lookup_hour, lookup_month)
-        consumption_now = self.calculate_current_minute_consumption(current_minute_value, lookup_month)
-        return consumption_now
+        return self.calculate_current_minute_household_consumption(current_minute_value, lookup_month)
 
     async def calculate_big_consumer_consumption(self):
         await asyncio.sleep(0)
@@ -93,16 +114,20 @@ class Simulator:
         lookup_hour = self.calculate_lookup_hour()
         lookup_month = self.calculate_lookup_month()
 
+        # Send reference to corresponding ConsumerGroup as third parameter so method can fill it in.
         household_consumption_task = asyncio.create_task(
             self.calculate_household_consumption(lookup_hour, lookup_month))
-        big_consumer_consumption_task = asyncio.create_task(self.calculate_big_consumer_consumption())
-        industry_consumption_task = asyncio.create_task(self.calculate_industry_consumption())
 
-        household_consumption = await household_consumption_task
+        big_consumer_consumption_task = asyncio.create_task(
+            self.calculate_big_consumer_consumption())
+
+        industry_consumption_task = asyncio.create_task(
+            self.calculate_industry_consumption())
+
+        event.consumption.households = await household_consumption_task
         big_consumer_consumption = await big_consumer_consumption_task
         industry_consumption = await industry_consumption_task
 
-        event.consumption.households.total_consumption = household_consumption
         json_string = event.toJSON()
         end = time.perf_counter()
         print(f"Calculations done in: {end-start}")
@@ -115,12 +140,12 @@ class Simulator:
     def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
-        # schedule.every().minute.at(":00").do(self.create_event_loop)
-        # while True:
-        #     schedule.run_pending()
-        #     time.sleep(1)
+        schedule.every().minute.at(":00").do(self.create_event_loop)
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
         # DEBUG CODE, prints faster than production code above
-        while True:
-            self.create_event_loop()
-            time.sleep(10)
+        # while True:
+        #     self.create_event_loop()
+        #     time.sleep(60)
