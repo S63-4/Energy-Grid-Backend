@@ -13,6 +13,7 @@ import com.energygrid.user_service.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.regex.Pattern;
 
 import static com.energygrid.user_service.common.security.UserRole.USER;
@@ -31,6 +32,18 @@ public class CustomerService {
 
     public Iterable<Customer> allCustomers (){
         return customerRepository.findAll();
+    }
+
+    public Iterable<ProfileDTO> allCustomerProfiles (){
+
+        ArrayList<ProfileDTO> profiles = new ArrayList<>();
+
+        for (Customer customer: customerRepository.findAll()) {
+            profiles.add(modelMapper.map(customer, ProfileDTO.class));
+        }
+
+
+        return profiles;
     }
 
     public String newCustomer(CustomerDTO customer) {

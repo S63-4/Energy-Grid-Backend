@@ -105,4 +105,11 @@ public class CustomerController {
     Iterable<Customer> allUsers() {
         return customerService.allCustomers();
     }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.allCustomerProfiles, method = RequestMethod.GET)
+    public @ResponseBody
+    Iterable<ProfileDTO> allCustomerProfiles() {
+        return customerService.allCustomerProfiles();
+    }
 }

@@ -4,6 +4,7 @@ public class RestURIConstant {
     public static final String newUser = "/UserController/new";
     public static final String allUsers = "/UserController/all";
     public static final String allCustomers = "/UserController/allCustomers";
+    public static final String allCustomerProfiles = "/customer/profiles";
     public static final String deleteUser = "/UserController/delete";
     public static final String currentUser = "/UserController/current";
     public static final String getStatus = "/status/getStatusForPeriod";
