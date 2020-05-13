@@ -1,12 +1,6 @@
 package com.energygrid.user_service;
 
-import com.energygrid.user_service.common.models.Customer;
-import com.energygrid.user_service.common.models.User;
-import com.energygrid.user_service.common.utils.CsvValues;
-import com.energygrid.user_service.common.utils.RandomString;
-import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
-import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;
@@ -15,22 +9,18 @@ import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.cloud.client.loadbalancer.LoadBalanced;
 import org.springframework.cloud.netflix.eureka.EnableEurekaClient;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
-import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
 import java.time.Duration;
 
 
 @EnableEurekaClient
-@SpringBootApplication(exclude = {SecurityAutoConfiguration.class,RepositoryRestMvcAutoConfiguration.class})
+@SpringBootApplication(exclude = {SecurityAutoConfiguration.class, RepositoryRestMvcAutoConfiguration.class})
 @EnableGlobalMethodSecurity(prePostEnabled = true)
-@PropertySource("classpath:database.properties")
+@PropertySource({"classpath:database.properties", "classpath:email.properties"})
 public class UserServiceApplication {
     @Bean
     public ModelMapper modelMapper() {
