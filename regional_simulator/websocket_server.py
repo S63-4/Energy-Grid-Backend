@@ -24,15 +24,14 @@ class WebSocketServer(Thread):
     async def register(self, websocket: WebSocketServerProtocol):
         self.clients.add(websocket)
         await websocket.send(f"Connection established with {websocket.host}\n")
-        print(f"New websocket connection. Total connections: {len(self.clients)}")
+        print(f"Total connections: {len(self.clients)}")
 
     async def unregister(self, websocket: WebSocketServerProtocol):
         self.clients.remove(websocket)
 
     async def distribute(self, websocket: WebSocketServerProtocol):
         async for message in websocket:
-            if message.startswith("SIM"):
-                await self.broadcast(message)
+            await self.broadcast(message)
 
     async def broadcast(self, message):
         if self.clients:

@@ -79,6 +79,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>gateway</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -89,11 +90,13 @@
                 <artifactId>jib-maven-plugin</artifactId>
                 <version>2.1.0</version>
                 <configuration>
+
                     <from>
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
+
                     <to>
-                        <image>service-gateway</image>
+                        <image>docker.io/energygrids63d/gateway</image>
                     </to>
                 </configuration>
             </plugin>

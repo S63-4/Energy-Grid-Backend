@@ -39,12 +39,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-test</artifactId>
             <scope>test</scope>
-            <exclusions>
-                <exclusion>
-                    <groupId>org.junit.vintage</groupId>
-                    <artifactId>junit-vintage-engine</artifactId>
-                </exclusion>
-            </exclusions>
         </dependency>
     </dependencies>
 
@@ -61,6 +55,7 @@
     </dependencyManagement>
 
     <build>
+        <finalName>eureka</finalName>
         <plugins>
             <plugin>
                 <groupId>org.springframework.boot</groupId>
@@ -75,7 +70,7 @@
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
                     <to>
-                        <image>service-eureka</image>
+                        <image>docker.io/energygrids63d/eureka-server</image>
                     </to>
                 </configuration>
             </plugin>
