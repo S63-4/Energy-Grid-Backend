@@ -7,7 +7,8 @@ if __name__ == "__main__":
     host = "localhost"
     port = 5672
     # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
-    eureka_client.init(eureka_server="http://localhost:8761/eureka",
+    f = open("eureka.txt", "r")
+    eureka_client.init(eureka_server=f.read(),
                        app_name="regional-simulator",
                        instance_port=port)
 

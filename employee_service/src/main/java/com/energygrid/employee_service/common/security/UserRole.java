@@ -7,14 +7,13 @@ import com.google.common.collect.Sets;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.energygrid.employee_service.common.security.UserPermissions.USER_READ;
-import static com.energygrid.employee_service.common.security.UserPermissions.USER_WRITE;
-
+import static com.energygrid.employee_service.common.security.UserPermissions.*;
 
 public enum UserRole {
     // ADD all the user roles you want, and bind them to the permissions you defined.
     USER(Sets.newHashSet(USER_READ)),
-    ADMIN(Sets.newHashSet(USER_READ, USER_WRITE));
+    Employee(Sets.newHashSet(USER_READ, USER_WRITE)),
+    Manager(Sets.newHashSet(USER_READ, USER_WRITE,EMPLOYEE_READ,EMPLOYEE_WRITE));
 
     private final Set<UserPermissions> permissions;
 

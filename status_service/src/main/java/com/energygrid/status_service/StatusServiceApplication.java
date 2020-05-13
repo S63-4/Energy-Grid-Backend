@@ -17,7 +17,7 @@ import org.springframework.web.client.RestTemplate;
 @EnableGlobalMethodSecurity(prePostEnabled = true)
 @EnableEurekaClient
 @ComponentScan
-@PropertySource("database.properties")
+@PropertySource("classpath:database.properties")
 public class StatusServiceApplication {
 
     @Bean
