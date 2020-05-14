@@ -1,6 +1,5 @@
 package com.energygrid.user_service.repositories;
 
-
 import com.energygrid.user_service.common.models.Customer;
 import org.springframework.data.repository.CrudRepository;
 import org.springframework.stereotype.Repository;

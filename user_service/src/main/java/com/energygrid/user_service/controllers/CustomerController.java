@@ -1,6 +1,5 @@
 package com.energygrid.user_service.controllers;
 
-
 import com.energygrid.user_service.common.dto.CustomerDTO;
 import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
 import com.energygrid.user_service.common.dto.ProfileDTO;
@@ -64,10 +63,9 @@ public class CustomerController {
 
             customerService.newCustomer(userObject);
 
-            return userObject.getFirstName();
+            return gson.toJson(userObject.getFirstName());
         } catch (Exception e) {
             throw new BadRequestException("error");
-
         }
     }
 
@@ -87,10 +85,31 @@ public class CustomerController {
     }
 
     @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.getCustomerByCustomerCode, method = RequestMethod.GET)
+    public @ResponseBody
+    ProfileDTO getCustomerByCustomerCode(@RequestParam("customercode") String code) {
+        return customerService.getCustomerByCustomerCode(code);
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.deleteCustomerByCustomerCode, method = RequestMethod.GET)
+    public @ResponseBody
+    String deleteCustomerByCustomerCode(@RequestParam("customercode") String code) {
+        Gson gson = new Gson();
+        return gson.toJson(customerService.deleteCustomerByCustomerCode(code));
+    }
+
+    @PreAuthorize("hasRole('ADMIN')")
     @RequestMapping(value = RestURIConstant.allCustomers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<Customer> allUsers() {
         return customerService.allCustomers();
     }
 
+    @PreAuthorize("hasRole('ADMIN')")
+    @RequestMapping(value = RestURIConstant.allCustomerProfiles, method = RequestMethod.GET)
+    public @ResponseBody
+    Iterable<ProfileDTO> allCustomerProfiles() {
+        return customerService.allCustomerProfiles();
+    }
 }
