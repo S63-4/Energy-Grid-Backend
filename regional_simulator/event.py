@@ -107,12 +107,12 @@ class Consumer:
         return json
 
 class HouseholdConsumer(Consumer):
-    num_connection = 0
+    num_connections = 0
 
     def toJSON(self):
         json = "{"
         json += f"\"name\" : \"{self.name}\", " \
-                f"\"num_connection\" : {self.num_connection}, " \
+                f"\"num_connections\" : {self.num_connections}, " \
                 f"\"consumption\" : {self.consumption}"
         json += "}"
         return json
@@ -129,12 +129,12 @@ class Producer:
         return json
 
 class HouseholdProducer(Producer):
-    num_connection = 0
+    num_connections = 0
 
     def toJSON(self):
         json = "{"
         json += f"\"name\" : \"{self.name}\", " \
-                f"\"num_connection\" : {self.num_connection}, " \
+                f"\"num_connections\" : {self.num_connections}, " \
                 f"\"production\" : {self.production}"
         json += "}"
         return json

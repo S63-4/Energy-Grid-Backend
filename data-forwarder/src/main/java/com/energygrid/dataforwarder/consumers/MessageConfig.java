@@ -1,16 +1,15 @@
-package com.energygrid.data_processor.consumers;
+package com.energygrid.dataforwarder.consumers;
 
-import com.energygrid.data_processor.consumers.MessageConsumer;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class MessagingConfig {
+public class MessageConfig {
 
     @Bean
-    public DirectExchange direct() {
-        return new DirectExchange("simulator");
+    public DirectExchange directExchange() {
+        return new DirectExchange("simulator-exchange");
     }
 
     private static class ConsumerConfig {
@@ -34,18 +33,18 @@ public class MessagingConfig {
         }
 
         @Bean
-        public Binding bindingRegional(DirectExchange directExchange, Queue regionalSimQueue) {
-            return BindingBuilder.bind(regionalSimQueue).to(directExchange).with("regional");
+        public Binding bindingRegional( DirectExchange directExchangeSimulator, Queue regionalSimQueue) {
+            return BindingBuilder.bind(regionalSimQueue).to(directExchangeSimulator).with("regional");
         }
 
         @Bean
-        public Binding bindingNational(DirectExchange directExchange, Queue nationalSimQueue) {
-            return BindingBuilder.bind(nationalSimQueue).to(directExchange).with("national");
+        public Binding bindingNational( DirectExchange directExchangeSimulator, Queue nationalSimQueue) {
+            return BindingBuilder.bind(nationalSimQueue).to(directExchangeSimulator).with("national");
         }
 
         @Bean
-        public Binding bindingMarket(DirectExchange directExchange, Queue marketSimQueue) {
-            return BindingBuilder.bind(marketSimQueue).to(directExchange).with("market");
+        public Binding bindingMarket( DirectExchange directExchangeSimulator, Queue marketSimQueue) {
+            return BindingBuilder.bind(marketSimQueue).to(directExchangeSimulator).with("market");
         }
 
         @Bean
