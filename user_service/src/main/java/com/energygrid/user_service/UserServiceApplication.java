@@ -1,6 +1,12 @@
 package com.energygrid.user_service;
 
+import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.models.User;
+import com.energygrid.user_service.common.utils.CsvValues;
+import com.energygrid.user_service.common.utils.RandomString;
+import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.data.rest.RepositoryRestMvcAutoConfiguration;

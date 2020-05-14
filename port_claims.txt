@@ -4,6 +4,7 @@ auth-service:       9020
 status-service:     9030
 common:             9040
 data-processor:     9050
+data-forwarder:     9060
 
 regional-simulator: 9200
 
