@@ -27,6 +27,11 @@ steps:
   
 - script: |
     cd regional_simulator
+    echo "$(eureka)" > eureka.txt
+    echo "$(rabbitmq)" > rabbitmq.txt
+  displayName: 'config files'
+- script: |
+    cd regional_simulator
     docker build -t $(DOCKER_USER)/$(CI_PROJECT_NAME) .
     docker tag $(DOCKER_USER)/$(CI_PROJECT_NAME) $(DOCKER_USER)/$(CI_PROJECT_NAME):$(Build.SourceVersion)
     docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
