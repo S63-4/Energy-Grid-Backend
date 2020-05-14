@@ -27,8 +27,8 @@ steps:
   
 - script: |
     cd regional_simulator
-    cat "$(eureka)" > eureka.txt
-    cat "$(rabbitmq)" > rabbitmq.txt
+    "$(eureka)" > eureka.txt
+    "$(rabbitmq)" > rabbitmq.txt
   displayName: 'config files'
 - script: |
     cd regional_simulator
