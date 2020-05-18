@@ -2,18 +2,42 @@ package com.energygrid.status_service.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "producer_group")
 public class ProducerGroup {
 
-    @JsonProperty("num_producers")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @Column(name = "total_producers")
+    @JsonProperty
     private int totalProducers;
-    @JsonProperty("total_production")
+    @Column(name = "total_production")
+    @JsonProperty
     private double totalProduction;
-    @JsonProperty("producers")
-    private ArrayList<Producer> producers;
+    @OneToMany(mappedBy = "producerGroup")
+    @JsonProperty
+    private List<Producer> producers;
 
-    public ProducerGroup(int totalProducers, double totalProduction, ArrayList<Producer> producers) {
+    @OneToOne(mappedBy = "windFarms")
+    private Production windFarmsProduction;
+
+    @OneToOne(mappedBy = "solarFarms")
+    private Production solarFarmsProduction;
+
+    @OneToOne(mappedBy = "powerPlants")
+    private Production powerPlantsProduction;
+
+    @OneToOne(mappedBy = "households")
+    private Production householdsProduction;
+
+
+
+    public ProducerGroup(int totalProducers, double totalProduction, List<Producer> producers) {
         this.totalProducers = totalProducers;
         this.totalProduction = totalProduction;
         this.producers = producers;
@@ -39,11 +63,11 @@ public class ProducerGroup {
         this.totalProduction = totalProduction;
     }
 
-    public ArrayList<Producer> getProducers() {
+    public List<Producer> getProducers() {
         return producers;
     }
 
-    public <T extends Producer> void setProducers(ArrayList<T> producers) {
-        this.producers = (ArrayList<Producer>) producers;
+    public <T extends Producer> void setProducers(List<T> producers) {
+        this.producers = (List<Producer>) producers;
     }
 }

@@ -7,15 +7,28 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.google.gson.Gson;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDate;
 import java.time.LocalDateTime;
+import java.time.LocalTime;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 
 @Component
 public class CustomJsonParser {
 
     public RegionalEvent parseToRegionalEvent(String message) throws JsonProcessingException {
+        // ATTENTION
+        // This class is not the same as the CustomJSONParser found in the data processor module
+        // This class parses a JSON string that has been created with gson in Java, whereas
+        // the parser in the data processor parses json from the simulator.
+        // The 2 differences are:
+        //      the naming of the fields according to java convention instead of python convention
+        //      The parsing of the localDateTime
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper(factory);
         JsonNode rootNode = mapper.readTree(message);
@@ -24,7 +37,7 @@ public class CustomJsonParser {
         JsonNode householdsConsumerGroupNode = consumptionNode.get("households");
         JsonNode householdsConsumersNode = householdsConsumerGroupNode.get("consumers");
 
-        JsonNode bigConsumersGroupNode = consumptionNode.get("big_consumers");
+        JsonNode bigConsumersGroupNode = consumptionNode.get("bigConsumers");
         JsonNode bigConsumersNode = bigConsumersGroupNode.get("consumers");
 
         JsonNode industriesGroupNode = consumptionNode.get("industries");
@@ -32,13 +45,13 @@ public class CustomJsonParser {
         // Load production data
         JsonNode productionNode = rootNode.get("production");
 
-        JsonNode windFarmsGroupNode = productionNode.get("wind_farms");
+        JsonNode windFarmsGroupNode = productionNode.get("windFarms");
         JsonNode windFarmsProducersNode = windFarmsGroupNode.get("producers");
 
-        JsonNode solarFarmsGroupNode = productionNode.get("solar_farms");
+        JsonNode solarFarmsGroupNode = productionNode.get("solarFarms");
         JsonNode solarFarmsProducersNode = solarFarmsGroupNode.get("producers");
 
-        JsonNode powerPlantsGroupNode = productionNode.get("power_plants");
+        JsonNode powerPlantsGroupNode = productionNode.get("powerPlants");
         JsonNode powerPlantsProducersNode = powerPlantsGroupNode.get("producers");
 
         JsonNode householdsProducerGroupNode = productionNode.get("households");
@@ -49,7 +62,7 @@ public class CustomJsonParser {
         Consumption consumption = new Consumption();
         ConsumerGroup householdsConsumersGroup = new ConsumerGroup();
         ConsumerGroup bigConsumersGroup = new ConsumerGroup();
-        ConsumerGroup industriesGroup = new ConsumerGroup();
+        ConsumerGroup industriesConsumersGroup = new ConsumerGroup();
         Production production = new Production();
         ProducerGroup windFarmsGroup = new ProducerGroup();
         ProducerGroup solarFarmsGroup = new ProducerGroup();
@@ -57,52 +70,64 @@ public class CustomJsonParser {
         ProducerGroup householdsProducersGroup = new ProducerGroup();
 
         // Create arrays
-        ArrayList<HouseholdConsumer> householdConsumers = mapper.readValue(householdsConsumersNode.toString(), new TypeReference<ArrayList<HouseholdConsumer>>() {});
-        ArrayList<Consumer> bigConsumers = mapper.readValue(bigConsumersNode.toString(), new TypeReference<ArrayList<Consumer>>() {});
-        ArrayList<Consumer> industries = mapper.readValue(industriesConsumersNode.toString(), new TypeReference<ArrayList<Consumer>>() {});
-        ArrayList<Producer> windFarms = mapper.readValue(windFarmsProducersNode.toString(), new TypeReference<ArrayList<Producer>>() {});
-        ArrayList<Producer> solarFarms = mapper.readValue(solarFarmsProducersNode.toString(), new TypeReference<ArrayList<Producer>>() {});
-        ArrayList<Producer> powerPlants = mapper.readValue(powerPlantsProducersNode.toString(), new TypeReference<ArrayList<Producer>>() {});
-        ArrayList<HouseholdProducer> householdProducers = mapper.readValue(householdsProducersNode.toString(), new TypeReference<ArrayList<HouseholdProducer>>() {});
+        List<HouseholdConsumer> householdConsumers = mapper.readValue(householdsConsumersNode.toString(), new TypeReference<List<HouseholdConsumer>>() {});
+        List<Consumer> bigConsumers = mapper.readValue(bigConsumersNode.toString(), new TypeReference<List<Consumer>>() {});
+        List<Consumer> industries = mapper.readValue(industriesConsumersNode.toString(), new TypeReference<List<Consumer>>() {});
+        List<Producer> windFarms = mapper.readValue(windFarmsProducersNode.toString(), new TypeReference<List<Producer>>() {});
+        List<Producer> solarFarms = mapper.readValue(solarFarmsProducersNode.toString(), new TypeReference<List<Producer>>() {});
+        List<Producer> powerPlants = mapper.readValue(powerPlantsProducersNode.toString(), new  TypeReference<List<Producer>>() {});
+        List<HouseholdProducer> householdProducers = mapper.readValue(householdsProducersNode.toString(), new TypeReference<List<HouseholdProducer>>() {});
 
         // Setting groups
-        householdsConsumersGroup.setTotalConsumers(householdsConsumerGroupNode.get("num_consumers").asInt());
-        householdsConsumersGroup.setTotalConsumption(householdsConsumerGroupNode.get("total_consumption").asDouble());
+        householdsConsumersGroup.setTotalConsumers(householdsConsumerGroupNode.get("totalConsumers").asInt());
+        householdsConsumersGroup.setTotalConsumption(householdsConsumerGroupNode.get("totalConsumption").asDouble());
         householdsConsumersGroup.setConsumers(householdConsumers);
-        bigConsumersGroup.setTotalConsumers(bigConsumersGroupNode.get("num_consumers").asInt());
-        bigConsumersGroup.setTotalConsumption(bigConsumersGroupNode.get("total_consumption").asDouble());
+        householdsConsumersGroup.setType("households");
+        bigConsumersGroup.setTotalConsumers(bigConsumersGroupNode.get("totalConsumers").asInt());
+        bigConsumersGroup.setTotalConsumption(bigConsumersGroupNode.get("totalConsumption").asDouble());
         bigConsumersGroup.setConsumers(bigConsumers);
-        industriesGroup.setTotalConsumers(industriesGroupNode.get("num_consumers").asInt());
-        industriesGroup.setTotalConsumption(industriesGroupNode.get("total_consumption").asDouble());
-        industriesGroup.setConsumers(industries);
-        windFarmsGroup.setTotalProducers(windFarmsGroupNode.get("num_producers").asInt());
-        windFarmsGroup.setTotalProduction(windFarmsGroupNode.get("total_production").asDouble());
+        bigConsumersGroup.setType("big-consumers");
+        industriesConsumersGroup.setTotalConsumers(industriesGroupNode.get("totalConsumers").asInt());
+        industriesConsumersGroup.setTotalConsumption(industriesGroupNode.get("totalConsumption").asDouble());
+        industriesConsumersGroup.setConsumers(industries);
+        industriesConsumersGroup.setType("industries");
+        windFarmsGroup.setTotalProducers(windFarmsGroupNode.get("totalProducers").asInt());
+        windFarmsGroup.setTotalProduction(windFarmsGroupNode.get("totalProduction").asDouble());
         windFarmsGroup.setProducers(windFarms);
-        solarFarmsGroup.setTotalProducers(solarFarmsGroupNode.get("num_producers").asInt());
-        solarFarmsGroup.setTotalProduction(solarFarmsGroupNode.get("total_production").asDouble());
+        solarFarmsGroup.setTotalProducers(solarFarmsGroupNode.get("totalProducers").asInt());
+        solarFarmsGroup.setTotalProduction(solarFarmsGroupNode.get("totalProduction").asDouble());
         solarFarmsGroup.setProducers(solarFarms);
-        powerPlantsGroup.setTotalProducers(powerPlantsGroupNode.get("num_producers").asInt());
-        powerPlantsGroup.setTotalProduction(powerPlantsGroupNode.get("total_production").asDouble());
+        powerPlantsGroup.setTotalProducers(powerPlantsGroupNode.get("totalProducers").asInt());
+        powerPlantsGroup.setTotalProduction(powerPlantsGroupNode.get("totalProduction").asDouble());
         powerPlantsGroup.setProducers(powerPlants);
-        householdsProducersGroup.setTotalProducers(householdsProducerGroupNode.get("num_producers").asInt());
-        householdsProducersGroup.setTotalProduction(householdsProducerGroupNode.get("total_production").asDouble());
+        householdsProducersGroup.setTotalProducers(householdsProducerGroupNode.get("totalProducers").asInt());
+        householdsProducersGroup.setTotalProduction(householdsProducerGroupNode.get("totalProduction").asDouble());
         householdsProducersGroup.setProducers(householdProducers);
 
         // Setting consumption and production
-        consumption.setHouseholds(householdsConsumersGroup);
-        consumption.setBigConsumers(bigConsumersGroup);
-        consumption.setIndustries(industriesGroup);
+        consumption.setGroups(Arrays.asList(householdsConsumersGroup, bigConsumersGroup, industriesConsumersGroup));
         production.setWindFarms(windFarmsGroup);
         production.setSolarFarms(solarFarmsGroup);
         production.setPowerPlants(powerPlantsGroup);
         production.setHouseholds(householdsProducersGroup);
         // Setting the event
-        String dateTime = rootNode.get("date").asText();
-        event.setLocalDateTime(LocalDateTime.parse(dateTime));
+        JsonNode dateTimeNode = rootNode.get("localDateTime");
+        LocalDateTime dateTime = parseDateTime(dateTimeNode);
+        event.setLocalDateTime(dateTime);
         event.setRegion(rootNode.get("region").asText());
         event.setConsumption(consumption);
         event.setProduction(production);
 
         return event;
+    }
+
+    private LocalDateTime parseDateTime(JsonNode dateTimeNode) {
+        int year = dateTimeNode.get("date").get("year").asInt();
+        int month = dateTimeNode.get("date").get("month").asInt();
+        int day = dateTimeNode.get("date").get("day").asInt();
+        int hour = dateTimeNode.get("time").get("hour").asInt();
+        int minute = dateTimeNode.get("time").get("minute").asInt();
+        int second = dateTimeNode.get("time").get("second").asInt();
+        return LocalDateTime.of(year, month, day, hour, minute, second);
     }
 }

@@ -6,7 +6,7 @@ if __name__ == "__main__":
 
     r = open("rabbitmq.txt", "r")
     host = r
-    port = 5672
+    port = 9200
     # The flowing code will register your server to eureka server and also start to send heartbeat every 30 seconds
     f = open("eureka.txt", "r")
     eureka_client.init(eureka_server=f.read(),

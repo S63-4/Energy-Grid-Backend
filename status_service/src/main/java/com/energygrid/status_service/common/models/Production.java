@@ -1,17 +1,39 @@
 package com.energygrid.status_service.common.models;
 
+import com.energygrid.status_service.common.events.RegionalEvent;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
+
+@Entity
+@Table(name = "production")
 public class Production {
 
-    @JsonProperty("wind_farms")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    private Long id;
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producer_group_windfarms_id", referencedColumnName = "id")
+    @JsonProperty
     private ProducerGroup windFarms;
-    @JsonProperty("solar_farms")
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producer_group_solarfarms_id", referencedColumnName = "id")
+    @JsonProperty
     private ProducerGroup solarFarms;
-    @JsonProperty("power_plants")
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producer_group_powerplants_id", referencedColumnName = "id")
+    @JsonProperty
     private ProducerGroup powerPlants;
-    @JsonProperty("households")
+
+    @OneToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producer_group_households_id", referencedColumnName = "id")
+    @JsonProperty
     private ProducerGroup households;
+
+    @OneToOne(mappedBy = "production")
+    private RegionalEvent regionalEvent;
 
     public Production(ProducerGroup windFarms, ProducerGroup solarFarms, ProducerGroup powerPlants, ProducerGroup households) {
         this.windFarms = windFarms;

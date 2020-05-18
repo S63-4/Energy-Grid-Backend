@@ -2,18 +2,43 @@ package com.energygrid.status_service.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
 import java.util.ArrayList;
+import java.util.List;
 
+@Entity
+@Table(name = "consumer_group")
 public class ConsumerGroup {
 
-    @JsonProperty("num_consumers")
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "type")
+    private String type;
+    @Column(name = "total_consumers")
+    @JsonProperty
     private int totalConsumers;
-    @JsonProperty("total_consumption")
+    @Column(name = "total_consumption")
+    @JsonProperty
     private double totalConsumption;
-    @JsonProperty("consumers")
-    private ArrayList<Consumer> consumers;
+    @OneToMany(mappedBy = "consumerGroup")
+    @JsonProperty
+    private List<Consumer> consumers;
 
-    public ConsumerGroup(int totalConsumers, double totalConsumption, ArrayList<Consumer> consumers) {
+    @ManyToOne(cascade = CascadeType.ALL)
+    private Consumption consumption;
+
+//    @OneToOne(mappedBy = "households")
+//    private Consumption householdsConsumption;
+//
+//    @OneToOne(mappedBy = "bigConsumers")
+//    private Consumption bigConsumersConsumption;
+//
+//    @OneToOne(mappedBy = "industries")
+//    private Consumption industriesConsumption;
+
+    public ConsumerGroup(int totalConsumers, double totalConsumption, List<Consumer> consumers) {
         this.totalConsumers = totalConsumers;
         this.totalConsumption = totalConsumption;
         this.consumers = consumers;
@@ -21,6 +46,14 @@ public class ConsumerGroup {
 
     public ConsumerGroup() {
 
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public int getTotalConsumers() {
@@ -39,11 +72,12 @@ public class ConsumerGroup {
         this.totalConsumption = totalConsumption;
     }
 
-    public ArrayList<Consumer> getConsumers() {
+    public List<Consumer> getConsumers() {
         return consumers;
     }
 
-    public <T extends Consumer> void setConsumers(ArrayList<T> consumers) {
-        this.consumers = (ArrayList<Consumer>) consumers;
+    public <T extends Consumer> void setConsumers(List<T> consumers) {
+        this.consumers = (List<Consumer>) consumers;
     }
+
 }
