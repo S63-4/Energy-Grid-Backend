@@ -19,6 +19,7 @@ import java.util.Arrays;
 
 import static com.energygrid.user_service.common.security.UserRole.Employee;
 import static org.hamcrest.core.Is.is;
+import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertThat;
 import static org.mockito.BDDMockito.given;
 import static org.mockito.MockitoAnnotations.initMocks;
@@ -52,7 +53,7 @@ public class CustomerControllerTest {
 
         String result = subject.newCustomer(json);
 
-        assertThat(newCustomer.getFirstName(), is(result));
+        assertEquals(newCustomer.getFirstName(), result);
    }
 
    @Test

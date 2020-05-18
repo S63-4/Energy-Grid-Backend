@@ -63,7 +63,7 @@ public class CustomerController {
 
             customerService.newCustomer(userObject);
 
-            return gson.toJson(userObject.getFirstName());
+            return userObject.getFirstName();
         } catch (Exception e) {
             throw new BadRequestException("error");
         }
