@@ -34,13 +34,6 @@ public class StatusDTO {
         this.label = label;
     }
 
-    @JsonIgnore
-    public LocalDate getLocalDate() {
-        return date.toInstant()
-                .atZone(ZoneId.systemDefault())
-                .toLocalDate();
-    }
-
     public Date getDate() {
         return date;
     }

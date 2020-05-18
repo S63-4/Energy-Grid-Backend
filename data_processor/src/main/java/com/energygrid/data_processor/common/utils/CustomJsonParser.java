@@ -11,11 +11,19 @@ import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 import java.util.ArrayList;
+import java.util.List;
 
 @Component
 public class CustomJsonParser {
 
     public RegionalEvent parseToRegionalEvent(String message) throws JsonProcessingException {
+        // ATTENTION
+        // This class is not the same as the CustomJSONParser found in the status service module
+        // This class parses a JSON string that has been created by the simulator, whereas
+        // the status service parses a JSON string created by gson in Java.
+        // The 2 differences are:
+        //      the naming of the fields according to python convention instead of java convention
+        //      The parsing of the localDateTime
         JsonFactory factory = new JsonFactory();
         ObjectMapper mapper = new ObjectMapper(factory);
         JsonNode rootNode = mapper.readTree(message);
@@ -57,13 +65,13 @@ public class CustomJsonParser {
         ProducerGroup householdsProducersGroup = new ProducerGroup();
 
         // Create arrays
-        ArrayList<HouseholdConsumer> householdConsumers = mapper.readValue(householdsConsumersNode.toString(), new TypeReference<ArrayList<HouseholdConsumer>>() {});
-        ArrayList<Consumer> bigConsumers = mapper.readValue(bigConsumersNode.toString(), new TypeReference<ArrayList<Consumer>>() {});
-        ArrayList<Consumer> industries = mapper.readValue(industriesConsumersNode.toString(), new TypeReference<ArrayList<Consumer>>() {});
-        ArrayList<Producer> windFarms = mapper.readValue(windFarmsProducersNode.toString(), new TypeReference<ArrayList<Producer>>() {});
-        ArrayList<Producer> solarFarms = mapper.readValue(solarFarmsProducersNode.toString(), new TypeReference<ArrayList<Producer>>() {});
-        ArrayList<Producer> powerPlants = mapper.readValue(powerPlantsProducersNode.toString(), new TypeReference<ArrayList<Producer>>() {});
-        ArrayList<HouseholdProducer> householdProducers = mapper.readValue(householdsProducersNode.toString(), new TypeReference<ArrayList<HouseholdProducer>>() {});
+        List<HouseholdConsumer> householdConsumers = mapper.readValue(householdsConsumersNode.toString(), new TypeReference<List<HouseholdConsumer>>() {});
+        List<Consumer> bigConsumers = mapper.readValue(bigConsumersNode.toString(), new TypeReference<List<Consumer>>() {});
+        List<Consumer> industries = mapper.readValue(industriesConsumersNode.toString(), new TypeReference<List<Consumer>>() {});
+        List<Producer> windFarms = mapper.readValue(windFarmsProducersNode.toString(), new TypeReference<List<Producer>>() {});
+        List<Producer> solarFarms = mapper.readValue(solarFarmsProducersNode.toString(), new TypeReference<List<Producer>>() {});
+        List<Producer> powerPlants = mapper.readValue(powerPlantsProducersNode.toString(), new  TypeReference<List<Producer>>() {});
+        List<HouseholdProducer> householdProducers = mapper.readValue(householdsProducersNode.toString(), new TypeReference<List<HouseholdProducer>>() {});
 
         // Setting groups
         householdsConsumersGroup.setTotalConsumers(householdsConsumerGroupNode.get("num_consumers").asInt());

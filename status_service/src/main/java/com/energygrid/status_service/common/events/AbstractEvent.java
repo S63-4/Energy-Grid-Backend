@@ -2,14 +2,24 @@ package com.energygrid.status_service.common.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
 import java.time.LocalDateTime;
 
+@Entity
+@Inheritance(strategy = InheritanceType.SINGLE_TABLE)
+@DiscriminatorColumn(name = "event_type")
+@Table(name = "event")
 public abstract class AbstractEvent {
 
+    @Id
+    @Column(name = "date_time")
     @JsonProperty
     private LocalDateTime localDateTime;
+    @Column(name = "region")
     @JsonProperty
     private String region;
+    @Column(name = "period")
+    private String period;
 
     public AbstractEvent(LocalDateTime localDateTime, String region) {
         this.localDateTime = localDateTime;
@@ -33,5 +43,13 @@ public abstract class AbstractEvent {
 
     public void setRegion(String region) {
         this.region = region;
+    }
+
+    public String getPeriod() {
+        return period;
+    }
+
+    public void setPeriod(String period) {
+        this.period = period;
     }
 }

@@ -3,6 +3,7 @@ package com.energygrid.data_processor.common.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class ProducerGroup {
 
@@ -11,9 +12,9 @@ public class ProducerGroup {
     @JsonProperty("total_production")
     private double totalProduction;
     @JsonProperty("producers")
-    private ArrayList<Producer> producers;
+    private List<Producer> producers;
 
-    public ProducerGroup(int totalProducers, double totalProduction, ArrayList<Producer> producers) {
+    public ProducerGroup(int totalProducers, double totalProduction, List<Producer> producers) {
         this.totalProducers = totalProducers;
         this.totalProduction = totalProduction;
         this.producers = producers;
@@ -39,11 +40,11 @@ public class ProducerGroup {
         this.totalProduction = totalProduction;
     }
 
-    public ArrayList<Producer> getProducers() {
+    public List<Producer> getProducers() {
         return producers;
     }
 
-    public <T extends Producer> void setProducers(ArrayList<T> producers) {
-        this.producers = (ArrayList<Producer>) producers;
+    public <T extends Producer> void setProducers(List<T> producers) {
+        this.producers = (List<Producer>) producers;
     }
 }

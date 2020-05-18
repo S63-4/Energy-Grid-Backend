@@ -38,12 +38,15 @@ public class RegionalService {
         // See if bucket still belongs to current hour
         if(bucket.isExpired(dateTime)) {
             // Save expired bucket and ask for new one
+            System.out.println("Save expired bucket and ask for new one...");
             Gson gson = new Gson();
             String eventJSON = gson.toJson(bucket.getEvent());
             messageProducer.sendRegionalHourMessage(eventJSON);
             bucket = regionalBucketFactory.newHourBucket(dateTime);
         }
         bucket.add(event);
+        // DEBUG CODE
+        // Code implemented to skip the hour wait time for the production code to run
         Gson gson = new Gson();
         String testJSON = gson.toJson(bucket.getEvent());
         messageProducer.sendRegionalHourMessage(testJSON);

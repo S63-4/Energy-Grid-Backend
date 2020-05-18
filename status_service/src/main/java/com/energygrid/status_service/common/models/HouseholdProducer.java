@@ -2,9 +2,18 @@ package com.energygrid.status_service.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.PrimaryKeyJoinColumn;
+import javax.persistence.Table;
+
+@Entity
+@PrimaryKeyJoinColumn(name = "id")
+@Table(name = "household_producer")
 public class HouseholdProducer extends Producer {
 
-    @JsonProperty("num_connections")
+    @Column(name = "num_connections")
+    @JsonProperty
     private int numConnections;
 
     public HouseholdProducer(String name, double production, int numConnections) {

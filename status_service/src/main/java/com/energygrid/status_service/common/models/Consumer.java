@@ -2,12 +2,27 @@ package com.energygrid.status_service.common.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
+import javax.persistence.*;
+
+@Entity
+@Inheritance(strategy = InheritanceType.JOINED )
+@Table(name = "consumer")
 public class Consumer {
 
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
+    @Column(name = "id")
+    private Long id;
+    @Column(name = "name")
     @JsonProperty
     private String name;
+    @Column(name = "consumption")
     @JsonProperty
     private double consumption;
+
+    @ManyToOne(cascade = CascadeType.ALL)
+    @JoinColumn(name = "consumer_group_id", nullable = false)
+    private ConsumerGroup consumerGroup;
 
     public Consumer(String name, double consumption) {
         this.name = name;
