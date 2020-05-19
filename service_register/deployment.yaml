@@ -74,7 +74,7 @@ metadata:
   selfLink: /api/v1/namespaces/default/services/eureka-service
   uid: ed2717b0-3eec-4731-bcb0-3a9d8b5bb6cd
 spec:
-  clusterIP: 10.93.8.99
+  clusterIP: 10.93.4.155
   ports:
   - port: 8761
     protocol: TCP
