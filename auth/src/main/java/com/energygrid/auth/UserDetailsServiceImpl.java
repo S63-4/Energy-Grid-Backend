@@ -29,7 +29,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         if (email.isEmpty()){
             throw new IllegalArgumentException("CustomerCode can't be empty");
         }
-            User user = restTemplate.getForObject("http://user-service/user/user?email="+email, User.class);
+            User user = restTemplate.getForObject("http://10.93.12.126:9000/user/user?email="+email, User.class);
             return user;
     }
 
