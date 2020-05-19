@@ -40,6 +40,7 @@ public class CustomerController {
         }
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getCustomerByCode, method = RequestMethod.GET)
     public @ResponseBody
     Customer getCustomerByCode(@RequestParam("code") String code) {
@@ -55,7 +56,7 @@ public class CustomerController {
         return customerService.getCustomerByCustomerCode(customerCode != null ? customerCode : "0");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @PostMapping(value = RestURIConstant.newCustomer)
     public @ResponseBody
     String newCustomer(@RequestBody String user){
@@ -87,14 +88,14 @@ public class CustomerController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.getCustomerByCustomerCode, method = RequestMethod.GET)
     public @ResponseBody
     ProfileDTO getCustomerByCustomerCode(@RequestParam("customercode") String code) {
         return customerService.getCustomerByCustomerCode(code);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.deleteCustomerByCustomerCode, method = RequestMethod.GET)
     public @ResponseBody
     String deleteCustomerByCustomerCode(@RequestParam("customercode") String code) {
@@ -102,14 +103,14 @@ public class CustomerController {
         return gson.toJson(customerService.deleteCustomerByCustomerCode(code));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.allCustomers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<Customer> allUsers() {
         return customerService.allCustomers();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.allCustomerProfiles, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<ProfileDTO> allCustomerProfiles() {
