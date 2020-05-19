@@ -138,12 +138,17 @@ public class CustomerService {
         return "Account deleted.";
     }
 
-    public String updateProfile(ProfileDTO user) throws Exception {
+    public String updateProfile(ProfileDTO user, Authentication auth) throws Exception {
         try {
             var userEntity = customerRepository.findCustomerByCustomerCode(user.getCustomerCode());
             var updateUser = modelMapper.map(userEntity, Customer.class);
-            customerRepository.save(updateUser);
 
+            if (hasAuthority(updateUser.getId(),auth)){
+                customerRepository.save(updateUser);
+            }
+            else {
+                return "failed tp update profile";
+            }
             return "Profile updated";
         } catch (Exception ex) {
             throw new Exception("Unable to update user in database");

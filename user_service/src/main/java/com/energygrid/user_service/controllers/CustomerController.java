@@ -34,13 +34,12 @@ public class CustomerController {
             //TODO: Get current customer
             Gson gson = new Gson();
             var customerObject = gson.fromJson(customer, ProfileDTO.class);
-            return customerService.updateProfile(customerObject);
+            return customerService.updateProfile(customerObject,SecurityContextHolder.getContext().getAuthentication());
         } catch (Exception e) {
             throw new BadRequestException("Failed to update profile");
         }
     }
 
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getCustomerByCode, method = RequestMethod.GET)
     public @ResponseBody
     Customer getCustomerByCode(@RequestParam("code") String code) {
