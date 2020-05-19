@@ -4,6 +4,7 @@ import com.energygrid.status_service.common.dto.StatusDTO;
 import com.energygrid.status_service.common.enums.StatusPeriod;
 import com.energygrid.status_service.common.events.RegionalEvent;
 import com.energygrid.status_service.services.StatusService;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -20,12 +21,14 @@ public class StatusController {
         this.statusService = statusService;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getHourStatus, method = RequestMethod.GET)
     public @ResponseBody
     List<StatusDTO> getStatusForPeriod() {
         return null;
     }
 
+    @PreAuthorize("isAuthenticated()")
     @GetMapping("/status/all")
     public List<RegionalEvent> getAll() {
         return statusService.getAll();
