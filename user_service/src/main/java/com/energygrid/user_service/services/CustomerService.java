@@ -11,6 +11,8 @@ import com.energygrid.user_service.common.models.Customer;
 import com.energygrid.user_service.common.utils.RandomString;
 import com.energygrid.user_service.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -145,6 +147,22 @@ public class CustomerService {
             return "Profile updated";
         } catch (Exception ex) {
             throw new Exception("Unable to update user in database");
+        }
+    }
+    private Boolean hasAuthority(Long id, Authentication authentication){
+        // id is the user id you expect.
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) auth.getPrincipal();
+        Customer customer = customerRepository.findCustomerByCustomerCode(email);
+
+
+        if(id.equals(customer.getId()) || customer.getAuthorities().contains("employee:read")){
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

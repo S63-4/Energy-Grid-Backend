@@ -23,11 +23,7 @@ public class UserService {
         this.passwordEncoder = passwordEncoder;
     }
 
-    public User newUser(User user) {
-        userRepository.save(user);
-        User newuser = userRepository.findUserByEmail(user.getEmail());
-        return newuser;
-    }
+
     public Long getId(String email){
         return userRepository.findIdByEmail(email);
     }

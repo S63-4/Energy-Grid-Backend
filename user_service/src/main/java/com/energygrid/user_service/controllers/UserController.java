@@ -56,6 +56,7 @@ public class UserController {
 
         return userService.changePassword(current(), oldPass, newPass);
     }
+
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody
     User getCustomerByCode(@RequestParam("email") String code) {
@@ -66,4 +67,7 @@ public class UserController {
     public String test() {
         return "Test works";
     }
+
+
+
 }
