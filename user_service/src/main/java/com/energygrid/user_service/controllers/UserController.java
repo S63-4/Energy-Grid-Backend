@@ -23,18 +23,20 @@ public class UserController {
         this.emailService = emailService;
         this.userRepository = userRepository;
     }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.id, method = RequestMethod.GET)
     public @ResponseBody Long getId(@RequestParam("email") String email){
         return userService.getId(email);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.deleteUser, method = RequestMethod.DELETE)
     public void delete(@RequestBody User user) {
         userService.DeleteUser(user);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.allUsers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<User> allUsers() {
@@ -56,6 +58,8 @@ public class UserController {
 
         return userService.changePassword(current(), oldPass, newPass);
     }
+
+    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody
     User getCustomerByCode(@RequestParam("email") String code) {
