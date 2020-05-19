@@ -19,8 +19,7 @@ public class AuthApplication {
         SpringApplication.run(AuthApplication.class, args);
     }
 
-    @Bean
-    @LoadBalanced        // Load balance between service instances running at different ports.
+    @Bean       // Load balance between service instances running at different ports.
     public RestTemplate restTemplate(RestTemplateBuilder restTemplateBuilder) {
         Duration time = Duration.ofMinutes(1);
         return restTemplateBuilder
