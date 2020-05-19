@@ -11,6 +11,8 @@ import com.energygrid.user_service.common.models.Customer;
 import com.energygrid.user_service.common.utils.RandomString;
 import com.energygrid.user_service.repositories.CustomerRepository;
 import org.modelmapper.ModelMapper;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Service;
 
 import java.util.ArrayList;
@@ -136,15 +138,36 @@ public class CustomerService {
         return "Account deleted.";
     }
 
-    public String updateProfile(ProfileDTO user) throws Exception {
+    public String updateProfile(ProfileDTO user, Authentication auth) throws Exception {
         try {
             var userEntity = customerRepository.findCustomerByCustomerCode(user.getCustomerCode());
             var updateUser = modelMapper.map(userEntity, Customer.class);
-            customerRepository.save(updateUser);
 
+            if (hasAuthority(updateUser.getId(),auth)){
+                customerRepository.save(updateUser);
+            }
+            else {
+                return "failed tp update profile";
+            }
             return "Profile updated";
         } catch (Exception ex) {
             throw new Exception("Unable to update user in database");
+        }
+    }
+    private Boolean hasAuthority(Long id, Authentication authentication){
+        // id is the user id you expect.
+
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String email = (String) auth.getPrincipal();
+        Customer customer = customerRepository.findCustomerByCustomerCode(email);
+
+
+        if(id.equals(customer.getId()) || customer.getAuthorities().contains("employee:read")){
+            return true;
+        }
+        else
+        {
+            return false;
         }
     }
 

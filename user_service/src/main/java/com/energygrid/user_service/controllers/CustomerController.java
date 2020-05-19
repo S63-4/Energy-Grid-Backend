@@ -5,10 +5,13 @@ import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
 import com.energygrid.user_service.common.dto.ProfileDTO;
 import com.energygrid.user_service.common.exceptions.BadRequestException;
 import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,7 +34,7 @@ public class CustomerController {
             //TODO: Get current customer
             Gson gson = new Gson();
             var customerObject = gson.fromJson(customer, ProfileDTO.class);
-            return customerService.updateProfile(customerObject);
+            return customerService.updateProfile(customerObject,SecurityContextHolder.getContext().getAuthentication());
         } catch (Exception e) {
             throw new BadRequestException("Failed to update profile");
         }
@@ -52,7 +55,7 @@ public class CustomerController {
         return customerService.getCustomerByCustomerCode(customerCode != null ? customerCode : "0");
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @PostMapping(value = RestURIConstant.newCustomer)
     public @ResponseBody
     String newCustomer(@RequestBody String user){
@@ -84,14 +87,14 @@ public class CustomerController {
         }
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.getCustomerByCustomerCode, method = RequestMethod.GET)
     public @ResponseBody
     ProfileDTO getCustomerByCustomerCode(@RequestParam("customercode") String code) {
         return customerService.getCustomerByCustomerCode(code);
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.deleteCustomerByCustomerCode, method = RequestMethod.GET)
     public @ResponseBody
     String deleteCustomerByCustomerCode(@RequestParam("customercode") String code) {
@@ -99,17 +102,21 @@ public class CustomerController {
         return gson.toJson(customerService.deleteCustomerByCustomerCode(code));
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.allCustomers, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<Customer> allUsers() {
         return customerService.allCustomers();
     }
 
-    @PreAuthorize("hasRole('ADMIN')")
+    @PreAuthorize("hasRole('Employee')")
     @RequestMapping(value = RestURIConstant.allCustomerProfiles, method = RequestMethod.GET)
     public @ResponseBody
     Iterable<ProfileDTO> allCustomerProfiles() {
         return customerService.allCustomerProfiles();
     }
+
+
+
+
 }
