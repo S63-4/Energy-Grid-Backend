@@ -41,6 +41,6 @@ steps:
     connectionType: 'Kubernetes Service Connection'
     kubernetesServiceEndpoint: 'Google cloud'
     command: 'set'
-    arguments: 'kubectl set image deployment/regional-simulator regional-simulator-1=energygrids63d/regional-rimulator:$(Build.SourceVersion) --record'
+    arguments: 'kubectl set image deployment/regional-simulator regional-simulator-1=energygrids63d/regional-rimulator:$(Build.SourceVersion)'
     secretType: 'dockerRegistry'
     containerRegistryType: 'Azure Container Registry'
