@@ -103,10 +103,6 @@
                     <from>
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
-
-                    <to>
-                        <image>docker.io/energygrids63d/gateway</image>
-                    </to>
                 </configuration>
             </plugin>
 
