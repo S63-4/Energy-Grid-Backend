@@ -20,7 +20,7 @@ public class SimpleCORSFilter implements Filter {
     public void init(FilterConfig fc) throws ServletException {
     }
 
-    private final List<String> allowedOrigins = Arrays.asList("http://localhost:4200");
+    private final List<String> allowedOrigins = Arrays.asList("http://localhost:4200", "http://35.189.86.8");
 
     @Override
     public void doFilter(ServletRequest req, ServletResponse resp,
