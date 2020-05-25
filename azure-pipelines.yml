@@ -32,7 +32,15 @@ steps:
 - script: |
     cd regional_simulator
     docker build -t $(DOCKER_USER)/$(CI_PROJECT_NAME) .
-    docker tag $(DOCKER_USER)/$(CI_PROJECT_NAME) $(DOCKER_USER)/$(CI_PROJECT_NAME):$(Build.SourceVersion)
+    docker tag $(DOCKER_USER)/$(CI_PROJECT_NAME) $(DOCKER_USER)/$(CI_PROJECT_NAME):
     docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
     docker push $(DOCKER_USER)/$(CI_PROJECT_NAME)
   displayName: 'create and push docker image'
+- task: Kubernetes@1
+  inputs:
+    connectionType: 'Kubernetes Service Connection'
+    kubernetesServiceEndpoint: 'Google cloud'
+    command: 'set'
+    arguments: 'kubectl set image deployment/regional-simulator regional-simulator-1=energygrids63d/regional-rimulator:$(Build.SourceVersion) --record'
+    secretType: 'dockerRegistry'
+    containerRegistryType: 'Azure Container Registry'
