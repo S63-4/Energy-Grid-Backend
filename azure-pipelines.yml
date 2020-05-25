@@ -28,7 +28,6 @@ steps:
 - script: |
     cd regional_simulator
     echo "$(eureka)" > eureka.txt
-    echo "$(rabbitmq)" > rabbitmq.txt
   displayName: 'config files'
 - script: |
     cd regional_simulator
@@ -37,4 +36,3 @@ steps:
     docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
     docker push $(DOCKER_USER)/$(CI_PROJECT_NAME)
   displayName: 'create and push docker image'
-
