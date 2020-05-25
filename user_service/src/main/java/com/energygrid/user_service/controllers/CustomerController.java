@@ -5,10 +5,13 @@ import com.energygrid.user_service.common.dto.CustomerRegisterDTO;
 import com.energygrid.user_service.common.dto.ProfileDTO;
 import com.energygrid.user_service.common.exceptions.BadRequestException;
 import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.models.User;
 import com.energygrid.user_service.services.CustomerService;
 import com.google.gson.Gson;
 import org.modelmapper.ModelMapper;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -31,13 +34,12 @@ public class CustomerController {
             //TODO: Get current customer
             Gson gson = new Gson();
             var customerObject = gson.fromJson(customer, ProfileDTO.class);
-            return customerService.updateProfile(customerObject);
+            return customerService.updateProfile(customerObject,SecurityContextHolder.getContext().getAuthentication());
         } catch (Exception e) {
             throw new BadRequestException("Failed to update profile");
         }
     }
 
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getCustomerByCode, method = RequestMethod.GET)
     public @ResponseBody
     Customer getCustomerByCode(@RequestParam("code") String code) {
@@ -113,4 +115,8 @@ public class CustomerController {
     Iterable<ProfileDTO> allCustomerProfiles() {
         return customerService.allCustomerProfiles();
     }
+
+
+
+
 }

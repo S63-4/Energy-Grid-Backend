@@ -56,10 +56,9 @@ public class UserController {
     @RequestMapping(value = RestURIConstant.changePassword, method = RequestMethod.POST)
     public boolean changePassword(@RequestParam("oldPass") String oldPass, @RequestParam("newPass") String newPass) {
 
-        return userService.changePassword(current(), oldPass, newPass);
+        return userService.changePassword(current(), oldPass, newPass,SecurityContextHolder.getContext().getAuthentication());
     }
 
-    @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getUserByCode, method = RequestMethod.GET)
     public @ResponseBody
     User getCustomerByCode(@RequestParam("email") String code) {
@@ -70,4 +69,9 @@ public class UserController {
     public String test() {
         return "Test works";
     }
+
+
+
+
+
 }

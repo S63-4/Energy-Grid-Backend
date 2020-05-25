@@ -5,12 +5,12 @@ class MessageProducer:
     _port = None
 
     def __init__(self, host, port):
-        self._host = host
-        self._port = port
+        self._host=host
+        self._port=port
 
     def send(self, message):
-        print(self._host)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host=self._host))
+        print("host:" + self._host)
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host="10.93.15.85"))
         channel = connection.channel()
         channel.exchange_declare(exchange="simulator-exchange", exchange_type="direct", durable=True)
         channel.basic_publish(exchange="simulator-exchange",
