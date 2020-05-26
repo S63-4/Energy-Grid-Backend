@@ -8,11 +8,10 @@ import org.openqa.selenium.firefox.FirefoxDriver;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
-@Ignore
 @RunWith(SpringRunner.class)
 @SpringBootTest(webEnvironment = SpringBootTest.WebEnvironment.RANDOM_PORT)
-public class RegisterSeleniumTest {
-  /*  private WebDriver driver;
+public class CustomerRegisterSeleniumTest {
+    private WebDriver driver;
 
     @BeforeClass
     public static void setUpClass() throws Exception {
@@ -33,11 +32,11 @@ public class RegisterSeleniumTest {
 
     @Test
     public void shouldGoToRegister() {
-        driver.navigate().to("http://localhost:4200/login");
+        driver.navigate().to("http://35.197.228.250/");
 
-        driver.findElement(By.xpath("/html/body/app-root/app-login/mat-card/mat-card-actions[2]/button")).click();
+        driver.findElement(By.xpath("/html/body/app-root/app-login/div/p/a")).click();
         String URL = driver.getCurrentUrl();
-        Assert.assertEquals(URL, "http://localhost:4200/register");
+        Assert.assertEquals(URL, "http://35.197.228.250/register");
 
-    }*/
+    }
 }
