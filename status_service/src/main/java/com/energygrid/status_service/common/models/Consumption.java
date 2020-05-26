@@ -17,7 +17,7 @@ public class Consumption {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "consumption")
+    @OneToMany(mappedBy = "consumption", cascade = CascadeType.ALL)
     private List<ConsumerGroup> groups;
 
 //    @OneToOne(cascade = CascadeType.ALL)
