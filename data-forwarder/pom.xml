@@ -81,9 +81,6 @@
                     <from>
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
-                    <to>
-                        <image>docker.io/energygrids63d/data_forwarder</image>
-                    </to>
                 </configuration>
             </plugin>
         </plugins>
