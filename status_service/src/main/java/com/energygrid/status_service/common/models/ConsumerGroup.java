@@ -26,9 +26,9 @@ public class ConsumerGroup {
     @JsonProperty
     private List<Consumer> consumers;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "consumption_id")
-    private Consumption consumption;
+//    @ManyToOne(fetch = FetchType.LAZY)
+//    @JoinColumn(name = "consumption_id")
+//    private Consumption consumption;
 
 //    @OneToOne(mappedBy = "households")
 //    private Consumption householdsConsumption;
