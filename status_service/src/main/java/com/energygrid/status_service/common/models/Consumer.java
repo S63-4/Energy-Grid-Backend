@@ -20,10 +20,6 @@ public class Consumer {
     @JsonProperty
     private double consumption;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "consumer_group_id", nullable = false)
-    private ConsumerGroup consumerGroup;
-
     public Consumer(String name, double consumption) {
         this.name = name;
         this.consumption = consumption;

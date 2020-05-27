@@ -22,9 +22,10 @@ public class ConsumerGroup {
     @Column(name = "total_consumption")
     @JsonProperty
     private double totalConsumption;
-    @OneToMany(mappedBy = "consumerGroup")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "consumer_group_id")
     @JsonProperty
-    private List<Consumer> consumers;
+    private List<Consumer> consumers = new ArrayList<>();
 
 //    @ManyToOne(fetch = FetchType.LAZY)
 //    @JoinColumn(name = "consumption_id")
