@@ -19,7 +19,3 @@ def get_weather():
 
 
 
-
-
-
-
