@@ -4,6 +4,7 @@ import time
 import asyncio
 import schedule
 from event import *
+import solar_panel as solar
 
 class Simulator:
     _mock_data = None
@@ -12,6 +13,11 @@ class Simulator:
 
     def __init__(self, event_producer):
         self._message_producer = event_producer
+
+    def calculate_current_solar_panel_production(self):
+
+        # the amount of solar panels in Zeeland is unknown but estimated to have passed the 1 million.
+        return solar.calculate_solar_production(1000000)
 
     def calculate_lookup_hour(self):
         """
