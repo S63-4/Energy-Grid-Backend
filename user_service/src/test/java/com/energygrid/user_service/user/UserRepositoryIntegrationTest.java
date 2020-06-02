@@ -20,7 +20,7 @@ import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@SpringBootTest(classes = {RestTemplate.class})
+@SpringBootTest
 public class UserRepositoryIntegrationTest {
 
     @Autowired
@@ -30,7 +30,7 @@ public class UserRepositoryIntegrationTest {
 
     @Before
     public void setUp() {
-        passwordEncoder = new AuthenticationUtils();
+
     }
 
 
@@ -41,12 +41,12 @@ public class UserRepositoryIntegrationTest {
 
     @Test
     public void shouldSaveAndFetch() {
-        User testUser = new User("Test","Testory", passwordEncoder.encode("test212313212312312"),
+        User testUser = new User("Test","Testory", "test212313212312312",
                 "testaccount@test.nl", true, true, true, true, USER.getGrantedAuthorities());
         subject.save(testUser);
         User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
 
-        assertThat(isThisTestUser,  equalTo("testaccount@test.nl"));
+        assertThat(isThisTestUser.getEmail(),  equalTo("testaccount@test.nl"));
     }
 
 }
