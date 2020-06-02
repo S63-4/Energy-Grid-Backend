@@ -1,4 +1,4 @@
-import requests, json
+import requests
 
 token = open("apiToken.txt","r").read()
 
@@ -11,7 +11,7 @@ def get_weather():
 
     if response.status_code == 200:
 
-        data = json.dumps(response.json())
+        data = response.json()
         return data
 
     else:
