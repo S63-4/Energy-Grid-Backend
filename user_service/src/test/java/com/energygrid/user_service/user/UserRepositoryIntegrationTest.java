@@ -10,15 +10,17 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import static com.energygrid.user_service.common.security.UserRole.USER;
 import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
-@DataJpaTest
+@SpringBootTest(classes = {RestTemplate.class})
 public class UserRepositoryIntegrationTest {
 
     @Autowired
@@ -38,14 +40,13 @@ public class UserRepositoryIntegrationTest {
     }
 
     @Test
-    @Ignore
     public void shouldSaveAndFetch() {
-//        User testUser = new User("Test","Testory", passwordEncoder.encode("test212313212312312"),
-//                "testaccount@test.nl", true, true, true, true, USER.getGrantedAuthorities());
-//        subject.save(testUser);
-//        User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
-//
-//        assertThat(isThisTestUser,  equalTo("testaccount@test.nl"));
+        User testUser = new User("Test","Testory", passwordEncoder.encode("test212313212312312"),
+                "testaccount@test.nl", true, true, true, true, USER.getGrantedAuthorities());
+        subject.save(testUser);
+        User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
+
+        assertThat(isThisTestUser,  equalTo("testaccount@test.nl"));
     }
 
 }
