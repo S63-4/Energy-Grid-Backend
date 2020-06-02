@@ -1,8 +1,11 @@
-package com.energygrid.user_service.user;
+package com.energygrid.user_service.controllers;
 
 import com.energygrid.user_service.AuthenticationUtils;
-import com.energygrid.user_service.common.models.User;
-import com.energygrid.user_service.repositories.UserRepository;
+import com.energygrid.user_service.UserServiceApplication;
+import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.models.Employee;
+import com.energygrid.user_service.repositories.CustomerRepository;
+import com.energygrid.user_service.repositories.EmployeeRepository;
 import org.junit.After;
 import org.junit.Before;
 import org.junit.Ignore;
@@ -11,26 +14,32 @@ import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
 import org.springframework.boot.test.context.SpringBootTest;
+import org.springframework.test.context.ActiveProfiles;
+import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
+import java.util.List;
+import java.util.Optional;
+
 import static com.energygrid.user_service.common.security.UserRole.USER;
 import static org.hamcrest.Matchers.equalTo;
+import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
-public class UserRepositoryIntegrationTest {
+public class EmployeeRepositoryIntegrationTest {
 
     @Autowired
-    private UserRepository subject;
+    private EmployeeRepository subject;
 
     private PasswordEncoder passwordEncoder;
 
     @Before
     public void setUp() {
-
+        passwordEncoder = new AuthenticationUtils();
     }
 
 
@@ -40,13 +49,13 @@ public class UserRepositoryIntegrationTest {
     }
 
     @Test
-    public void shouldSaveAndFetch() {
-        User testUser = new User("Test","Testory", "test212313212312312",
-                "testaccount@test.nl", true, true, true, true, USER.getGrantedAuthorities());
+    public void shouldSaveAndAdd() {
+        Employee testUser = new Employee("asd","asd","Test","kachel@test.nl",
+                true,true,true,true,USER.getGrantedAuthorities(),"123456");
         subject.save(testUser);
-        User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
+        var users = (List<Employee>) subject.findAll();
+        assertNotNull(users);
 
-        assertThat(isThisTestUser.getEmail(),  equalTo("testaccount@test.nl"));
     }
 
 }
