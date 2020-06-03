@@ -21,6 +21,7 @@ public class MessageConsumer {
     public void receiveRegional(String message) throws IOException {
         File jsonFile = new File("/Users/lottediesveld/Documents/Fontys/IntelliJ IDEA/Semester 6/Energy-Grid-Backend/data-rest-forwarder/src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
         //TODO: create function to generate json format for other groups
+
         writeToFile(message, jsonFile);
     }
 

@@ -13,11 +13,11 @@ public class RegionalEvent extends AbstractEvent {
     @JsonProperty
     private Production production;
 
-    public RegionalEvent(LocalDateTime dateTime, String region) {
-        super(dateTime, region);
+    public RegionalEvent() {
     }
 
-    public RegionalEvent() {
+    public RegionalEvent(LocalDateTime dateTime, String region) {
+        super(dateTime, region);
     }
 
     public Consumption getConsumption() {

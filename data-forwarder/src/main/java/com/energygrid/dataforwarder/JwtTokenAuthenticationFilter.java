@@ -1,7 +1,4 @@
 package com.energygrid.dataforwarder;
-
-
-
 import org.springframework.core.annotation.Order;
 
 import org.springframework.stereotype.Component;
@@ -46,7 +43,6 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
         // 3. Get the token
         String token = header.replace("Bearer", "");
-
 
     }
 }

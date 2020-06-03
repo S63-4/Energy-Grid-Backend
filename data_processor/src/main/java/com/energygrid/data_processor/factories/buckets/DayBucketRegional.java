@@ -7,6 +7,4 @@ public class DayBucketRegional extends AbstractBucket {
     public DayBucketRegional(LocalDateTime dateTime) {
         super(dateTime);
     }
-
-
 }

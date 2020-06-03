@@ -11,12 +11,12 @@ public abstract class AbstractEvent {
     @JsonProperty
     private String region;
 
+    public AbstractEvent() {
+    }
+
     public AbstractEvent(LocalDateTime localDateTime, String region) {
         this.localDateTime = localDateTime;
         this.region = region;
-    }
-
-    public AbstractEvent() {
     }
 
     public LocalDateTime getLocalDateTime() {

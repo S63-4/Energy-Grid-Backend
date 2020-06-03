@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.common.models;
+package com.energygrid.datarestforwarder.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -11,14 +11,14 @@ public class Consumption {
     @JsonProperty("industries")
     private  ConsumerGroup industries;
 
-    public Consumption() {
-
-    }
-
     public Consumption(ConsumerGroup households, ConsumerGroup bigConsumers, ConsumerGroup industries) {
         this.households = households;
         this.bigConsumers = bigConsumers;
         this.industries = industries;
+    }
+
+    public Consumption() {
+
     }
 
     public ConsumerGroup getHouseholds() {
