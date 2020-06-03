@@ -8,6 +8,7 @@ import solar_panel as solar
 from event import *
 import random
 
+
 class Simulator:
     _mock_data_household_consumption = None
     _mock_data_big_consumer_consumption = None
@@ -27,7 +28,7 @@ class Simulator:
     def get_windspeed(self):
         return self.data["wind"]["speed"]
 
-    def roundToNearestHalf(self, windspeed, rounded_windspeed):
+    def round_to_nearest_half(self, windspeed, rounded_windspeed):
         base = .5
         myround = base * round(windspeed / base)
         if myround == float(rounded_windspeed):
@@ -61,7 +62,7 @@ class Simulator:
             elif production_row is not float:
                 # get values of row above and row beneath
                 nearest_whole = int(round(windspeed))
-                nearest_half = self.roundToNearestHalf(windspeed, nearest_whole)
+                nearest_half = self.round_to_nearest_half(windspeed, nearest_whole)
                 production_row_nearest_half = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_half]
                 production_row_nearest_whole = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_whole]
                 production_nearest_half = production_row_nearest_half["kW/h"].array[0]
@@ -299,7 +300,7 @@ class Simulator:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.run_simulator())
 
-    def writeToFile(self, message):
+    def write_to_file(self, message):
         """
         mainly used for DEBUG purposes
         """
