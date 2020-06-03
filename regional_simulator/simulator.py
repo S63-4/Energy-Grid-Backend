@@ -11,7 +11,8 @@ import random
 class Simulator:
     _mock_data_household_consumption = None
     _mock_data_big_consumer_consumption = None
-    _enduris_data = None
+    _enduris_data_households = None
+    _cbr_data_big_consumers = None
     _message_producer = None
     _mock_data_windturbines = None
 
@@ -114,7 +115,64 @@ class Simulator:
         return row_current_quarter[lookup_month].values[0] / 15
 
     def calculate_current_minute_big_consumer_consumption(self, current_minute_value, lookup_month):
-        pass
+        """
+        This method calculates the consumption for the current minute.
+        step 1: look at the total of all the quarters of the month combined
+        step 2: look at how much the current month takes up from the yearly total
+        step 3: look at the yearly consumption data for current household from the util. comp. sheet
+        step 4: calculate the amount of CBR data is used in current month
+        step 5: calculate the ratio between total monthly value in mock data util. comp. data
+        step 6.1: calculate current minute value multiplied by ratio to form actual data
+        step 6.2: add random factor
+        step 7: build ConsumerGroup object
+        step 8: return ConsumerGroup object
+        """
+        # find the row with the sum of all quarter hour (step 1)
+        row_totals = self._mock_data_big_consumer_consumption.loc[
+            self._mock_data_big_consumer_consumption["hour"] == "total_month"]
+        total_month_value = row_totals[lookup_month].array[0]
+
+        # find month is percentage of year value (step 2)
+        row_month_percentage_of_year = self._mock_data_big_consumer_consumption.loc[
+            self._mock_data_big_consumer_consumption["hour"] == "percentage_of_year"]
+        month_percentage_of_year = row_month_percentage_of_year[lookup_month].array[0]
+
+        # steps 3, 4, 5 & 6 are taken for every row in the util company sheet
+        consumer_group = ConsumerGroup()
+        consumer_group.consumers.clear()
+        total_consumption = 0
+        total_consumers = 0
+        list_consumers = []
+        for index, row in self._cbr_data_big_consumers.iterrows():
+            if str(row["name"]).startswith("Sector"):
+                # find yearly total from households in util company sheet (step 3)
+                big_consumer_consumption_year_total = row["yearly_consumption"]
+
+                # calculate how much of yearly total is used in {lookup_month} (step 4)
+                total_month_consumption = month_percentage_of_year * big_consumer_consumption_year_total
+
+                # calculate ratio between mock data and real data (step 5)
+                ratio = total_month_consumption / total_month_value
+
+                # calculate consumption from ratio and current minute value and add random factor
+                consumption = ratio * current_minute_value
+                random_percentage = 1 + (random.randrange(-100, 100, 1) / 1000)
+                consumption *= random_percentage
+
+                # build consumer group object
+                new_consumer = Consumer()
+                new_consumer.name = row["name"]
+                new_consumer.consumption = consumption
+                total_consumption += consumption
+                total_consumers += 1
+                list_consumers.append(new_consumer)
+
+        consumer_group.total_consumption = total_consumption
+        consumer_group.num_consumers = total_consumers
+        consumer_group.consumers = list_consumers
+        return consumer_group  # step 8
+
+
 
     def calculate_current_minute_household_consumption(self, current_minute_value, lookup_month):
         """
@@ -143,7 +201,7 @@ class Simulator:
         total_consumption = 0
         total_consumers = 0
         list_consumers = []
-        for index, row in self._enduris_data.iterrows():
+        for index, row in self._enduris_data_households.iterrows():
             if row["PRODUCTSOORT"] == "ELK":
                 # find yearly total from households in util company sheet (step 3)
                 household_consumption_year_total = row["SJV_GEMIDDELD"]
@@ -193,7 +251,7 @@ class Simulator:
     async def run_simulator(self):
         date = datetime.datetime.now()
         # add 1 minute to simulation time to make sure simulation of next minute is done at the start of the minute
-        date = date.replace(minute=(date.minute+1))
+        date = date + datetime.timedelta(minutes=1)
         date_iso = date.replace(microsecond=0).isoformat()
         print(f"Simulating for time in ISO 8601: {date_iso}")
         event = Event(date)
@@ -227,9 +285,9 @@ class Simulator:
   
         
         event.consumption.households = await household_consumption_task
-        event.production.solar_farms = await solar_production_task
-        # event.consumption.big_consumers = await big_consumer_consumption_task
+        event.consumption.big_consumers = await big_consumer_consumption_task
         # event.consumption.industries = await industry_consumption_task
+        event.production.solar_farms = await solar_production_task
         event.production.wind_farms = await windfarms_production_task
 
         json_string = event.toJSON()
@@ -250,10 +308,11 @@ class Simulator:
         f.close()
 
     def main(self):
-        self._mock_data_household_consumption = pd.read_excel("household_consumption_mock_data.xlsx")
-        self._mock_data_big_consumer_consumption = pd.read_excel("big_consumer_consumption_mock_data.xlsx")
-        self._enduris_data = pd.read_excel("enduris_2019.xlsx")
-        self._mock_data_windturbines = pd.read_excel("windturbines_mock_data.xlsx")
+        self._mock_data_household_consumption = pd.read_excel("datasheets/household_consumption_mock_data.xlsx", keep_default_na=False)
+        self._mock_data_big_consumer_consumption = pd.read_excel("datasheets/big_consumer_consumption_mock_data.xlsx", keep_default_na=False)
+        self._enduris_data_households = pd.read_excel("datasheets/enduris_2019.xlsx", keep_default_na=False)
+        self._cbr_data_big_consumers = pd.read_excel("datasheets/big_consumer_consumption_cbr_data.xlsx", keep_default_na=False)
+        self._mock_data_windturbines = pd.read_excel("datasheets/windturbines_mock_data.xlsx", keep_default_na=False)
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:
             schedule.run_pending()

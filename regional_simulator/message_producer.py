@@ -21,3 +21,4 @@ class MessageProducer:
                               body=message)
         print("Message sent!")
         connection.close()
+
