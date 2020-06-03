@@ -108,8 +108,10 @@ class Simulator:
 
     async def run_simulator(self):
         date = datetime.datetime.now()
+        # add 1 minute to simulation time to make sure simulation of next minute is done at the start of the minute
+        date = date.replace(minute=(date.minute+1))
         date_iso = date.replace(microsecond=0).isoformat()
-        print(f"Start time in ISO 8601: {date_iso}")
+        print(f"Simulating for time in ISO 8601: {date_iso}")
         event = Event(date)
         # event.consumption.households.consumers.clear()
         # event.consumption.big_consumers.consumers.clear()
