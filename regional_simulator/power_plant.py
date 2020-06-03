@@ -13,5 +13,5 @@ class PowerPlant:
     def setCurrentCapacity(self, current_power_generation_percentage):
         self.current_power_generation_percentage = current_power_generation_percentage
 
-    def setTotalProduction(self, production):
+    def addTotalProduction(self, production):
         self.total_production += production

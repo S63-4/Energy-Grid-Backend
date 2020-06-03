@@ -13,6 +13,8 @@ class Simulator:
     _power_plants = None
     _message_producer = None
 
+    list_power_plants = []
+
     def __init__(self, event_producer):
         self._message_producer = event_producer
 
@@ -109,13 +111,10 @@ class Simulator:
     async def calculate_industry_consumption(self):
         await asyncio.sleep(0)
 
-    async def calculate_energy_production(self):
-        list_power_plants = []
-
-        for index, row in self._power_plants.iterrows():
-            new_powerplant = PowerPlant(row["NAME"], row["FUELTYPE"], row["NOMINAL_POWER_GENERATION"])
-            list_power_plants.append(new_powerplant)
-            
+    async def calculate_powerplant_production(self):
+        for powerplant in self.list_power_plants:
+            generation = powerplant.nominal_power_generation / 100 * powerplant.current_power_generation_percentage
+            powerplant.addTotalProduction(generation)
 
     async def run_simulator(self):
         date = datetime.datetime.now()
@@ -144,12 +143,13 @@ class Simulator:
         industry_consumption_task = asyncio.create_task(
             self.calculate_industry_consumption())
 
-        energy_production_task = asyncio.create_task(
-            self.calculate_energy_production())
+        powerplant_production_task = asyncio.create_task(
+            self.calculate_powerplant_production())
 
         event.consumption.households = await household_consumption_task
         # event.consumption.big_consumers = await big_consumer_consumption_task
         # event.consumption.industries = await industry_consumption_task
+
 
         json_string = event.toJSON()
         end = time.perf_counter()
@@ -172,6 +172,11 @@ class Simulator:
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
         self._power_plants = pd.read_excel("power_plants_2019.xlsx")
+
+        for index, row in self._power_plants.iterrows():
+            new_powerplant = PowerPlant(row["NAME"], row["FUELTYPE"], row["NOMINAL_POWER_GENERATION"])
+            new_powerplant.setCurrentCapacity(row["CURRENT_CAPACITY"])
+            self.list_power_plants.append(new_powerplant)
 
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:
