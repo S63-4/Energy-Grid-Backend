@@ -219,7 +219,7 @@ class Simulator:
         loop = asyncio.get_event_loop()
         loop.run_until_complete(self.run_simulator())
 
-    def writeToFile(self, message):
+    def write_to_file(self, message):
         """
         mainly used for DEBUG purposes
         """
