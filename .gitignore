@@ -29,3 +29,4 @@ regional_simulator/venv/
 
 # database settings
 database.properties
+application.properties
