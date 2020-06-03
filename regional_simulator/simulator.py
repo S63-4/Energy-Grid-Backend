@@ -6,9 +6,11 @@ import asyncio
 import schedule
 import solar_panel as solar
 from event import *
+import random
 
 class Simulator:
-    _mock_data = None
+    _mock_data_household_consumption = None
+    _mock_data_big_consumer_consumption = None
     _enduris_data = None
     _message_producer = None
     _mock_data_windturbines = None
@@ -76,8 +78,6 @@ class Simulator:
         producer.production = production
         producers.append(producer)
         producer_group.producers = producers
-        print("Total producation: ", production)
-        print(producer_group)
         return producer_group
 
     def calculate_lookup_hour(self, date):
@@ -104,12 +104,17 @@ class Simulator:
     def calculate_lookup_month(self, date):
         return date.strftime("%B").lower()
 
-    def calculate_current_minute_value(self, lookup_hour, lookup_month):
-        row_current_quarter = self._mock_data.loc[self._mock_data["hour"] == lookup_hour]
+    def calculate_big_consumer_consumption_current_minute_value(self, lookup_hour, lookup_month):
+        row_current_quarter = self._mock_data_big_consumer_consumption.loc[self._mock_data_big_consumer_consumption["hour"] == lookup_hour]
+        return row_current_quarter[lookup_month].values[0] / 15
+
+    def calculate_household_consumption_current_minute_value(self, lookup_hour, lookup_month):
+        row_current_quarter = self._mock_data_household_consumption.loc[self._mock_data_household_consumption["hour"] == lookup_hour]
         # divide current quarter value by 15 to mock a minute
         return row_current_quarter[lookup_month].values[0] / 15
 
-
+    def calculate_current_minute_big_consumer_consumption(self, current_minute_value, lookup_month):
+        pass
 
     def calculate_current_minute_household_consumption(self, current_minute_value, lookup_month):
         """
@@ -119,16 +124,17 @@ class Simulator:
         step 3: look at the yearly consumption data for current household from the util. comp. sheet
         step 4: calculate the amount of util. comp. data is used in current month
         step 5: calculate the ratio between total monthly value in mock data util. comp. data
-        step 6: calculate current minute value multiplied by ratio to form actual data
+        step 6.1: calculate current minute value multiplied by ratio to form actual data
+        step 6.2: add random factor
         step 7: build ConsumerGroup object
         step 8: return ConsumerGroup object
         """
         # find the row with the sum of all quarter hour (step 1)
-        row_totals = self._mock_data.loc[self._mock_data["hour"] == "total_month"]
+        row_totals = self._mock_data_household_consumption.loc[self._mock_data_household_consumption["hour"] == "total_month"]
         total_month_value = row_totals[lookup_month].array[0]
 
         # find month is percentage of year value (step 2)
-        row_month_percentage_of_year = self._mock_data.loc[self._mock_data["hour"] == "percentage_of_year"]
+        row_month_percentage_of_year = self._mock_data_household_consumption.loc[self._mock_data_household_consumption["hour"] == "percentage_of_year"]
         month_percentage_of_year = row_month_percentage_of_year[lookup_month].array[0]
 
         # steps 3, 4, 5 & 6 are taken for every row in the util company sheet
@@ -148,8 +154,10 @@ class Simulator:
                 # calculate ratio between mock data and real data (step 5)
                 ratio = total_month_consumption / total_month_value
 
-                # calculate consumption from ratio and current minute value
+                # calculate consumption from ratio and current minute value and add random factor
                 consumption = ratio * current_minute_value
+                random_percentage = 1 + (random.randrange(-100, 100, 1) / 1000)
+                consumption *= random_percentage
 
                 # build consumer group object
                 new_consumer = HouseholdConsumer()
@@ -166,11 +174,12 @@ class Simulator:
         return consumer_group  # step 8
 
     async def calculate_household_consumption(self, lookup_hour, lookup_month):
-        current_minute_value = self.calculate_current_minute_value(lookup_hour, lookup_month)
+        current_minute_value = self.calculate_household_consumption_current_minute_value(lookup_hour, lookup_month)
         return self.calculate_current_minute_household_consumption(current_minute_value, lookup_month)
 
-    async def calculate_big_consumer_consumption(self):
-        await asyncio.sleep(0)
+    async def calculate_big_consumer_consumption(self, lookup_hour, lookup_month):
+        current_minute_value = self.calculate_big_consumer_consumption_current_minute_value(lookup_hour, lookup_month)
+        return self.calculate_current_minute_big_consumer_consumption(current_minute_value, lookup_month)
 
     async def calculate_current_minute_solar_production(self):
         # The exact number ol solar panels is unknown but expected to be over 1 million.
@@ -205,7 +214,7 @@ class Simulator:
             self.calculate_household_consumption(lookup_hour, lookup_month))
 
         big_consumer_consumption_task = asyncio.create_task(
-            self.calculate_big_consumer_consumption())
+            self.calculate_big_consumer_consumption(lookup_hour, lookup_month))
 
         industry_consumption_task = asyncio.create_task(
             self.calculate_industry_consumption())
@@ -241,10 +250,10 @@ class Simulator:
         f.close()
 
     def main(self):
-        self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
+        self._mock_data_household_consumption = pd.read_excel("household_consumption_mock_data.xlsx")
+        self._mock_data_big_consumer_consumption = pd.read_excel("big_consumer_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
         self._mock_data_windturbines = pd.read_excel("windturbines_mock_data.xlsx")
-        print(self._mock_data_windturbines.head(42))
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:
             schedule.run_pending()
