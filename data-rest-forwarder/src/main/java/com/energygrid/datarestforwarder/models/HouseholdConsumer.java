@@ -1,5 +1,6 @@
-package com.energygrid.data_processor.common.models;
+package com.energygrid.datarestforwarder.models;
 
+import com.energygrid.datarestforwarder.models.Consumer;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 public class HouseholdConsumer extends Consumer {
@@ -7,12 +8,12 @@ public class HouseholdConsumer extends Consumer {
     @JsonProperty("num_connections")
     private int numConnections;
 
-    public HouseholdConsumer() {
-    }
-
     public HouseholdConsumer(String name, double consumption, int numConnections) {
         super(name, consumption);
         this.numConnections = numConnections;
+    }
+
+    public HouseholdConsumer() {
     }
 
     public int getNumConnections() {

@@ -1,6 +1,9 @@
 package com.energygrid.datarestforwarder.consumers;
 
 import com.energygrid.datarestforwarder.RESTful.MessageController;
+import com.energygrid.datarestforwarder.events.RegionalEvent;
+import com.energygrid.datarestforwarder.models.SharedJSON;
+import com.energygrid.datarestforwarder.models.utils.CustomJsonParser;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
@@ -13,26 +16,22 @@ public class MessageConsumer {
     private MessageController controller;
 
     private Gson gson = new Gson();
+    CustomJsonParser parser = new CustomJsonParser();
+    SharedJSON sharedJSON = new SharedJSON();
 
     public MessageConsumer() {
     }
 
     @RabbitListener(queues = "#{regionalSimQueue.name}")
     public void receiveRegional(String message) throws IOException {
-        File jsonFile = new File("/Users/lottediesveld/Documents/Fontys/IntelliJ IDEA/Semester 6/Energy-Grid-Backend/data-rest-forwarder/src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
-        writeToFile(message, jsonFile);
-    }
-
-    @RabbitListener(queues = "#{nationalSimQueue.name}")
-    public void receiveNational(String message) throws IOException {
-        File jsonFile = new File("/Users/lottediesveld/Documents/Fontys/IntelliJ IDEA/Semester 6/Energy-Grid-Backend/data-rest-forwarder/src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/national.json");
-        writeToFile(message, jsonFile);
-    }
-
-    @RabbitListener(queues = "#{marketSimQueue.name}")
-    public void receiveMarket(String message) throws IOException {
-        File jsonFile = new File("/Users/lottediesveld/Documents/Fontys/IntelliJ IDEA/Semester 6/Energy-Grid-Backend/data-rest-forwarder/src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/market.json");
-        writeToFile(message, jsonFile);
+        File jsonFile = new File("src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
+        RegionalEvent event = parser.parseToRegionalEvent(message);
+        double totalConsumption = event.getConsumption().getIndustries().getTotalConsumption() + event.getConsumption().getBigConsumers().getTotalConsumption() + event.getConsumption().getHouseholds().getTotalConsumption();
+        double totalProduction = event.getProduction().getHouseholds().getTotalProduction() + event.getProduction().getPowerPlants().getTotalProduction() + event.getProduction().getSolarFarms().getTotalProduction() + event.getProduction().getWindFarms().getTotalProduction();
+        sharedJSON.setConsumption(totalConsumption);
+        sharedJSON.setProduction(totalProduction);
+        sharedJSON.setDate(event.getLocalDateTime());
+        writeToFile(gson.toJson(sharedJSON), jsonFile);
     }
 
     private void writeToFile(String message, File jsonFile)
