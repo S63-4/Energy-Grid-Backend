@@ -6,6 +6,7 @@ import asyncio
 import schedule
 from event import *
 
+
 class Simulator:
     _mock_data = None
     _enduris_data = None
