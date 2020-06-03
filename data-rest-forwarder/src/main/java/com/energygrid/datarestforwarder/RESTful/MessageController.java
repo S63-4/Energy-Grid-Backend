@@ -1,6 +1,7 @@
 package com.energygrid.datarestforwarder.RESTful;
 
 import com.google.gson.Gson;
+import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -14,21 +15,7 @@ public class MessageController {
 
     @GetMapping("/regional")
     public String regionalMessage() throws IOException {
-        File jsonFile = new File("com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
-        String message = gson.fromJson(new FileReader(jsonFile), String.class);
-        return message;
-    }
-
-    @GetMapping("/national")
-    public String nationalMessage() throws IOException {
-        File jsonFile = new File("com/energygrid/datarestforwarder/RESTful/JSONfiles/national.json");
-        String message = gson.fromJson(new FileReader(jsonFile), String.class);
-        return message;
-    }
-
-    @GetMapping("/market")
-    public String marketMessage() throws IOException {
-        File jsonFile = new File("com/energygrid/datarestforwarder/RESTful/JSONfiles/market.json");
+        File jsonFile = new File("src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
         String message = gson.fromJson(new FileReader(jsonFile), String.class);
         return message;
     }

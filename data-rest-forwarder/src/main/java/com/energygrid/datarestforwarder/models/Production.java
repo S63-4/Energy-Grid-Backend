@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.common.models;
+package com.energygrid.datarestforwarder.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -13,15 +13,15 @@ public class Production {
     @JsonProperty("households")
     private ProducerGroup households;
 
-    public Production() {
-
-    }
-
     public Production(ProducerGroup windFarms, ProducerGroup solarFarms, ProducerGroup powerPlants, ProducerGroup households) {
         this.windFarms = windFarms;
         this.solarFarms = solarFarms;
         this.powerPlants = powerPlants;
         this.households = households;
+    }
+
+    public Production() {
+
     }
 
     public ProducerGroup getWindFarms() {

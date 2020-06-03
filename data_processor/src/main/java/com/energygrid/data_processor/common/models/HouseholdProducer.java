@@ -7,12 +7,12 @@ public class HouseholdProducer extends Producer {
     @JsonProperty("num_connections")
     private int numConnections;
 
+    public HouseholdProducer() {
+    }
+
     public HouseholdProducer(String name, double production, int numConnections) {
         super(name, production);
         this.numConnections = numConnections;
-    }
-
-    public HouseholdProducer() {
     }
 
     public int getNumConnections() {

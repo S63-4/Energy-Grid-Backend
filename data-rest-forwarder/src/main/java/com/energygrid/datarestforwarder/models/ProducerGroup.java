@@ -1,8 +1,7 @@
-package com.energygrid.data_processor.common.models;
+package com.energygrid.datarestforwarder.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class ProducerGroup {

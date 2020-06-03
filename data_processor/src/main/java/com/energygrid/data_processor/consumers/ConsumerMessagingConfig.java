@@ -1,6 +1,5 @@
 package com.energygrid.data_processor.consumers;
 
-import com.energygrid.data_processor.consumers.MessageConsumer;
 import org.springframework.amqp.core.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

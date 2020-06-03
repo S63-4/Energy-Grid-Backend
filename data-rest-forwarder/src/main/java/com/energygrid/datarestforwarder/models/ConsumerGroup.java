@@ -1,4 +1,4 @@
-package com.energygrid.data_processor.common.models;
+package com.energygrid.datarestforwarder.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
@@ -12,7 +12,7 @@ public class ConsumerGroup {
     private double totalConsumption;
     @JsonProperty("consumers")
     private List<Consumer> consumers;
-
+    
     public ConsumerGroup() {
 
     }
