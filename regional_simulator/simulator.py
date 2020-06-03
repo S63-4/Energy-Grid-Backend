@@ -4,9 +4,12 @@ import datetime
 import time
 import asyncio
 import schedule
+
+import power_plant as powerplant
 import solar_panel as solar
 from event import *
 import random
+
 
 class Simulator:
     _mock_data_household_consumption = None
@@ -62,16 +65,20 @@ class Simulator:
                 # get values of row above and row beneath
                 nearest_whole = int(round(windspeed))
                 nearest_half = self.roundToNearestHalf(windspeed, nearest_whole)
-                production_row_nearest_half = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_half]
-                production_row_nearest_whole = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_whole]
+                production_row_nearest_half = self._mock_data_windturbines.loc[
+                    self._mock_data_windturbines["windspeed"] == nearest_half]
+                production_row_nearest_whole = self._mock_data_windturbines.loc[
+                    self._mock_data_windturbines["windspeed"] == nearest_whole]
                 production_nearest_half = production_row_nearest_half["kW/h"].array[0]
                 production_nearest_whole = production_row_nearest_whole["kW/h"].array[0]
                 if nearest_half < nearest_whole:
                     production = self.interpolate_windturbine_production(windspeed, nearest_half, nearest_whole,
-                                                                         production_nearest_half, production_nearest_whole)
+                                                                         production_nearest_half,
+                                                                         production_nearest_whole)
                 elif nearest_whole < nearest_half:
                     production = self.interpolate_windturbine_production(windspeed, nearest_whole, nearest_half,
-                                                                         production_nearest_whole, production_nearest_half)
+                                                                         production_nearest_whole,
+                                                                         production_nearest_half)
         production = production * amount_windturbines
         producer_group.num_producers = amount_windturbines
         producer_group.total_production = production
@@ -246,7 +253,8 @@ class Simulator:
     async def calculate_industry_consumption(self):
         await asyncio.sleep(0)
 
-
+    async def calculate_powerplant_production(self):
+        return powerplant.calculate_current_powerplant_production()
 
     async def run_simulator(self):
         date = datetime.datetime.now()
@@ -277,22 +285,25 @@ class Simulator:
         industry_consumption_task = asyncio.create_task(
             self.calculate_industry_consumption())
 
+        powerplant_production_task = asyncio.create_task(
+            self.calculate_powerplant_production())
+
         windfarms_production_task = asyncio.create_task(
             self.calculate_windturbines_production())
-        
+
         solar_production_task = asyncio.create_task(
-          self.calculate_current_minute_solar_production())
-  
-        
+            self.calculate_current_minute_solar_production())
+
         event.consumption.households = await household_consumption_task
         event.consumption.big_consumers = await big_consumer_consumption_task
         # event.consumption.industries = await industry_consumption_task
         event.production.solar_farms = await solar_production_task
         event.production.wind_farms = await windfarms_production_task
+        event.production.power_plants = await powerplant_production_task
 
         json_string = event.toJSON()
         end = time.perf_counter()
-        print(f"Calculations done in: {end-start}")
+        print(f"Calculations done in: {end - start}")
         self._message_producer.send(json_string)
 
     def create_event_loop(self):
