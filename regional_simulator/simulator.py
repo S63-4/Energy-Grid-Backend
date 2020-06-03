@@ -116,6 +116,7 @@ class Simulator:
         for powerplant in self.list_power_plants:
             generation = powerplant.nominal_power_generation / 100 * powerplant.current_power_generation_percentage
             powerplant.setCurrentProduction(generation)
+            print(powerplant.current_powerplant_output)
 
     async def run_simulator(self):
         date = datetime.datetime.now()
