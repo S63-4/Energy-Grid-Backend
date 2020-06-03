@@ -4,7 +4,6 @@ import time
 import asyncio
 import schedule
 from event import *
-import solar_panel as solar
 
 class Simulator:
     _mock_data = None
@@ -14,21 +13,16 @@ class Simulator:
     def __init__(self, event_producer):
         self._message_producer = event_producer
 
-    def calculate_current_solar_panel_production(self):
-
-        # the amount of solar panels in Zeeland is unknown but estimated to have passed the 1 million.
-        return solar.calculate_solar_production(1000000)
-
-    def calculate_lookup_hour(self):
+    def calculate_lookup_hour(self, date):
         """
         This method calculates the hour of the week where the consumption data should be lookup up from.
         The minutes are added as a decimal value.
         :return:
         hour_of_week: the hour of the week
         """
-        the_day_of_week = datetime.datetime.now().weekday()
-        hours = datetime.datetime.now().time().hour
-        minutes = datetime.datetime.now().minute
+        the_day_of_week = date.weekday()
+        hours = date.time().hour
+        minutes = date.minute
         if 0 <= minutes <= 14:
             minutes = 0
         elif 15 <= minutes <= 29:
@@ -40,8 +34,8 @@ class Simulator:
         hour_of_week = (the_day_of_week*24) + hours + minutes
         return hour_of_week
 
-    def calculate_lookup_month(self):
-        return datetime.datetime.now().strftime("%B").lower()
+    def calculate_lookup_month(self, date):
+        return date.strftime("%B").lower()
 
     def calculate_current_minute_value(self, lookup_hour, lookup_month):
         row_current_quarter = self._mock_data.loc[self._mock_data["hour"] == lookup_hour]
@@ -114,8 +108,10 @@ class Simulator:
 
     async def run_simulator(self):
         date = datetime.datetime.now()
-        date = date.replace(microsecond=0).isoformat()
-        print(f"Start time in ISO 8601: {date}")
+        # add 1 minute to simulation time to make sure simulation of next minute is done at the start of the minute
+        date = date.replace(minute=(date.minute+1))
+        date_iso = date.replace(microsecond=0).isoformat()
+        print(f"Simulating for time in ISO 8601: {date_iso}")
         event = Event(date)
         # event.consumption.households.consumers.clear()
         # event.consumption.big_consumers.consumers.clear()
@@ -126,8 +122,8 @@ class Simulator:
         # event.production.households.producers.clear()
 
         start = time.perf_counter()
-        lookup_hour = self.calculate_lookup_hour()
-        lookup_month = self.calculate_lookup_month()
+        lookup_hour = self.calculate_lookup_hour(date)
+        lookup_month = self.calculate_lookup_month(date)
 
         # Send reference to corresponding ConsumerGroup as third parameter so method can fill it in.
         household_consumption_task = asyncio.create_task(
