@@ -7,6 +7,7 @@ import schedule
 from power_plant import *
 from event import *
 
+
 class Simulator:
     _mock_data = None
     _enduris_data = None
@@ -36,7 +37,7 @@ class Simulator:
             minutes = .50
         elif 45 <= minutes <= 59:
             minutes = .75
-        hour_of_week = (the_day_of_week*24) + hours + minutes
+        hour_of_week = (the_day_of_week * 24) + hours + minutes
         return hour_of_week
 
     def calculate_lookup_month(self, date):
@@ -114,12 +115,12 @@ class Simulator:
     async def calculate_powerplant_production(self):
         for powerplant in self.list_power_plants:
             generation = powerplant.nominal_power_generation / 100 * powerplant.current_power_generation_percentage
-            powerplant.addTotalProduction(generation)
+            powerplant.setCurrentProduction(generation)
 
     async def run_simulator(self):
         date = datetime.datetime.now()
         # add 1 minute to simulation time to make sure simulation of next minute is done at the start of the minute
-        date = date.replace(minute=(date.minute+1))
+        date = date.replace(minute=(date.minute + 1))
         date_iso = date.replace(microsecond=0).isoformat()
         print(f"Simulating for time in ISO 8601: {date_iso}")
         event = Event(date)
@@ -151,11 +152,11 @@ class Simulator:
         event.consumption.households = await household_consumption_task
         # event.consumption.big_consumers = await big_consumer_consumption_task
         # event.consumption.industries = await industry_consumption_task
-
+        event.production.power_plants = await powerplant_production_task
 
         json_string = event.toJSON()
         end = time.perf_counter()
-        print(f"Calculations done in: {end-start}")
+        print(f"Calculations done in: {end - start}")
         """" self._message_producer.send(json_string) """
 
     def create_event_loop(self):

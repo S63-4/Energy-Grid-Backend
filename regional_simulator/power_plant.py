@@ -3,7 +3,7 @@ class PowerPlant:
     fuel_type = None
     nominal_power_generation = 0
     current_power_generation_percentage = 0
-    total_production = 0
+    current_powerplant_output = 0
 
     def __init__(self, name, fuel_type, nominal_power_generation):
         self.name = name
@@ -13,5 +13,5 @@ class PowerPlant:
     def setCurrentCapacity(self, current_power_generation_percentage):
         self.current_power_generation_percentage = current_power_generation_percentage
 
-    def addTotalProduction(self, production):
-        self.total_production += production
+    def setCurrentProduction(self, production):
+        self.current_powerplant_output += production
