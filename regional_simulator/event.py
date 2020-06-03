@@ -38,6 +38,7 @@ class Consumption:
         json += "}"
         return json
 
+
 class Production:
     wind_farms = None
     solar_farms = None
@@ -59,6 +60,7 @@ class Production:
         json += "}"
         return json
 
+
 class ConsumerGroup:
     num_consumers = 0
     total_consumption = 0
@@ -76,6 +78,7 @@ class ConsumerGroup:
         json = json[:-1]
         json += "]}"
         return json
+
 
 class ProducerGroup:
     num_producers = 0
@@ -95,6 +98,7 @@ class ProducerGroup:
         json += "]}"
         return json
 
+
 class Consumer:
     name = ""
     consumption = 0
@@ -105,6 +109,7 @@ class Consumer:
                 f"\"consumption\" : {self.consumption}"
         json += "}"
         return json
+
 
 class HouseholdConsumer(Consumer):
     num_connections = 0
@@ -117,6 +122,7 @@ class HouseholdConsumer(Consumer):
         json += "}"
         return json
 
+
 class Producer:
     name = ""
     production = 0
@@ -127,6 +133,7 @@ class Producer:
                 f"\"production\" : {self.production}"
         json += "}"
         return json
+
 
 class HouseholdProducer(Producer):
     num_connections = 0
