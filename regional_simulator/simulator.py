@@ -76,8 +76,6 @@ class Simulator:
         producer.production = production
         producers.append(producer)
         producer_group.producers = producers
-        print("Total producation: ", production)
-        print(producer_group)
         return producer_group
 
     def calculate_lookup_hour(self, date):
@@ -244,7 +242,6 @@ class Simulator:
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
         self._mock_data_windturbines = pd.read_excel("windturbines_mock_data.xlsx")
-        print(self._mock_data_windturbines.head(42))
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:
             schedule.run_pending()
