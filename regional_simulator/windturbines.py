@@ -1,4 +1,4 @@
-# import weatherService as weather
+import weatherService as weather
 import pandas as pd
 import time
 import schedule
@@ -6,18 +6,18 @@ import schedule
 
 class Windturbines:
     _mock_data = None
-    # data = None
+    _amount_windturbines = 325
+
+    try:
+        data = weather.get_weather()
+    except ConnectionAbortedError as error:
+        print(error.args)
 
     def __init__(self):
         pass
-        # try:
-        #     data = weather.get_weather()
-        # except ConnectionAbortedError as error:
-        #     print(error.args)
 
     def get_windspeed(self):
-        return float(input("Custom windspeed: "))
-        # return self.data["wind"]["speed"]
+        return self.data["wind"]["speed"]
 
     def myround(self, windspeed, rounded_windspeed):
         base = .5
@@ -66,17 +66,17 @@ class Windturbines:
                 elif nearest_whole < nearest_half:
                     production = self.interpolate_production(windspeed, nearest_whole, nearest_half,
                                                              production_nearest_whole, production_nearest_half)
-        print(production)
+        production = production * self._amount_windturbines
         return production
 
     def main(self):
         self._mock_data = pd.read_excel("windturbines_mock_data.xlsx")
         print(self._mock_data.head(42))
         self.get_production()
-        # schedule.every().minute.at(":00").do(self.get_production())
-        # while True:
-        #     schedule.run_pending()
-        #     time.sleep(1)
+        schedule.every().minute.at(":00").do(self.get_production())
+        while True:
+            schedule.run_pending()
+            time.sleep(1)
 
 
 
