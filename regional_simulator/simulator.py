@@ -23,7 +23,7 @@ class Simulator:
     def get_windspeed(self):
         return self.data["wind"]["speed"]
 
-    def roundToNearestHalf(self, windspeed, rounded_windspeed):
+    def round_to_nearest_half(self, windspeed, rounded_windspeed):
         base = .5
         myround = base * round(windspeed / base)
         if myround == float(rounded_windspeed):
@@ -57,7 +57,7 @@ class Simulator:
             elif production_row is not float:
                 # get values of row above and row beneath
                 nearest_whole = int(round(windspeed))
-                nearest_half = self.roundToNearestHalf(windspeed, nearest_whole)
+                nearest_half = self.round_to_nearest_half(windspeed, nearest_whole)
                 production_row_nearest_half = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_half]
                 production_row_nearest_whole = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_whole]
                 production_nearest_half = production_row_nearest_half["kW/h"].array[0]
@@ -230,7 +230,6 @@ class Simulator:
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
         self._mock_data_windturbines = pd.read_excel("windturbines_mock_data.xlsx")
-        print(self._mock_data_windturbines.head(42))
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:
             schedule.run_pending()
