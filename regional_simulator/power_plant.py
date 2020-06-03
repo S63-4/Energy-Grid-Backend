@@ -22,6 +22,4 @@ def calculate_current_powerplant_production():
     producer_group.total_production = total_power_production
     producer_group.producers = producers
 
-    print(total_power_production)
-
     return producer_group

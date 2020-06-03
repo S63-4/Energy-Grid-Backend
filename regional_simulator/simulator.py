@@ -235,7 +235,7 @@ class Simulator:
         json_string = event.toJSON()
         end = time.perf_counter()
         print(f"Calculations done in: {end - start}")
-        """" self._message_producer.send(json_string) """
+        self._message_producer.send(json_string)
 
     def create_event_loop(self):
         loop = asyncio.get_event_loop()
