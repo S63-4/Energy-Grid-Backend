@@ -5,7 +5,7 @@ import time
 import asyncio
 import schedule
 
-from power_plant import *
+import power_plant as powerplant
 import solar_panel as solar
 from event import *
 
@@ -13,11 +13,8 @@ from event import *
 class Simulator:
     _mock_data = None
     _enduris_data = None
-    _power_plants = None
     _message_producer = None
     _mock_data_windturbines = None
-
-    list_power_plants = []
 
     def __init__(self, event_producer):
         self._message_producer = event_producer
@@ -65,16 +62,20 @@ class Simulator:
                 # get values of row above and row beneath
                 nearest_whole = int(round(windspeed))
                 nearest_half = self.roundToNearestHalf(windspeed, nearest_whole)
-                production_row_nearest_half = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_half]
-                production_row_nearest_whole = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_whole]
+                production_row_nearest_half = self._mock_data_windturbines.loc[
+                    self._mock_data_windturbines["windspeed"] == nearest_half]
+                production_row_nearest_whole = self._mock_data_windturbines.loc[
+                    self._mock_data_windturbines["windspeed"] == nearest_whole]
                 production_nearest_half = production_row_nearest_half["kW/h"].array[0]
                 production_nearest_whole = production_row_nearest_whole["kW/h"].array[0]
                 if nearest_half < nearest_whole:
                     production = self.interpolate_windturbine_production(windspeed, nearest_half, nearest_whole,
-                                                                         production_nearest_half, production_nearest_whole)
+                                                                         production_nearest_half,
+                                                                         production_nearest_whole)
                 elif nearest_whole < nearest_half:
                     production = self.interpolate_windturbine_production(windspeed, nearest_whole, nearest_half,
-                                                                         production_nearest_whole, production_nearest_half)
+                                                                         production_nearest_whole,
+                                                                         production_nearest_half)
         production = production * amount_windturbines
         producer_group.num_producers = amount_windturbines
         producer_group.total_production = production
@@ -104,7 +105,7 @@ class Simulator:
             minutes = .50
         elif 45 <= minutes <= 59:
             minutes = .75
-        hour_of_week = (the_day_of_week*24) + hours + minutes
+        hour_of_week = (the_day_of_week * 24) + hours + minutes
         return hour_of_week
 
     def calculate_lookup_month(self, date):
@@ -114,8 +115,6 @@ class Simulator:
         row_current_quarter = self._mock_data.loc[self._mock_data["hour"] == lookup_hour]
         # divide current quarter value by 15 to mock a minute
         return row_current_quarter[lookup_month].values[0] / 15
-
-
 
     def calculate_current_minute_household_consumption(self, current_minute_value, lookup_month):
         """
@@ -186,17 +185,12 @@ class Simulator:
         await asyncio.sleep(0)
 
     async def calculate_powerplant_production(self):
-        for powerplant in self.list_power_plants:
-            generation = powerplant.nominal_power_generation / 100 * powerplant.current_power_generation_percentage
-            powerplant.setCurrentProduction(generation)
-            print(powerplant.current_powerplant_output)
-
-
+        return powerplant.calculate_current_powerplant_production()
 
     async def run_simulator(self):
         date = datetime.datetime.now()
         # add 1 minute to simulation time to make sure simulation of next minute is done at the start of the minute
-        date = date.replace(minute=(date.minute+1))
+        date = date.replace(minute=(date.minute + 1))
         date_iso = date.replace(microsecond=0).isoformat()
         print(f"Simulating for time in ISO 8601: {date_iso}")
         event = Event(date)
@@ -229,8 +223,7 @@ class Simulator:
             self.calculate_windturbines_production())
 
         solar_production_task = asyncio.create_task(
-          self.calculate_current_minute_solar_production())
-
+            self.calculate_current_minute_solar_production())
 
         event.consumption.households = await household_consumption_task
         event.production.solar_farms = await solar_production_task
@@ -261,12 +254,6 @@ class Simulator:
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
         self._mock_data_windturbines = pd.read_excel("windturbines_mock_data.xlsx")
         print(self._mock_data_windturbines.head(42))
-        self._power_plants = pd.read_excel("power_plants_2019.xlsx")
-
-        for index, row in self._power_plants.iterrows():
-            new_powerplant = PowerPlant(row["NAME"], row["FUELTYPE"], row["NOMINAL_POWER_GENERATION"])
-            new_powerplant.setCurrentCapacity(row["CURRENT_CAPACITY"])
-            self.list_power_plants.append(new_powerplant)
 
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:

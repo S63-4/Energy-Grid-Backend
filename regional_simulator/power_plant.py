@@ -1,18 +1,27 @@
-class PowerPlant:
-    name = None
-    fuel_type = None
-    nominal_power_generation = 0
-    current_power_generation_percentage = 0
-    current_powerplant_output = 0
-    total_powerplant_production = 0
+import pandas as pd
+from event import *
 
-    def __init__(self, name, fuel_type, nominal_power_generation):
-        self.name = name
-        self.fuel_type = fuel_type
-        self.nominal_power_generation = nominal_power_generation
 
-    def setCurrentCapacity(self, current_power_generation_percentage):
-        self.current_power_generation_percentage = current_power_generation_percentage
+def calculate_current_powerplant_production():
+    power_plants = pd.read_excel("power_plants_2019.xlsx")
+    producers = []
+    total_power_production = 0
 
-    def setCurrentProduction(self, production):
-        self.current_powerplant_output = production
+    for index, row in power_plants.iterrows():
+        nominal_power_power_generation = row["NOMINAL_POWER_GENERATION"]
+        current_capacity = row["CURRENT_CAPACITY"]
+        current_power_generation = nominal_power_power_generation / 100 * current_capacity
+        total_power_production += current_power_generation
+        producer = Producer()
+        producer.name = row["NAME"]
+        producer.production = current_power_generation
+        producers.append(producer)
+
+    producer_group = ProducerGroup()
+    producer_group.num_producers = power_plants.index
+    producer_group.total_production = total_power_production
+    producer_group.producers = producers
+
+    print(total_power_production)
+
+    return producer_group
