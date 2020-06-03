@@ -10,40 +10,43 @@ import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.orm.jpa.DataJpaTest;
+import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.web.client.RestTemplate;
 
 import static com.energygrid.user_service.common.security.UserRole.USER;
+import static org.hamcrest.Matchers.equalTo;
 import static org.junit.Assert.assertThat;
-import static org.hamcrest.core.Is.is;
 
-//@RunWith(SpringRunner.class)
-//@DataJpaTest
-//public class UserRepositoryIntegrationTest {
-//
-//    @Autowired
-//    private UserRepository subject;
-//
-//    private PasswordEncoder passwordEncoder;
-//
-//    @Before
-//    public void setUp() {
-//        passwordEncoder = new AuthenticationUtils();
-//    }
-//
-//
-//    @After
-//    public void tearDown() {
-//        subject.deleteAll();
-//    }
-//
-//    @Ignore
-//    public void shouldSaveAndFetch() {
-////        User testUser = new User("Test","Testory", passwordEncoder.encode("test212313212312312"),"testaccount@test.nl", "0773077070", "0612345678", "1111TT","SCHOOLSTRAAT", "EINDHOVEN", "11","623415",true,true,true,true,USER.getGrantedAuthorities());
-////        subject.save(testUser);
-////        User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
-////
-////        assertThat(isThisTestUser, is(testUser));
-//    }
-//
-//}
+@RunWith(SpringRunner.class)
+@SpringBootTest
+public class UserRepositoryIntegrationTest {
+
+    @Autowired
+    private UserRepository subject;
+
+    private PasswordEncoder passwordEncoder;
+
+    @Before
+    public void setUp() {
+
+    }
+
+
+    @After
+    public void tearDown() {
+        subject.deleteAll();
+    }
+
+    @Test
+    public void shouldSaveAndFetch() {
+        User testUser = new User("Test","Testory", "test212313212312312",
+                "testaccount@test.nl", true, true, true, true, USER.getGrantedAuthorities());
+        subject.save(testUser);
+        User isThisTestUser = subject.findUserByEmail("testaccount@test.nl");
+
+        assertThat(isThisTestUser.getEmail(),  equalTo("testaccount@test.nl"));
+    }
+
+}
