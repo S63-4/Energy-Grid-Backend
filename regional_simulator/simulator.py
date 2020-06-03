@@ -1,4 +1,5 @@
 import pandas as pd
+import weatherService as weather
 import datetime
 import time
 import asyncio
@@ -9,9 +10,74 @@ class Simulator:
     _mock_data = None
     _enduris_data = None
     _message_producer = None
+    _mock_data_windturbines = None
 
     def __init__(self, event_producer):
         self._message_producer = event_producer
+
+    try:
+        data = weather.get_weather()
+    except ConnectionAbortedError as error:
+        print(error.args)
+
+    def get_windspeed(self):
+        return self.data["wind"]["speed"]
+
+    def roundToNearestHalf(self, windspeed, rounded_windspeed):
+        base = .5
+        myround = base * round(windspeed / base)
+        if myround == float(rounded_windspeed):
+            if windspeed < rounded_windspeed:
+                myround = myround - .5
+            elif windspeed > rounded_windspeed:
+                myround += .5
+        return myround
+
+    def interpolate_windturbine_production(self, between_value, smallest_number, biggest_number, smallest_production,
+                                           biggest_production):
+        percentual_difference = round((between_value - smallest_number) / (biggest_number - smallest_number), 1)
+        production = smallest_production + percentual_difference * (
+                biggest_production - smallest_production)
+        return production
+
+    async def calculate_windturbines_production(self):
+        # find the speed of the wind
+        windspeed = self.get_windspeed()
+        producer_group = ProducerGroup()
+        producer = Producer()
+        producers = []
+        production = 0
+        amount_windturbines = 325
+
+        # find the production at that speed
+        if 2.5 < windspeed < 26:
+            production_row = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == windspeed]
+            if windspeed.is_integer() or production_row is float:
+                production = production_row["kW/h"].array[0]
+            elif production_row is not float:
+                # get values of row above and row beneath
+                nearest_whole = int(round(windspeed))
+                nearest_half = self.roundToNearestHalf(windspeed, nearest_whole)
+                production_row_nearest_half = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_half]
+                production_row_nearest_whole = self._mock_data_windturbines.loc[self._mock_data_windturbines["windspeed"] == nearest_whole]
+                production_nearest_half = production_row_nearest_half["kW/h"].array[0]
+                production_nearest_whole = production_row_nearest_whole["kW/h"].array[0]
+                if nearest_half < nearest_whole:
+                    production = self.interpolate_windturbine_production(windspeed, nearest_half, nearest_whole,
+                                                                         production_nearest_half, production_nearest_whole)
+                elif nearest_whole < nearest_half:
+                    production = self.interpolate_windturbine_production(windspeed, nearest_whole, nearest_half,
+                                                                         production_nearest_whole, production_nearest_half)
+        production = production * amount_windturbines
+        producer_group.num_producers = amount_windturbines
+        producer_group.total_production = production
+        producer.name = "windturbines"
+        producer.production = production
+        producers.append(producer)
+        producer_group.producers = producers
+        print("Total producation: ", production)
+        print(producer_group)
+        return producer_group
 
     def calculate_lookup_hour(self, date):
         """
@@ -135,9 +201,13 @@ class Simulator:
         industry_consumption_task = asyncio.create_task(
             self.calculate_industry_consumption())
 
+        windfarms_production_task = asyncio.create_task(
+            self.calculate_windturbines_production())
+
         event.consumption.households = await household_consumption_task
         # event.consumption.big_consumers = await big_consumer_consumption_task
         # event.consumption.industries = await industry_consumption_task
+        event.production.wind_farms = await windfarms_production_task
 
         json_string = event.toJSON()
         end = time.perf_counter()
@@ -159,6 +229,8 @@ class Simulator:
     def main(self):
         self._mock_data = pd.read_excel("household_consumption_mock_data.xlsx")
         self._enduris_data = pd.read_excel("enduris_2019.xlsx")
+        self._mock_data_windturbines = pd.read_excel("windturbines_mock_data.xlsx")
+        print(self._mock_data_windturbines.head(42))
         schedule.every().minute.at(":00").do(self.create_event_loop)
         while True:
             schedule.run_pending()
