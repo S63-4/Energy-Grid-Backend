@@ -15,7 +15,7 @@ public class MessageController {
 
     @GetMapping("/regional")
     public String regionalMessage() throws IOException {
-        File jsonFile = new File("src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
+        File jsonFile = new File("data-rest-forwarder/src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
         String message = gson.fromJson(new FileReader(jsonFile), String.class);
         return message;
     }

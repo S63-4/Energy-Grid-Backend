@@ -178,7 +178,7 @@ class Simulator:
         date = date.replace(minute=(date.minute+1))
         date_iso = date.replace(microsecond=0).isoformat()
         print(f"Simulating for time in ISO 8601: {date_iso}")
-        event = Event(date)
+        event = Event(date_iso)
         # event.consumption.households.consumers.clear()
         # event.consumption.big_consumers.consumers.clear()
         # event.consumption.industries.consumers.clear()
