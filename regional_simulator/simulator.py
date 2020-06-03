@@ -3,6 +3,7 @@ import datetime
 import time
 import asyncio
 import schedule
+import solar_panel as solar
 from event import *
 
 class Simulator:
@@ -41,6 +42,8 @@ class Simulator:
         row_current_quarter = self._mock_data.loc[self._mock_data["hour"] == lookup_hour]
         # divide current quarter value by 15 to mock a minute
         return row_current_quarter[lookup_month].values[0] / 15
+
+
 
     def calculate_current_minute_household_consumption(self, current_minute_value, lookup_month):
         """
@@ -103,8 +106,14 @@ class Simulator:
     async def calculate_big_consumer_consumption(self):
         await asyncio.sleep(0)
 
+    async def calculate_current_minute_solar_production(self):
+        # The exact number ol solar panels is unknown but expected to be over 1 million.
+        return solar.calculate_solar_production(1000000)
+
     async def calculate_industry_consumption(self):
         await asyncio.sleep(0)
+
+
 
     async def run_simulator(self):
         date = datetime.datetime.now()
@@ -135,7 +144,10 @@ class Simulator:
         industry_consumption_task = asyncio.create_task(
             self.calculate_industry_consumption())
 
+        solar_production_task = asyncio.create_task(self.calculate_current_minute_solar_production())
+
         event.consumption.households = await household_consumption_task
+        event.production.solar_farms = await solar_production_task
         # event.consumption.big_consumers = await big_consumer_consumption_task
         # event.consumption.industries = await industry_consumption_task
 

@@ -1,4 +1,5 @@
 import weatherService as weather
+from event import *
 
 try:
     data = weather.get_weather()
@@ -48,18 +49,20 @@ def calculate_solar_production(panels_amount):
 
 
 
-    time_factor = 0.0
-    cloud_factor = 0.0
+    time_factor = 0
+    cloud_factor = 0
     clouds = get_clouds()
 
     # Check if the sun is currently up or not.
 
     if get_current_time() < get_sunrise() or get_current_time() > get_sunset():
-        time_factor = 0.0
+        time_factor = 0
     else:
-        time_factor = 1.0
+        time_factor = 1
 
-    # Check the cloud density.
+    # Check the cloud density. Foe the reasons stated above clouds can be beneficial, for the solar panel.
+    # Because there is no known exact formula . We will not simulate it exactly but we will compensate for it.
+    # By reducing the impact of clouds in general by dividing it by 1.5
 
     cloud_factor = (100 - (clouds / 1.5)) / 100
     print(cloud_factor)
@@ -72,10 +75,20 @@ def calculate_solar_production(panels_amount):
     # Amount of solar panels * average production * cloud factor * time factor / minutes in a year
 
     production_per_minute = panels_amount * 300 * cloud_factor * time_factor / 525950
-    print(production_per_minute)
 
-calculate_solar_production(1000)
+    producer = Producer()
+    producer.name = "solar panels"
+    producer.production = production_per_minute
 
+    producers = []
+    producers.append(producer)
+
+    result = ProducerGroup()
+    result.num_producers = panels_amount
+    result.total_production = production_per_minute
+    result.producers = producers
+
+    return result
 
 
 
