@@ -36,11 +36,3 @@ steps:
     docker login -u $(DOCKER_USER) -p $(DOCKER_PASSWORD)
     docker push $(DOCKER_USER)/$(CI_PROJECT_NAME)
   displayName: 'create and push docker image'
-- task: Kubernetes@1
-  inputs:
-    connectionType: 'Kubernetes Service Connection'
-    kubernetesServiceEndpoint: 'Google cloud'
-    command: 'set'
-    arguments: 'image deployment/regional-simulator regional-simulator-1=energygrids63d/regional-rimulator:$(Build.SourceVersion)'
-    secretType: 'dockerRegistry'
-    containerRegistryType: 'Azure Container Registry'
