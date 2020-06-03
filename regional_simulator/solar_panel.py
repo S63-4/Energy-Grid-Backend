@@ -44,18 +44,18 @@ def calculate_solar_production(panels_amount):
 
     # In this simulation we will assume all the solar panels are 300 Wp.
     # There are +- 525950 minutes in a year
+
     # the amount of solar panels in Zeeland is unknown but estimated to have passed the 1 million.
-
-
-
 
     time_factor = 0
     cloud_factor = 0
+
     clouds = get_clouds()
 
     # Check if the sun is currently up or not.
 
     if get_current_time() < get_sunrise() or get_current_time() > get_sunset():
+
         time_factor = 0
     else:
         time_factor = 1
@@ -65,9 +65,6 @@ def calculate_solar_production(panels_amount):
     # By reducing the impact of clouds in general by dividing it by 1.5
 
     cloud_factor = (100 - (clouds / 1.5)) / 100
-    print(cloud_factor)
-
-
 
 
 
