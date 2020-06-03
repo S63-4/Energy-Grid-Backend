@@ -29,7 +29,3 @@ build/
 
 ### VS Code ###
 .vscode/
-
-# database settings
-database.properties
-application.properties

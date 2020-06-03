@@ -68,6 +68,12 @@
             <artifactId>junit</artifactId>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.jacoco</groupId>
+            <artifactId>jacoco-maven-plugin</artifactId>
+            <version>0.8.5</version>
+        </dependency>
+
     </dependencies>
 
     <dependencyManagement>
@@ -87,7 +93,6 @@
                     <from>
                         <image>adoptopenjdk/openjdk13</image>
                     </from>
-
                 </configuration>
             </plugin>
 
