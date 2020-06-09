@@ -1,9 +1,14 @@
 package com.energygrid.user_service;
 
 import com.energygrid.user_service.common.models.Customer;
+import com.energygrid.user_service.common.models.Employee;
 import com.energygrid.user_service.common.models.User;
+import com.energygrid.user_service.common.security.UserPermissions;
+import com.energygrid.user_service.common.security.UserRole;
 import com.energygrid.user_service.common.utils.CsvValues;
 import com.energygrid.user_service.common.utils.RandomString;
+import com.energygrid.user_service.repositories.CustomerRepository;
+import com.energygrid.user_service.repositories.EmployeeRepository;
 import com.energygrid.user_service.repositories.UserRepository;
 import org.modelmapper.ModelMapper;
 import org.springframework.boot.CommandLineRunner;
@@ -18,6 +23,7 @@ import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.client.RestTemplate;
 
 import java.time.Duration;
@@ -36,6 +42,22 @@ public class UserServiceApplication {
     public static void main(String[] args) {
         SpringApplication.run(UserServiceApplication.class, args);
     }
+
+    @Bean
+    public CommandLineRunner demo(EmployeeRepository employeeRepository, CustomerRepository customerRepository, PasswordEncoder passwordEncoder) {
+        return args -> {
+
+            Customer customer = new Customer("Kevin","Vink",passwordEncoder.encode("test4"),"Kevin@tester.com",true,true,true,true,UserRole.USER.getGrantedAuthorities(),"06123","0612345","4004PD","Coolstreat","Memestreat","9","123123123");
+            Employee employee = new Employee("Henk","Kachel",passwordEncoder.encode("test2"),"Henk2@tester.com",true,true,true,true,UserRole.Employee.getGrantedAuthorities(),"1");
+            Employee manager = new Employee("Henk","Baas",passwordEncoder.encode("test3"),"Henk3@tester.com",true,true,true,true,UserRole.Manager.getGrantedAuthorities(),"2");
+
+            customerRepository.save(customer);
+            employeeRepository.save(employee);
+            employeeRepository.save(manager);
+
+        };
+    }
+
 
 
     @Configuration
