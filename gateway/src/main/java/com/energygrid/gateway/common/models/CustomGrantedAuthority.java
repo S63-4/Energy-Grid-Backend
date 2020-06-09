@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.models;
+package com.energygrid.gateway.common.models;
 
 import org.springframework.security.core.GrantedAuthority;
 

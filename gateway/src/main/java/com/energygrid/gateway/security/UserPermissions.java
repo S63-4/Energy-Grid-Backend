@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.security;
+package com.energygrid.gateway.security;
 
 public enum UserPermissions {
     // declare all the different permissions here.

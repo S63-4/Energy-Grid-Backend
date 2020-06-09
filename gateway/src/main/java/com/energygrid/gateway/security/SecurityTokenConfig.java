@@ -1,6 +1,5 @@
 package com.energygrid.gateway.security;
 
-import com.energygrid.gateway.security.common.security.JwtConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.http.HttpMethod;

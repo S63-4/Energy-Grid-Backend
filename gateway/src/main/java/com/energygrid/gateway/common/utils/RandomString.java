@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.utils;
+package com.energygrid.gateway.common.utils;
 
 // Java program generate a random AlphaNumeric String
 // using Regular Expressions method

@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.exceptions;
+package com.energygrid.gateway.common.exceptions;
 
 public class BadRequestException extends RuntimeException {
 
