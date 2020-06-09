@@ -1,14 +1,14 @@
-package com.energygrid.gateway.security.common.security;
+package com.energygrid.gateway.security;
 
 
 
-import com.energygrid.gateway.security.common.models.CustomGrantedAuthority;
+import com.energygrid.gateway.common.models.CustomGrantedAuthority;
 import com.google.common.collect.Sets;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.energygrid.gateway.security.common.security.UserPermissions.*;
+import static com.energygrid.gateway.security.UserPermissions.*;
 
 
 public enum UserRole {
