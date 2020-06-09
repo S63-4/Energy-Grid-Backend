@@ -74,7 +74,7 @@ def calculate_solar_production(panels_amount):
     #Calculate
     # Amount of solar panels * average production * cloud factor * time factor / minutes in a year
 
-    production_per_minute = panels_amount * 300 * cloud_factor * time_factor / 525950
+    production_per_minute = panels_amount * (300 * cloud_factor * time_factor / 525950) * 85
 
     producer = Producer()
     producer.name = "solar panels"
