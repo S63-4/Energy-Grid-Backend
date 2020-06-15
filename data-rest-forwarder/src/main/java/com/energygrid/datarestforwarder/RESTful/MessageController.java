@@ -1,5 +1,6 @@
 package com.energygrid.datarestforwarder.RESTful;
 
+import com.energygrid.datarestforwarder.models.SharedJSON;
 import com.google.gson.Gson;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -18,7 +19,7 @@ public class MessageController {
         File jsonFile = new File(
                 getClass().getClassLoader().getResource("regional.json").getFile()
         );
-        String message = gson.fromJson(new FileReader(jsonFile), String.class);
-        return message;
+        SharedJSON message = gson.fromJson(new FileReader(jsonFile), SharedJSON.class);
+        return gson.toJson(message);
     }
 }
