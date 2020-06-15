@@ -11,12 +11,6 @@ class MessageProducer:
     def send(self, message):
         print("host:" + self._host)
         connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
-<<<<<<< Updated upstream
-=======
-        # DEBUG CODE
-        # connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
-
->>>>>>> Stashed changes
         channel = connection.channel()
         channel.exchange_declare(exchange="simulator-exchange", exchange_type="direct", durable=True)
         channel.basic_publish(exchange="simulator-exchange",
