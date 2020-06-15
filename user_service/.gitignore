@@ -32,4 +32,3 @@ build/
 
 # database settings
 database.properties
-application.properties

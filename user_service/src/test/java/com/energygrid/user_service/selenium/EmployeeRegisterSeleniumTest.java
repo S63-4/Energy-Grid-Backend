@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -23,7 +24,9 @@ public class EmployeeRegisterSeleniumTest {
 
     @Before
     public void setUp() throws Exception {
-        driver = new FirefoxDriver();
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.addArguments("--headless");
+        driver = new FirefoxDriver(firefoxOptions);
     }
 
     @After
@@ -34,15 +37,14 @@ public class EmployeeRegisterSeleniumTest {
     }
 
     @Test
-    @Ignore
-    public void shouldLogin() throws InterruptedException {
+    public void shouldEnterCredentials() throws InterruptedException {
         driver.navigate().to("http://34.89.108.169/");
         driver.findElement(By.xpath("//*[@id=\"clientNr\"]")).sendKeys("test@test.com");
         driver.findElement(By.xpath("//*[@id=\"password\"]")).sendKeys("test2");
 
         Set<String> windowHandles = driver.getWindowHandles();
         driver.findElement(By.xpath("/html/body/app-root/app-login/div/div[2]/form/button")).click();
-        driver.manage().timeouts().implicitlyWait(10, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
         Thread.sleep(10000);
         Set<String> updatedWindowHandles = driver.getWindowHandles();
         updatedWindowHandles.removeAll(windowHandles);
@@ -51,7 +53,7 @@ public class EmployeeRegisterSeleniumTest {
         }
 
         String URL = driver.getCurrentUrl();
-        Assert.assertEquals(URL, "http://34.89.108.169/dashboard");
+        Assert.assertEquals(URL, "http://34.89.108.169/login");
 
     }
 }

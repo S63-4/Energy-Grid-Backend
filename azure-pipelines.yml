@@ -28,6 +28,7 @@ steps:
 - script: |
     cd regional_simulator
     echo "$(eureka)" > eureka.txt
+    echo $(apiToken) > apiToken.txt
   displayName: 'config files'
 - script: |
     cd regional_simulator

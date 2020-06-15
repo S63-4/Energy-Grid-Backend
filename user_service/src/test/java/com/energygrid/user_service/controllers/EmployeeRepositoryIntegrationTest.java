@@ -30,6 +30,8 @@ import static org.junit.Assert.assertThat;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest
+@ActiveProfiles("test")
+
 public class EmployeeRepositoryIntegrationTest {
 
     @Autowired
