@@ -10,9 +10,9 @@ class MessageProducer:
 
     def send(self, message):
         print("host:" + self._host)
-        connection = pika.BlockingConnection(pika.ConnectionParameters(host="10.93.15.85"))
+        # connection = pika.BlockingConnection(pika.ConnectionParameters(host="10.93.15.85"))
         # DEBUG CODE
-        # connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
+        connection = pika.BlockingConnection(pika.ConnectionParameters(host="localhost"))
 
         channel = connection.channel()
         channel.exchange_declare(exchange="simulator-exchange", exchange_type="direct", durable=True)
