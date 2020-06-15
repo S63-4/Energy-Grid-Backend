@@ -24,7 +24,7 @@ public class MessageConsumer {
 
     @RabbitListener(queues = "#{regionalSimQueue.name}")
     public void receiveRegional(String message) throws IOException {
-        File jsonFile = new File("src/main/java/com/energygrid/datarestforwarder/RESTful/JSONfiles/regional.json");
+        File jsonFile = new File("/home/energygrids63d/regional.json");
         RegionalEvent event = parser.parseToRegionalEvent(message);
         double totalConsumption = event.getConsumption().getIndustries().getTotalConsumption() + event.getConsumption().getBigConsumers().getTotalConsumption() + event.getConsumption().getHouseholds().getTotalConsumption();
         double totalProduction = event.getProduction().getHouseholds().getTotalProduction() + event.getProduction().getPowerPlants().getTotalProduction() + event.getProduction().getSolarFarms().getTotalProduction() + event.getProduction().getWindFarms().getTotalProduction();
