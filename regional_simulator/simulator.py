@@ -363,7 +363,7 @@ class Simulator:
         event.production.power_plants = await powerplant_production_task
 
         json_string = event.toJSON()
-        self.write_to_file(json_string)
+        # self.write_to_file(json_string)
         end = time.perf_counter()
         print(f"Calculations done in: {end - start}")
         self._message_producer.send(json_string)
