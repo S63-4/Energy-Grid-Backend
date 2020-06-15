@@ -19,8 +19,8 @@ public class Producer {
     @JsonProperty
     private double production;
 
-    @ManyToOne(cascade = CascadeType.ALL)
-    @JoinColumn(name = "producer_group_id", nullable = false)
+    @ManyToOne
+    @JoinColumn(name = "producer_id", insertable = false, updatable = false)
     private ProducerGroup producerGroup;
 
     public Producer(String name, double production) {

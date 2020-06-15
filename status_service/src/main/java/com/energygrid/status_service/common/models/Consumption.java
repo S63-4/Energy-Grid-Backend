@@ -2,6 +2,7 @@ package com.energygrid.status_service.common.models;
 
 import com.energygrid.status_service.common.events.RegionalEvent;
 import com.fasterxml.jackson.annotation.JsonProperty;
+import org.hibernate.annotations.Cascade;
 
 import javax.persistence.*;
 import java.util.Arrays;
@@ -17,7 +18,8 @@ public class Consumption {
     @Column(name = "id")
     private Long id;
 
-    @OneToMany(mappedBy = "consumption")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "group_id")
     private List<ConsumerGroup> groups;
 
 //    @OneToOne(cascade = CascadeType.ALL)
