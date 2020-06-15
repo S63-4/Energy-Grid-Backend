@@ -16,6 +16,11 @@ public class StatusService {
     }
 
     public List<RegionalEvent> getAll() {
+
         return (List<RegionalEvent>) regionalEventRepository.findAll();
+    }
+
+    public List<RegionalEvent> getRegionalEventByZipCode(String zipcode) {
+        return null;
     }
 }
