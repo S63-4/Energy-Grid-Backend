@@ -3,7 +3,7 @@ package com.energygrid.datarestforwarder.models;
 import java.time.LocalDateTime;
 
 public class SharedJSON {
-    LocalDateTime dateTime;
+    String date;
     String region;
     double consumption;
     double production;
@@ -12,19 +12,19 @@ public class SharedJSON {
         this.region = "Zeeland";
     }
 
-    public SharedJSON(LocalDateTime dateTime, double consumption, double production) {
-        this.dateTime = dateTime;
+    public SharedJSON(String date, double consumption, double production) {
+        this.date = date;
         this.region = "Zeeland";
         this.consumption = consumption;
         this.production = production;
     }
 
-    public LocalDateTime getDate() {
-        return dateTime;
+    public String getDate() {
+        return date;
     }
 
-    public void setDate(LocalDateTime dateTime) {
-        this.dateTime = dateTime;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getRegion() {

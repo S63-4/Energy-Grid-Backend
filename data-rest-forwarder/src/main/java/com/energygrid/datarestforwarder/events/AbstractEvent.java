@@ -2,29 +2,29 @@ package com.energygrid.datarestforwarder.events;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDateTime;
+import java.util.Date;
 
 public abstract class AbstractEvent {
 
     @JsonProperty
-    private LocalDateTime localDateTime;
+    private String date;
     @JsonProperty
     private String region;
 
     public AbstractEvent() {
     }
 
-    public AbstractEvent(LocalDateTime localDateTime, String region) {
-        this.localDateTime = localDateTime;
+    public AbstractEvent(String date, String region) {
+        this.date = date;
         this.region = region;
     }
 
-    public LocalDateTime getLocalDateTime() {
-        return localDateTime;
+    public String getDate() {
+        return date;
     }
 
-    public void setLocalDateTime(LocalDateTime localDateTime) {
-        this.localDateTime = localDateTime;
+    public void setDate(String date) {
+        this.date = date;
     }
 
     public String getRegion() {

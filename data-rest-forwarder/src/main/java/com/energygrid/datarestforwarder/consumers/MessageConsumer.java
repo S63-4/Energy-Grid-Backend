@@ -8,12 +8,15 @@ import com.fasterxml.jackson.core.JsonProcessingException;
 import com.google.gson.Gson;
 import org.springframework.amqp.rabbit.annotation.RabbitListener;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 
 import java.io.*;
 
 public class MessageConsumer {
+
     @Autowired
-    private MessageController controller;
+    private ResourceLoader resourceLoader;
 
     private Gson gson = new Gson();
     CustomJsonParser parser = new CustomJsonParser();
@@ -24,15 +27,13 @@ public class MessageConsumer {
 
     @RabbitListener(queues = "#{regionalSimQueue.name}")
     public void receiveRegional(String message) throws IOException {
-        File jsonFile = new File(
-                getClass().getClassLoader().getResource("regional.json").getFile()
-        );
+        File jsonFile = resourceLoader.getResource("classpath:regional.json").getFile();
         RegionalEvent event = parser.parseToRegionalEvent(message);
         double totalConsumption = event.getConsumption().getIndustries().getTotalConsumption() + event.getConsumption().getBigConsumers().getTotalConsumption() + event.getConsumption().getHouseholds().getTotalConsumption();
         double totalProduction = event.getProduction().getHouseholds().getTotalProduction() + event.getProduction().getPowerPlants().getTotalProduction() + event.getProduction().getSolarFarms().getTotalProduction() + event.getProduction().getWindFarms().getTotalProduction();
         sharedJSON.setConsumption(totalConsumption);
         sharedJSON.setProduction(totalProduction);
-        sharedJSON.setDate(event.getLocalDateTime());
+        sharedJSON.setDate(event.getDate());
         writeToFile(gson.toJson(sharedJSON), jsonFile);
     }
 

@@ -105,7 +105,7 @@ public class CustomJsonParser {
         production.setHouseholds(householdsProducersGroup);
         // Setting the event
         String dateTime = rootNode.get("date").asText();
-        event.setLocalDateTime(LocalDateTime.parse(dateTime));
+        event.setDate(dateTime);
         event.setRegion(rootNode.get("region").asText());
         event.setConsumption(consumption);
         event.setProduction(production);
