@@ -14,6 +14,7 @@ import random
 class Simulator:
     _mock_data_household_consumption = None
     _mock_data_big_consumer_consumption = None
+    _mock_data_industries_consumption = None
     _enduris_data_households = None
     _cbr_data_big_consumers = None
     _message_producer = None
@@ -114,6 +115,10 @@ class Simulator:
         row_current_quarter = self._mock_data_big_consumer_consumption.loc[self._mock_data_big_consumer_consumption["hour"] == lookup_hour]
         return row_current_quarter[lookup_month].values[0] / 15
 
+    def calculate_industries_consumption_current_minute_value(self, lookup_hour, lookup_month):
+        row_current_quarter = self._mock_data_industries_consumption.loc[self._mock_data_industries_consumption["hour"] == lookup_hour]
+        return row_current_quarter[lookup_month].values[0] / 15
+
     def calculate_household_consumption_current_minute_value(self, lookup_hour, lookup_month):
         row_current_quarter = self._mock_data_household_consumption.loc[self._mock_data_household_consumption["hour"] == lookup_hour]
         # divide current quarter value by 15 to mock a minute
@@ -177,8 +182,6 @@ class Simulator:
         consumer_group.consumers = list_consumers
         return consumer_group  # step 8
 
-
-
     def calculate_current_minute_household_consumption(self, current_minute_value, lookup_month):
         """
         This method calculates the consumption for the current minute.
@@ -236,6 +239,9 @@ class Simulator:
         consumer_group.consumers = list_consumers
         return consumer_group  # step 8
 
+    def calculate_current_minute_industry_consumption(self, current_minute_value, lookup_month):
+        pass
+
     async def calculate_household_consumption(self, lookup_hour, lookup_month):
         current_minute_value = self.calculate_household_consumption_current_minute_value(lookup_hour, lookup_month)
         return self.calculate_current_minute_household_consumption(current_minute_value, lookup_month)
@@ -244,12 +250,13 @@ class Simulator:
         current_minute_value = self.calculate_big_consumer_consumption_current_minute_value(lookup_hour, lookup_month)
         return self.calculate_current_minute_big_consumer_consumption(current_minute_value, lookup_month)
 
+    async def calculate_industry_consumption(self, lookup_hour, lookup_month):
+        current_minute_value = self.calculate_industries_consumption_current_minute_value(lookup_hour, lookup_month)
+        return self.calculate_current_minute_industry_consumption(current_minute_value, lookup_month)
+
     async def calculate_current_minute_solar_production(self):
         # The exact number ol solar panels is unknown but expected to be over 1 million.
         return solar.calculate_solar_production(1000000)
-
-    async def calculate_industry_consumption(self):
-        await asyncio.sleep(0)
 
     async def calculate_powerplant_production(self):
         return powerplant.calculate_current_powerplant_production()
@@ -281,7 +288,7 @@ class Simulator:
             self.calculate_big_consumer_consumption(lookup_hour, lookup_month))
 
         industry_consumption_task = asyncio.create_task(
-            self.calculate_industry_consumption())
+            self.calculate_industry_consumption(lookup_hour, lookup_month))
 
         powerplant_production_task = asyncio.create_task(
             self.calculate_powerplant_production())
