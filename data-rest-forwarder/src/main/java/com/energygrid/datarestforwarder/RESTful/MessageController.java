@@ -15,7 +15,9 @@ public class MessageController {
 
     @GetMapping("/regional")
     public String regionalMessage() throws IOException {
-        File jsonFile = new File("/home/energygrids63d/regional.json");
+        File jsonFile = new File(
+                getClass().getClassLoader().getResource("regional.json").getFile()
+        );
         String message = gson.fromJson(new FileReader(jsonFile), String.class);
         return message;
     }
