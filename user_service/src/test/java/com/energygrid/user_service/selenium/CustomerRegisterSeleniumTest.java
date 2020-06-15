@@ -5,6 +5,7 @@ import org.junit.runner.RunWith;
 import org.openqa.selenium.By;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.firefox.FirefoxOptions;
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.test.context.junit4.SpringRunner;
 
@@ -20,7 +21,9 @@ public class CustomerRegisterSeleniumTest {
 
     @Before
     public void setUp() throws Exception {
-        driver = new FirefoxDriver();
+        FirefoxOptions firefoxOptions = new FirefoxOptions();
+        firefoxOptions.addArguments("--headless");
+        driver = new FirefoxDriver(firefoxOptions);
     }
 
     @After
@@ -32,6 +35,7 @@ public class CustomerRegisterSeleniumTest {
 
     @Test
     public void shouldGoToRegister() {
+
         driver.navigate().to("http://35.197.228.250/");
 
         driver.findElement(By.xpath("/html/body/app-root/app-login/div/p/a")).click();
