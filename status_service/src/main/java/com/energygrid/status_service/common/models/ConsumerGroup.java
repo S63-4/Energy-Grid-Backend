@@ -31,15 +31,6 @@ public class ConsumerGroup {
     @JoinColumn(name = "group_id", insertable = false, updatable = false)
     private Consumption consumption;
 
-//    @OneToOne(mappedBy = "households")
-//    private Consumption householdsConsumption;
-//
-//    @OneToOne(mappedBy = "bigConsumers")
-//    private Consumption bigConsumersConsumption;
-//
-//    @OneToOne(mappedBy = "industries")
-//    private Consumption industriesConsumption;
-
     public ConsumerGroup(int totalConsumers, double totalConsumption, List<Consumer> consumers) {
         this.totalConsumers = totalConsumers;
         this.totalConsumption = totalConsumption;
