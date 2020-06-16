@@ -27,7 +27,9 @@ public class MessageController {
 
     @GetMapping("/regional")
     public String regionalMessage() throws IOException {
-        File jsonFile = resourceLoader.getResource("classpath:regional.json").getFile();
+        File jsonFile = new File(
+                getClass().getClassLoader().getResource("regional.json").getFile()
+        );
         SharedJSON message = gson.fromJson(new FileReader(jsonFile), SharedJSON.class);
         return gson.toJson(message);
     }
