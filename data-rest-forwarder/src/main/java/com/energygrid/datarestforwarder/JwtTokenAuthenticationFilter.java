@@ -16,7 +16,7 @@ import java.io.IOException;
 public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
 
 
-    public JwtTokenAuthenticationFilter(){
+    public JwtTokenAuthenticationFilter() {
     }
 
     @Override
@@ -24,7 +24,8 @@ public class JwtTokenAuthenticationFilter extends OncePerRequestFilter {
             throws ServletException, IOException {
 
 
-   //the user does not have to be authenticated for this service
-
+        //the user does not have to be authenticated for this service
+        chain.doFilter(request, response);        // If not valid, go to the next filter.
+        return;
     }
 }
