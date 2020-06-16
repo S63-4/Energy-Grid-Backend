@@ -1,72 +1,36 @@
 package com.energygrid.status_service.common.dto;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
-import java.time.LocalDate;
-import java.time.ZoneId;
-import java.util.Date;
+import java.time.LocalDateTime;
 
-public class StatusDTO {
+public class StatusDTO extends AbstractEventDTO {
 
     @JsonProperty
-    private Date date;
-
+    private ConsumptionDTO consumption;
     @JsonProperty
-    private double consumption;
-
-    @JsonProperty
-    private double production;
-
-    @JsonProperty
-    private String label;
-
-    public StatusDTO(Date date, int consumption, int production) {
-        this.date = date;
-        this.consumption = consumption;
-        this.production = production;
-    }
+    private ProductionDTO production;
 
     public StatusDTO() {
     }
 
-    public StatusDTO(String label) {
-        this.label = label;
+    public StatusDTO(LocalDateTime dateTime, String region) {
+        super(dateTime, region);
     }
 
-    public Date getDate() {
-        return date;
-    }
-
-    public void setDate(Date date) {
-        this.date = date;
-    }
-
-    public void setLabel(String label) {
-        this.label = label;
-    }
-
-    public double getConsumption() {
+    public ConsumptionDTO getConsumption() {
         return consumption;
     }
 
-    public void setConsumption(double consumption) {
+    public void setConsumption(ConsumptionDTO consumption) {
         this.consumption = consumption;
     }
 
-    public void addConsumption(double addition) {
-        this.consumption += addition;
-    }
-
-    public double getProduction() {
+    public ProductionDTO getProduction() {
         return production;
     }
 
-    public void setProduction(double production) {
+    public void setProduction(ProductionDTO production) {
         this.production = production;
-    }
-
-    public void addProduction(double addition) {
-        this.production += addition;
     }
 }

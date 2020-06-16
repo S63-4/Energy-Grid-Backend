@@ -19,22 +19,10 @@ public class ProducerGroup {
     @Column(name = "total_production")
     @JsonProperty
     private double totalProduction;
-    @OneToMany(mappedBy = "producerGroup")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "producer_id")
     @JsonProperty
     private List<Producer> producers;
-
-    @OneToOne(mappedBy = "windFarms")
-    private Production windFarmsProduction;
-
-    @OneToOne(mappedBy = "solarFarms")
-    private Production solarFarmsProduction;
-
-    @OneToOne(mappedBy = "powerPlants")
-    private Production powerPlantsProduction;
-
-    @OneToOne(mappedBy = "households")
-    private Production householdsProduction;
-
 
 
     public ProducerGroup(int totalProducers, double totalProduction, List<Producer> producers) {

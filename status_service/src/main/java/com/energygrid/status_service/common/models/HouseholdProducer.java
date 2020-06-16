@@ -8,7 +8,7 @@ import javax.persistence.PrimaryKeyJoinColumn;
 import javax.persistence.Table;
 
 @Entity
-@PrimaryKeyJoinColumn(name = "id")
+@PrimaryKeyJoinColumn(referencedColumnName = "id")
 @Table(name = "household_producer")
 public class HouseholdProducer extends Producer {
 

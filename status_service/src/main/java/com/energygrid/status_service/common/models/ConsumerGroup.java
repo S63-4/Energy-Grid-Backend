@@ -22,21 +22,14 @@ public class ConsumerGroup {
     @Column(name = "total_consumption")
     @JsonProperty
     private double totalConsumption;
-    @OneToMany(mappedBy = "consumerGroup")
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinColumn(name = "consumer_id")
     @JsonProperty
     private List<Consumer> consumers;
 
-    @ManyToOne(cascade = CascadeType.ALL)
+    @ManyToOne
+    @JoinColumn(name = "group_id", insertable = false, updatable = false)
     private Consumption consumption;
-
-//    @OneToOne(mappedBy = "households")
-//    private Consumption householdsConsumption;
-//
-//    @OneToOne(mappedBy = "bigConsumers")
-//    private Consumption bigConsumersConsumption;
-//
-//    @OneToOne(mappedBy = "industries")
-//    private Consumption industriesConsumption;
 
     public ConsumerGroup(int totalConsumers, double totalConsumption, List<Consumer> consumers) {
         this.totalConsumers = totalConsumers;

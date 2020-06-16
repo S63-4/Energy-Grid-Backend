@@ -47,10 +47,10 @@ public class RegionalService {
         bucket.add(event);
         // DEBUG CODE
         // Code implemented to skip the hour wait time for the production code to run
-        Gson gson = new Gson();
-        String testJSON = gson.toJson(bucket.getEvent());
-        messageProducer.sendRegionalHourMessage(testJSON);
-        System.out.println();
+//        Gson gson = new Gson();
+//        String testJSON = gson.toJson(bucket.getEvent());
+//        messageProducer.sendRegionalHourMessage(testJSON);
+//        System.out.println();
     }
 
     private void saveToDay() {

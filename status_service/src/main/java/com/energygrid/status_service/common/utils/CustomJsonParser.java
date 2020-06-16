@@ -106,10 +106,7 @@ public class CustomJsonParser {
 
         // Setting consumption and production
         consumption.setGroups(Arrays.asList(householdsConsumersGroup, bigConsumersGroup, industriesConsumersGroup));
-        production.setWindFarms(windFarmsGroup);
-        production.setSolarFarms(solarFarmsGroup);
-        production.setPowerPlants(powerPlantsGroup);
-        production.setHouseholds(householdsProducersGroup);
+        production.setGroups(Arrays.asList(windFarmsGroup, solarFarmsGroup, powerPlantsGroup, householdsProducersGroup));
         // Setting the event
         JsonNode dateTimeNode = rootNode.get("localDateTime");
         LocalDateTime dateTime = parseDateTime(dateTimeNode);
