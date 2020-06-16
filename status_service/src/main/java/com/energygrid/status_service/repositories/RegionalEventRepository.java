@@ -12,5 +12,5 @@ import java.util.List;
 public interface RegionalEventRepository extends CrudRepository<RegionalEvent, Long> {
     public RegionalEvent findByLocalDateTime(LocalDateTime localDateTime);
 
-
+    List<RegionalEvent> findByLocalDateTimeBetween(LocalDateTime startDate, LocalDateTime endDate);
 }

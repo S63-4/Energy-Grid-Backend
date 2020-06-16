@@ -21,10 +21,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Override
     public UserDetails loadUserByUsername(String email) throws UsernameNotFoundException {
 
+        //TODO: Remove debug line
+
         if (email.isEmpty()) {
             throw new IllegalArgumentException("CustomerCode can't be empty");
         }
-        User user = restTemplate.getForObject("http://10.93.12.126:9000/user/user?email=" + email, User.class);
+        // user = restTemplate.getForObject("http://10.93.12.126:9000/user/user?email=" + email, User.class);
+        User user = restTemplate.getForObject("http://localhost:9000/user/user?email=" + email, User.class);
         return user;
     }
 
