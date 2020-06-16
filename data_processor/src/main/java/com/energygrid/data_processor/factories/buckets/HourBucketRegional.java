@@ -24,7 +24,7 @@ public class HourBucketRegional extends AbstractBucket {
         }
         else {
             // For tracking purposes, the datetime in the bucketEvent will update with the dateTime in the newEvent
-            //this.event.setLocalDateTime(newEvent.getLocalDateTime());
+            // this.event.setLocalDateTime(newEvent.getLocalDateTime());
             // Currently this code checks if the entry at index i in the bucket has the same zip-code as the entry at index i in the incoming event
             // If this is the case, the 2 are summed up as the new total. If not, the matching zip-code will be looked for in the hashmap.
             // If there is no match in the incoming event, the current total will remain standing.

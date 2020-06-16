@@ -1,5 +1,6 @@
 package com.energygrid.status_service.controllers;
 
+import com.energygrid.status_service.common.dto.CustomerStatusDTO;
 import com.energygrid.status_service.common.dto.StatusDTO;
 import com.energygrid.status_service.common.events.RegionalEvent;
 import com.energygrid.status_service.services.StatusService;
@@ -30,6 +31,21 @@ public class StatusController {
 
         List<StatusDTO> events = statusService.getRegionalEventByDates(startDate, endDate);
 
+        Gson gson = new Gson();
+        String result = gson.toJson(events);
+
+        return result;
+    }
+
+    @PreAuthorize("isAuthenticated()")
+    @RequestMapping(value = RestURIConstant.getGetHourStatusCustomer, method = RequestMethod.GET)
+    public @ResponseBody
+    String getStatusForHourPeriod(
+            @RequestParam("zipCode") String zipCode,
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(value = "endDate", defaultValue = "#{T(java.time.LocalDateTime).now()}") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
+
+        List<CustomerStatusDTO> events = statusService.getCustomerStatus(zipCode, startDate, endDate);
         Gson gson = new Gson();
         String result = gson.toJson(events);
 
