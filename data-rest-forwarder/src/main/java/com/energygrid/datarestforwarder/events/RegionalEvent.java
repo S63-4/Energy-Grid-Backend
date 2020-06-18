@@ -5,6 +5,7 @@ import com.energygrid.datarestforwarder.models.Production;
 import com.fasterxml.jackson.annotation.JsonProperty;
 
 import java.time.LocalDateTime;
+import java.util.Date;
 
 public class RegionalEvent extends AbstractEvent {
 
@@ -16,8 +17,8 @@ public class RegionalEvent extends AbstractEvent {
     public RegionalEvent() {
     }
 
-    public RegionalEvent(LocalDateTime dateTime, String region) {
-        super(dateTime, region);
+    public RegionalEvent(String date, String region) {
+        super(date, region);
     }
 
     public Consumption getConsumption() {

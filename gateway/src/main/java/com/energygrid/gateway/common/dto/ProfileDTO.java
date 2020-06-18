@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.dto;
+package com.energygrid.gateway.common.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 

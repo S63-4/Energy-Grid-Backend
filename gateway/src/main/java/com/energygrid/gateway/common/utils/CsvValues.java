@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.utils;
+package com.energygrid.gateway.common.utils;
 
 public enum CsvValues {
     NET_PROVIDER(0),

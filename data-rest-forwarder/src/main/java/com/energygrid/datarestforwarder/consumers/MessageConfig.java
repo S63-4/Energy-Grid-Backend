@@ -3,6 +3,14 @@ package com.energygrid.datarestforwarder.consumers;
 import org.springframework.amqp.core.*;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
+
+import java.io.File;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URI;
+import java.net.URL;
 
 @Configuration
 public class MessageConfig {
@@ -38,12 +46,12 @@ public class MessageConfig {
         }
 
         @Bean
-        public Binding bindingNational( DirectExchange directExchangeSimulator, Queue nationalSimQueue) {
+        public Binding bindingNational(DirectExchange directExchangeSimulator, Queue nationalSimQueue) {
             return BindingBuilder.bind(nationalSimQueue).to(directExchangeSimulator).with("national");
         }
 
         @Bean
-        public Binding bindingMarket( DirectExchange directExchangeSimulator, Queue marketSimQueue) {
+        public Binding bindingMarket(DirectExchange directExchangeSimulator, Queue marketSimQueue) {
             return BindingBuilder.bind(marketSimQueue).to(directExchangeSimulator).with("market");
         }
 
@@ -51,5 +59,6 @@ public class MessageConfig {
         public MessageConsumer consumer() {
             return new MessageConsumer();
         }
+
     }
 }

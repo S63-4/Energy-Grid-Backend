@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.utils;
+package com.energygrid.gateway.common.utils;
 
 
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;

@@ -1,4 +1,4 @@
-package com.energygrid.gateway.security.common.security;
+package com.energygrid.gateway.security;
 
 import org.springframework.beans.factory.annotation.Value;
 
