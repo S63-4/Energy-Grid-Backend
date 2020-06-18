@@ -171,4 +171,7 @@ public class CustomerService {
         }
     }
 
+    public String getZipCodeByEmail(String emailAddress) {
+        return customerRepository.findCustomerByCustomerCode(emailAddress).getZipCode();
+    }
 }
