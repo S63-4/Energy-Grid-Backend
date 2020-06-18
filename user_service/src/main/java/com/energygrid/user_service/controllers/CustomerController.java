@@ -115,8 +115,4 @@ public class CustomerController {
     Iterable<ProfileDTO> allCustomerProfiles() {
         return customerService.allCustomerProfiles();
     }
-
-
-
-
 }

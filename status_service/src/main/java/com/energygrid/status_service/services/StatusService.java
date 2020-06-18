@@ -6,6 +6,7 @@ import com.energygrid.status_service.common.events.RegionalEvent;
 import com.energygrid.status_service.common.models.Consumer;
 import com.energygrid.status_service.common.models.ConsumerWithDateTime;
 import com.energygrid.status_service.common.models.Producer;
+import com.energygrid.status_service.consumers.MessageProducer;
 import com.energygrid.status_service.repositories.RegionalEventRepository;
 import org.checkerframework.checker.units.qual.C;
 import org.modelmapper.ModelMapper;
@@ -21,10 +22,12 @@ public class StatusService {
 
     private RegionalEventRepository regionalEventRepository;
     private final ModelMapper modelMapper;
+    private MessageProducer messageProducer;
 
-    public StatusService(RegionalEventRepository regionalEventRepository, ModelMapper modelMapper) {
+    public StatusService(RegionalEventRepository regionalEventRepository, ModelMapper modelMapper, MessageProducer messageProducer) {
         this.regionalEventRepository = regionalEventRepository;
         this.modelMapper = modelMapper;
+        this.messageProducer = messageProducer;
     }
 
     public List<RegionalEvent> getAll() {
@@ -60,5 +63,9 @@ public class StatusService {
             statusDTOS.add(new CustomerStatusDTO(iso, consumer.getName(), consumer.getConsumption(), producer.getProduction()));
         }
         return statusDTOS;
+    }
+
+    public String getCustumerZipCodeByEmail(String emailAddress) {
+        return messageProducer.sendGetZipCodeMessage(emailAddress);
     }
 }

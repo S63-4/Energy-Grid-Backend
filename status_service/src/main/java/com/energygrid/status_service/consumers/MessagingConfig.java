@@ -1,15 +1,21 @@
 package com.energygrid.status_service.consumers;
 
 import org.springframework.amqp.core.*;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 
 @Configuration
-public class ConsumerMessagingConfig {
+public class MessagingConfig {
 
     @Bean
     public DirectExchange directExchange() {
         return new DirectExchange("data-processor-exchange");
+    }
+
+    @Bean
+    public DirectExchange directExchange2() {
+        return new DirectExchange("user-service-exchange");
     }
 
     private static class ConsumerConfig {
@@ -19,7 +25,7 @@ public class ConsumerMessagingConfig {
     }
 
         @Bean
-        public Binding saveStatusBinding (DirectExchange directExchange, Queue regionalHourQueue){
+        public Binding saveStatusBinding (@Qualifier("data-processor-exchange") DirectExchange directExchange, Queue regionalHourQueue){
             return BindingBuilder.bind(regionalHourQueue).to(directExchange).with("regional-hour");
     }
 
@@ -27,5 +33,10 @@ public class ConsumerMessagingConfig {
         public MessageConsumer messageConsumer () {
             return new MessageConsumer();
         }
+    }
+
+    @Bean
+    public MessageProducer messageProducer() {
+        return new MessageProducer();
     }
 }

@@ -7,6 +7,8 @@ import com.energygrid.status_service.services.StatusService;
 import com.google.gson.Gson;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -40,15 +42,15 @@ public class StatusController {
     @PreAuthorize("isAuthenticated()")
     @RequestMapping(value = RestURIConstant.getGetHourStatusCustomer, method = RequestMethod.GET)
     public @ResponseBody
-    String getStatusForHourPeriod(
-            @RequestParam("zipCode") String zipCode,
+    String getCustomerStatusForHourPeriod(
             @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
             @RequestParam(value = "endDate", defaultValue = "#{T(java.time.LocalDateTime).now()}") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
-
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String emailAddress = (String) auth.getPrincipal();
+        String zipCode = statusService.getCustumerZipCodeByEmail(emailAddress);
         List<CustomerStatusDTO> events = statusService.getCustomerStatus(zipCode, startDate, endDate);
         Gson gson = new Gson();
         String result = gson.toJson(events);
-
         return result;
     }
 
