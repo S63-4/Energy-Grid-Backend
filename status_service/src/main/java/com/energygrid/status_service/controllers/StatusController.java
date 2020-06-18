@@ -45,12 +45,8 @@ public class StatusController {
     @RequestMapping(value = RestURIConstant.getGetHourStatusCustomer, method = RequestMethod.GET)
     public @ResponseBody
     String getCustomerStatusForHourPeriod(
-            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String startDateString,
-            @RequestParam(value = "endDate", defaultValue = "#{T(java.time.LocalDateTime).now()}") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) String endDateString) {
-        DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
-                .append(DateTimeFormatter.ISO_OFFSET_DATE_TIME).toFormatter();
-        LocalDateTime startDate = LocalDateTime.parse(startDateString, dateTimeFormatter);
-        LocalDateTime endDate = LocalDateTime.parse(endDateString, dateTimeFormatter);
+            @RequestParam("startDate") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime startDate,
+            @RequestParam(value = "endDate", defaultValue = "#{T(java.time.LocalDateTime).now()}") @DateTimeFormat(iso = DateTimeFormat.ISO.DATE_TIME) LocalDateTime endDate) {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String emailAddress = (String) auth.getPrincipal();
         String zipCode = statusService.getCustumerZipCodeByEmail(emailAddress);
