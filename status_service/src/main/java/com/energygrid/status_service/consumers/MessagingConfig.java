@@ -8,17 +8,18 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class MessagingConfig {
 
-    @Bean
+    @Bean("data-processor-exchange")
     public DirectExchange directExchange() {
         return new DirectExchange("data-processor-exchange");
     }
 
-    @Bean
+    @Bean("user-service-exchange")
     public DirectExchange directExchange2() {
         return new DirectExchange("user-service-exchange");
     }
 
     private static class ConsumerConfig {
+
         @Bean
         public Queue regionalHourQueue() {
             return new AnonymousQueue();
@@ -27,7 +28,7 @@ public class MessagingConfig {
         @Bean
         public Binding saveStatusBinding (@Qualifier("data-processor-exchange") DirectExchange directExchange, Queue regionalHourQueue){
             return BindingBuilder.bind(regionalHourQueue).to(directExchange).with("regional-hour");
-    }
+        }
 
         @Bean
         public MessageConsumer messageConsumer () {

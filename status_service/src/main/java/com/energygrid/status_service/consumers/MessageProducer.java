@@ -7,8 +7,8 @@ import org.springframework.beans.factory.annotation.Qualifier;
 
 public class MessageProducer {
 
-    @Autowired
     @Qualifier("user-service-exchange")
+    @Autowired
     DirectExchange directExchange;
 
     @Autowired
@@ -17,4 +17,5 @@ public class MessageProducer {
     public String sendGetZipCodeMessage(String emailAddress) {
         return (String) template.convertSendAndReceive(directExchange.getName(), emailAddress, "rpc-get-zipcode");
     }
+
 }
