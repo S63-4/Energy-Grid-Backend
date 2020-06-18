@@ -318,7 +318,9 @@ class Simulator:
         return powerplant.calculate_current_powerplant_production()
 
     async def run_simulator(self):
-        date = datetime.datetime.now()
+        import pytz
+        tz = pytz.timezone('Europe/Amsterdam')
+        date = datetime.datetime.now(tz=tz)
         # add 1 minute to simulation time to make sure simulation of next minute is done at the start of the minute
         date = date + datetime.timedelta(minutes=1)
         date_iso = date.replace(microsecond=0).isoformat()

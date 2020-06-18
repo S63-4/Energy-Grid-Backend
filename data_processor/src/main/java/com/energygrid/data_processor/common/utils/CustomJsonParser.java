@@ -10,6 +10,8 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
+import java.time.format.DateTimeFormatterBuilder;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -106,7 +108,9 @@ public class CustomJsonParser {
         production.setHouseholds(householdsProducersGroup);
         // Setting the event
         String dateTime = rootNode.get("date").asText();
-        event.setLocalDateTime(LocalDateTime.parse(dateTime));
+        DateTimeFormatter dateTimeFormatter = new DateTimeFormatterBuilder()
+                .append(DateTimeFormatter.ISO_OFFSET_DATE_TIME).toFormatter();
+        event.setLocalDateTime(LocalDateTime.parse(dateTime, dateTimeFormatter));
         event.setRegion(rootNode.get("region").asText());
         event.setConsumption(consumption);
         event.setProduction(production);
