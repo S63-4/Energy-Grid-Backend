@@ -15,7 +15,7 @@ public class MessageProducer {
     private RabbitTemplate template;
 
     public String sendGetZipCodeMessage(String emailAddress) {
-        return (String) template.convertSendAndReceive(directExchange.getName(), emailAddress, "rpc-get-zipcode");
+        return (String) template.convertSendAndReceive(directExchange.getName(), "rpc-get-zipcode", emailAddress);
     }
 
 }

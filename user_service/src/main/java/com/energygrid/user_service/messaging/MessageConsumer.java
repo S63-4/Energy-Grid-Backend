@@ -9,7 +9,7 @@ public class MessageConsumer {
     @Autowired
     CustomerService customerService;
 
-    @RabbitListener
+    @RabbitListener(queues = "#{zipCodeQueue.name}")
     public String receiveZipCodeRequest(String emailAddress) {
         return customerService.getZipCodeByEmail(emailAddress);
     }

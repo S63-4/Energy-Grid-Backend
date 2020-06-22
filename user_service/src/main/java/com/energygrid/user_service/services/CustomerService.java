@@ -182,6 +182,7 @@ public class CustomerService {
     }
 
     public String getZipCodeByEmail(String emailAddress) {
-        return customerRepository.findCustomerByCustomerCode(emailAddress).getZipCode();
+        Customer customer = customerRepository.findCustomerByEmail(emailAddress);
+        return customer.getZipCode();
     }
 }
