@@ -9,7 +9,7 @@ public class MessagingConfig {
 
     @Bean
     public DirectExchange directExchange() {
-        return new DirectExchange("user-service-queue");
+        return new DirectExchange("user-service-exchange");
     }
 
     public static class ConsumerConfig {

@@ -32,15 +32,15 @@ public class CustomerService {
         this.modelMapper = modelMapper;
     }
 
-    public Iterable<Customer> allCustomers (){
+    public Iterable<Customer> allCustomers() {
         return customerRepository.findAll();
     }
 
-    public Iterable<ProfileDTO> allCustomerProfiles (){
+    public Iterable<ProfileDTO> allCustomerProfiles() {
 
         ArrayList<ProfileDTO> profiles = new ArrayList<>();
 
-        for (Customer customer: customerRepository.findAll()) {
+        for (Customer customer : customerRepository.findAll()) {
             profiles.add(modelMapper.map(customer, ProfileDTO.class));
         }
 
@@ -59,13 +59,13 @@ public class CustomerService {
         newCustomer.setEnabled(true);
         newCustomer.setPassword("null");
 
-        try{
+        try {
             customerRepository.save(newCustomer);
 
             //emailService.sendRegistrationMail(newCustomer.getEmail(), newCustomer.getCustomerCode());
 
             return "saved";
-        }catch (Exception ex){
+        } catch (Exception ex) {
             throw new DatabaseException("New customer not saved");
         }
     }
@@ -110,16 +110,28 @@ public class CustomerService {
     }
 
     public ProfileDTO getCustomerByCustomerCode(String customerCode) {
-        if(customerCode == ""){
+        if (customerCode == "") {
             throw new BadRequestException("Customer code cannot be empty");
-        }
-        else{
-            Customer customer = customerRepository.findCustomerByCustomerCode(customerCode);
+        } else {
+            Customer customer = customerRepository.findCustomerByEmail(customerCode);
 
-            if(customer == null){
+            if (customer == null) {
                 throw new BadRequestException("Customer not found");
+            } else {
+                return modelMapper.map(customer, ProfileDTO.class);
             }
-            else{
+        }
+    }
+
+    public ProfileDTO getCustomerByEmail(String email) {
+        if (email.equals("")) {
+            throw new BadRequestException("Email cannot be empty");
+        } else {
+            Customer customer = customerRepository.findCustomerByEmail(email);
+
+            if (customer == null) {
+                throw new BadRequestException("Customer not found");
+            } else {
                 return modelMapper.map(customer, ProfileDTO.class);
             }
         }
@@ -129,7 +141,7 @@ public class CustomerService {
         return customerRepository.findCustomerByCustomerCode(customerCode);
     }
 
-    public String deleteCustomerByCustomerCode(String customerCode){
+    public String deleteCustomerByCustomerCode(String customerCode) {
         try {
             customerRepository.delete(customerRepository.findCustomerByCustomerCode(customerCode));
         } catch (Exception ex) {
@@ -143,10 +155,9 @@ public class CustomerService {
             var userEntity = customerRepository.findCustomerByCustomerCode(user.getCustomerCode());
             var updateUser = modelMapper.map(userEntity, Customer.class);
 
-            if (hasAuthority(updateUser.getId(),auth)){
+            if (hasAuthority(updateUser.getId(), auth)) {
                 customerRepository.save(updateUser);
-            }
-            else {
+            } else {
                 return "failed tp update profile";
             }
             return "Profile updated";
@@ -154,7 +165,8 @@ public class CustomerService {
             throw new Exception("Unable to update user in database");
         }
     }
-    private Boolean hasAuthority(Long id, Authentication authentication){
+
+    private Boolean hasAuthority(Long id, Authentication authentication) {
         // id is the user id you expect.
 
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
@@ -162,16 +174,15 @@ public class CustomerService {
         Customer customer = customerRepository.findCustomerByCustomerCode(email);
 
 
-        if(id.equals(customer.getId()) || customer.getAuthorities().contains("employee:read")){
+        if (id.equals(customer.getId()) || customer.getAuthorities().contains("employee:read")) {
             return true;
-        }
-        else
-        {
+        } else {
             return false;
         }
     }
 
     public String getZipCodeByEmail(String emailAddress) {
-        return customerRepository.findCustomerByCustomerCode(emailAddress).getZipCode();
+        Customer customer = customerRepository.findCustomerByEmail(emailAddress);
+        return customer.getZipCode();
     }
 }
