@@ -8,6 +8,8 @@ import org.springframework.stereotype.Repository;
 public interface CustomerRepository extends CrudRepository<Customer, Long> {
     Customer findCustomerByCustomerCode(String code);
 
+    Customer findCustomerByEmail(String email);
+
     boolean existsByCustomerCode(String customerCode);
 
     boolean existsByEmail(String email);
